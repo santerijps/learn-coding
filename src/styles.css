@@ -788,8 +788,14 @@ p.feedback-wrong {
   color: var(--muted);
 }
 
-.editor .cm-cursor {
-  border-left-color: var(--text);
+.editor .cm-content {
+  caret-color: var(--text);
+}
+
+.editor .cm-cursor,
+.editor .cm-dropCursor {
+  border-left: 2px solid var(--accent);
+  margin-left: -1px;
 }
 
 .editor .cm-selectionBackground,

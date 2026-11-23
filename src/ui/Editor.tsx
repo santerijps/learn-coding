@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { EditorState, Prec, type Extension } from '@codemirror/state'
-import { EditorView, keymap, placeholder as placeholderExt } from '@codemirror/view'
+import { drawSelection, EditorView, keymap, placeholder as placeholderExt } from '@codemirror/view'
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands'
 import { indentUnit, syntaxHighlighting } from '@codemirror/language'
 import { javascript } from '@codemirror/lang-javascript'
@@ -32,6 +32,8 @@ export function Editor({ language, onChange, onSubmit, placeholder, ariaLabel, a
       return true
     }
     const extensions: Extension[] = [
+      // CodeMirror draws its own cursor so it is visible in both themes (the native caret defaults to black).
+      drawSelection({ cursorBlinkRate: 1000 }),
       history(),
       Prec.highest(
         keymap.of(language === 'shell' ? [{ key: 'Enter', run: submit }, { key: 'Mod-Enter', run: submit }] : [{ key: 'Mod-Enter', run: submit }]),
