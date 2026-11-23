@@ -1,5 +1,6 @@
 import { href, useRoute, type Route } from './app/router'
 import { ProgressProvider } from './app/progress'
+import { ThemeToggle } from './app/theme'
 import { m } from './i18n'
 import { HomePage } from './pages/HomePage'
 import { TrackPage } from './pages/TrackPage'
@@ -46,6 +47,7 @@ export function App() {
           </span>
           {m.appName}
         </a>
+        <ThemeToggle />
       </header>
       <main>
         {/* Keying by route remounts the page, so e.g. switching tracks starts a fresh round. */}

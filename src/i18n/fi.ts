@@ -127,6 +127,10 @@ export const fi = {
   noResults: 'Ei osumia.',
 
   notFound: 'Sivua ei löytynyt.',
+
+  // Theme
+  themeName: { auto: 'Automaattinen', light: 'Vaalea', dark: 'Tumma' } as const,
+  themeSwitch: (current: string, next: string) => `Teema: ${current}. Vaihda teemaan ${next}.`,
 }
 
 export type Messages = typeof fi
