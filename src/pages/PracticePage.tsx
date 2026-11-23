@@ -4,10 +4,15 @@ import type { DeckCard, TrackId } from '../content/schema'
 import { href } from '../app/router'
 import { useProgress } from '../app/progress'
 import { buildRound, nextDue, unlockedCards } from '../session/buildRound'
+import { weakestRound } from '../session/weak'
 import { gradeAttempt, newCard, review } from '../srs/scheduler'
-import { bumpStreak, type Progress } from '../storage/progress'
+import { bumpStreak, loadAttempts, type Progress } from '../storage/progress'
 import { formatDuration, formatRelative, m } from '../i18n'
 import { CardDrill, type DrillResult } from '../practice/CardDrill'
+import { NotFound } from './NotFound'
+
+/** What a round draws its cards from. */
+export type PracticeScope = { kind: 'track'; trackId: TrackId } | { kind: 'lesson'; lessonId: string } | { kind: 'weak'; trackId: TrackId }
 
 type Round = {
   queue: DeckCard[]
@@ -22,16 +27,33 @@ type Round = {
   finishedAt?: number
 }
 
-function trackCards(trackId: TrackId, progress: Progress) {
-  return unlockedCards(
-    course.deck.filter((c) => c.track === trackId),
-    progress,
-  )
+const trackDeck = (trackId: TrackId) => course.deck.filter((c) => c.track === trackId)
+
+/**
+ * The cards for one round. Every scope fills up to ROUND_SIZE when it has enough cards:
+ * - track: due and new cards from completed lessons first, then the soonest upcoming;
+ * - lesson: that lesson's cards in the same order (works before the lesson is completed);
+ * - weak: the learner's most-missed and least stable cards.
+ */
+function roundCards(scope: PracticeScope, progress: Progress): DeckCard[] {
+  const now = new Date()
+  switch (scope.kind) {
+    case 'track':
+      return buildRound(unlockedCards(trackDeck(scope.trackId), progress), progress, now, true)
+    case 'lesson':
+      return buildRound(
+        course.deck.filter((c) => c.lessonId === scope.lessonId),
+        progress,
+        now,
+        true,
+      )
+    case 'weak':
+      return weakestRound(trackDeck(scope.trackId), progress, loadAttempts())
+  }
 }
 
-/** Every round has ROUND_SIZE cards when enough are unlocked: due and new cards first, then the soonest upcoming. */
-function startRound(trackId: TrackId, progress: Progress): Round {
-  const queue = buildRound(trackCards(trackId, progress), progress, new Date(), true)
+function startRound(scope: PracticeScope, progress: Progress): Round {
+  const queue = roundCards(scope, progress)
   return {
     queue,
     index: 0,
@@ -42,15 +64,25 @@ function startRound(trackId: TrackId, progress: Progress): Round {
   }
 }
 
-export function PracticePage({ trackId }: { trackId: TrackId }) {
+export function PracticePage({ scope }: { scope: PracticeScope }) {
   const { progress, update } = useProgress()
-  const track = course.trackById.get(trackId)!
-  const [round, setRound] = useState(() => startRound(trackId, progress))
+  const [round, setRound] = useState(() => startRound(scope, progress))
   // Each attempt gets its own key so a requeued card starts fresh.
   const [attempt, setAttempt] = useState(0)
 
+  const lesson = scope.kind === 'lesson' ? course.tracks.flatMap((t) => t.lessons).find((l) => l.id === scope.lessonId) : undefined
+  const trackId = scope.kind === 'lesson' ? course.deck.find((c) => c.lessonId === scope.lessonId)?.track : scope.trackId
+  const track = trackId ? course.trackById.get(trackId) : undefined
+  if (!track || (scope.kind === 'lesson' && !lesson)) return <NotFound />
+
+  const title = scope.kind === 'lesson' ? `${m.practice}: ${lesson!.title}` : scope.kind === 'weak' ? m.weakRound : m.practice
+  const back =
+    scope.kind === 'lesson'
+      ? { to: href({ name: 'lesson', lessonId: scope.lessonId }), label: lesson!.title }
+      : { to: href({ name: 'track', track: track.id }), label: track.title }
+
   const restart = () => {
-    setRound(startRound(trackId, progress))
+    setRound(startRound(scope, progress))
     setAttempt((a) => a + 1)
   }
 
@@ -86,21 +118,21 @@ export function PracticePage({ trackId }: { trackId: TrackId }) {
 
   const crumbs = (
     <nav className="crumbs">
-      <a href={href({ name: 'track', track: trackId })}>← {track.title}</a>
+      <a href={back.to}>← {back.label}</a>
     </nav>
   )
+  const firstOpenLesson = track.lessons.find((l) => !progress.lessons[l.id])
 
-  // No completed lessons yet, so nothing is unlocked.
+  // Nothing to practice: no completed lessons, or (weak round) nothing practiced yet.
   if (round.queue.length === 0) {
-    const first = track.lessons.find((l) => !progress.lessons[l.id])
     return (
       <div className="page">
         {crumbs}
-        <h1>{m.practice}</h1>
-        <p className="lead">{m.noLessonsDone}</p>
-        {first ? (
-          <a className="btn btn-primary" href={href({ name: 'lesson', lessonId: first.id })}>
-            {m.firstLesson(first.title)}
+        <h1>{title}</h1>
+        <p className="lead">{scope.kind === 'weak' ? m.weakNothingYet : m.noLessonsDone}</p>
+        {firstOpenLesson ? (
+          <a className="btn btn-primary" href={href({ name: 'lesson', lessonId: firstOpenLesson.id })}>
+            {m.firstLesson(firstOpenLesson.title)}
           </a>
         ) : null}
       </div>
@@ -110,8 +142,7 @@ export function PracticePage({ trackId }: { trackId: TrackId }) {
   // Round finished.
   if (round.finishedAt) {
     const results = [...round.firstTry.values()]
-    const upcoming = nextDue(trackCards(trackId, progress), progress)
-    const first = track.lessons.find((l) => !progress.lessons[l.id])
+    const upcoming = nextDue(unlockedCards(trackDeck(track.id), progress), progress)
     return (
       <div className="page">
         {crumbs}
@@ -126,12 +157,15 @@ export function PracticePage({ trackId }: { trackId: TrackId }) {
             <button className="btn btn-primary" onClick={restart} autoFocus>
               {m.newRound}
             </button>
-            {first ? (
-              <a className="btn btn-ghost" href={href({ name: 'lesson', lessonId: first.id })}>
-                {m.continueWith(first.title)}
+            {firstOpenLesson && scope.kind === 'track' ? (
+              <a className="btn btn-ghost" href={href({ name: 'lesson', lessonId: firstOpenLesson.id })}>
+                {m.continueWith(firstOpenLesson.title)}
               </a>
             ) : null}
-            <a className="btn btn-ghost" href={href({ name: 'track', track: trackId })}>
+            <a className="btn btn-ghost" href={href({ name: 'stats', track: track.id })}>
+              {m.stats}
+            </a>
+            <a className="btn btn-ghost" href={href({ name: 'track', track: track.id })}>
               {m.backToTrack}
             </a>
           </div>
@@ -144,6 +178,7 @@ export function PracticePage({ trackId }: { trackId: TrackId }) {
   return (
     <div className="page practice">
       {crumbs}
+      {scope.kind !== 'track' ? <p className="eyebrow">{title}</p> : null}
       <div className="round-head">
         <span>{m.cardCounter(round.index + 1, round.queue.length)}</span>
         <div className="meter" aria-hidden="true">

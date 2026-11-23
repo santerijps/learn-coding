@@ -1,17 +1,42 @@
-import { href, useRoute } from './app/router'
+import { href, useRoute, type Route } from './app/router'
 import { ProgressProvider } from './app/progress'
 import { m } from './i18n'
 import { HomePage } from './pages/HomePage'
 import { TrackPage } from './pages/TrackPage'
 import { LessonPage } from './pages/LessonPage'
 import { PracticePage } from './pages/PracticePage'
+import { ChallengePage } from './pages/ChallengePage'
+import { StatsPage } from './pages/StatsPage'
 import { CheatSheetPage } from './pages/CheatSheetPage'
 import { NotFound } from './pages/NotFound'
 
+function Page({ route }: { route: Route }) {
+  switch (route.name) {
+    case 'home':
+      return <HomePage />
+    case 'track':
+      return <TrackPage trackId={route.track} />
+    case 'lesson':
+      return <LessonPage lessonId={route.lessonId} />
+    case 'practice':
+      return <PracticePage scope={{ kind: 'track', trackId: route.track }} />
+    case 'practice-lesson':
+      return <PracticePage scope={{ kind: 'lesson', lessonId: route.lessonId }} />
+    case 'practice-weak':
+      return <PracticePage scope={{ kind: 'weak', trackId: route.track }} />
+    case 'challenge':
+      return <ChallengePage trackId={route.track} />
+    case 'stats':
+      return <StatsPage trackId={route.track} />
+    case 'cheatsheet':
+      return <CheatSheetPage trackId={route.track} />
+    case 'notFound':
+      return <NotFound />
+  }
+}
+
 export function App() {
   const route = useRoute()
-  // Keying by route remounts the page, so e.g. switching tracks starts a fresh round.
-  const key = href(route)
   return (
     <ProgressProvider>
       <header className="topbar">
@@ -23,12 +48,8 @@ export function App() {
         </a>
       </header>
       <main>
-        {route.name === 'home' ? <HomePage key={key} /> : null}
-        {route.name === 'track' ? <TrackPage key={key} trackId={route.track} /> : null}
-        {route.name === 'lesson' ? <LessonPage key={key} lessonId={route.lessonId} /> : null}
-        {route.name === 'practice' ? <PracticePage key={key} trackId={route.track} /> : null}
-        {route.name === 'cheatsheet' ? <CheatSheetPage key={key} trackId={route.track} /> : null}
-        {route.name === 'notFound' ? <NotFound /> : null}
+        {/* Keying by route remounts the page, so e.g. switching tracks starts a fresh round. */}
+        <Page key={href(route)} route={route} />
       </main>
     </ProgressProvider>
   )

@@ -5,6 +5,7 @@ import { logAttempt } from '../storage/progress'
 import { m } from '../i18n'
 import { Editor } from '../ui/Editor'
 import { CodeBlock } from '../ui/CodeBlock'
+import { AnswerDiff } from '../ui/AnswerDiff'
 import { Inline } from '../ui/Markdown'
 
 export type DrillResult = {
@@ -43,6 +44,7 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
       usedHint,
       override,
       error: err,
+      mode: 'practice',
       at: new Date().toISOString(),
     })
 
@@ -146,13 +148,13 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
             </p>
           ) : null}
           {answer.trim() ? (
+            <AnswerDiff answer={answer} model={card.solution} />
+          ) : (
             <>
-              <p className="label">{m.answerLabel}</p>
-              <CodeBlock code={answer} language={card.language} />
+              <p className="label">{m.modelAnswer}</p>
+              <CodeBlock code={card.solution} language={card.language} />
             </>
-          ) : null}
-          <p className="label">{m.modelAnswer}</p>
-          <CodeBlock code={card.solution} language={card.language} />
+          )}
           <Editor
             key="retype"
             language={card.language}

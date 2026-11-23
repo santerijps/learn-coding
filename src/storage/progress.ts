@@ -1,4 +1,5 @@
 import type { FsrsCard } from '../srs/scheduler'
+import type { TrackId } from '../content/schema'
 
 /**
  * All persistence goes through this module. It uses localStorage for now; moving progress to a
@@ -13,6 +14,8 @@ export type Progress = {
   lessons: Record<string, string>
   /** Consecutive days with at least one finished practice round. `day` is a local YYYY-MM-DD date. */
   streak: { day: string; count: number } | null
+  /** Best timed-challenge score per track. */
+  challengeBest: Partial<Record<TrackId, number>>
 }
 
 export type AttemptLog = {
@@ -24,6 +27,8 @@ export type AttemptLog = {
   /** The learner pressed "my answer was right": the checker was too strict for this answer. */
   override: boolean
   error?: string
+  /** Where the attempt happened. Missing on attempts logged before challenges existed. */
+  mode?: 'practice' | 'challenge'
   at: string
 }
 
@@ -33,7 +38,7 @@ const ATTEMPTS_KEY = 'learn-coding.attempts.v1'
 const MAX_ATTEMPTS = 5000
 
 export function emptyProgress(): Progress {
-  return { version: 1, cards: {}, lessons: {}, streak: null }
+  return { version: 1, cards: {}, lessons: {}, streak: null, challengeBest: {} }
 }
 
 function read(key: string): unknown {
@@ -65,6 +70,7 @@ export function loadProgress(): Progress {
     cards: Object.fromEntries(Object.entries(stored.cards ?? {}).map(([id, c]) => [id, reviveCard(c)])),
     lessons: stored.lessons ?? {},
     streak: stored.streak ?? null,
+    challengeBest: stored.challengeBest ?? {},
   }
 }
 

@@ -818,6 +818,88 @@ p.feedback-wrong {
   font-weight: 400;
 }
 
+.diff mark {
+  border-radius: 3px;
+  padding: 0 1px;
+  color: inherit;
+}
+
+.diff-del {
+  background: var(--wrong-soft);
+  box-shadow: inset 0 -2px 0 var(--wrong);
+}
+
+.diff-ins {
+  background: var(--right-soft);
+  box-shadow: inset 0 -2px 0 var(--right);
+}
+
+/* ---------- Stats ---------- */
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.summary > div {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+}
+
+.summary dt {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.summary dd {
+  margin: 0.15rem 0 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.weak-list {
+  padding-left: 1.5rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.weak-list li {
+  display: grid;
+}
+
+/* ---------- Challenge ---------- */
+
+.challenge-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.clock {
+  font-size: 1.4rem;
+}
+
+.clock-low {
+  color: var(--wrong);
+}
+
+.score {
+  font-size: 1.1rem;
+  color: var(--right);
+}
+
+.challenge-head + .meter {
+  margin-top: 0.4rem;
+}
+
 /* ---------- Cheat sheet ---------- */
 
 .search input {

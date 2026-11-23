@@ -30,6 +30,12 @@ export function TrackPage({ trackId }: { trackId: TrackId }) {
         <a className="btn btn-primary" href={href({ name: 'practice', track: trackId })}>
           {m.startPractice}
         </a>
+        <a className="btn btn-ghost" href={href({ name: 'challenge', track: trackId })}>
+          ⏱ {m.challenge}
+        </a>
+        <a className="btn btn-ghost" href={href({ name: 'stats', track: trackId })}>
+          {m.stats}
+        </a>
         <a className="btn btn-ghost" href={href({ name: 'cheatsheet', track: trackId })}>
           {m.cheatSheet}
         </a>

@@ -7,6 +7,10 @@ test('routes round-trip through their hash', () => {
     { name: 'track', track: 'js' },
     { name: 'lesson', lessonId: 'js-muuttujat' },
     { name: 'practice', track: 'git' },
+    { name: 'practice-lesson', lessonId: 'git-haarat' },
+    { name: 'practice-weak', track: 'js' },
+    { name: 'challenge', track: 'git' },
+    { name: 'stats', track: 'js' },
     { name: 'cheatsheet', track: 'js' },
   ]
   for (const r of routes) expect(parseRoute(href(r))).toEqual(r)
@@ -14,6 +18,7 @@ test('routes round-trip through their hash', () => {
 
 test('unknown routes are not found', () => {
   expect(parseRoute('#/track/python').name).toBe('notFound')
+  expect(parseRoute('#/stats').name).toBe('notFound')
   expect(parseRoute('#/nope').name).toBe('notFound')
   expect(parseRoute('').name).toBe('home')
 })

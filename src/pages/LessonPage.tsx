@@ -51,11 +51,15 @@ export function LessonPage({ lessonId }: { lessonId: string }) {
             <button className="btn btn-primary" onClick={() => setPhase({ name: 'exercises', index: 0 })}>
               {m.toExercises}
             </button>
-            {!completed ? (
+            {completed ? (
+              <a className="btn btn-ghost" href={href({ name: 'practice-lesson', lessonId: lesson.id })}>
+                {m.practiceLesson}
+              </a>
+            ) : (
               <button className="btn btn-ghost" onClick={complete}>
                 {m.skipLesson}
               </button>
-            ) : null}
+            )}
           </div>
         </>
       ) : null}
@@ -82,8 +86,11 @@ export function LessonPage({ lessonId }: { lessonId: string }) {
           <h2>{m.lessonComplete}</h2>
           <p>{m.cardsUnlocked(lesson.cards.length)}</p>
           <div className="actions">
-            <a className="btn btn-primary" href={href({ name: 'practice', track: track.id })} autoFocus>
-              {m.startPractice}
+            <a className="btn btn-primary" href={href({ name: 'practice-lesson', lessonId: lesson.id })} autoFocus>
+              {m.practiceLesson}
+            </a>
+            <a className="btn btn-ghost" href={href({ name: 'practice', track: track.id })}>
+              {m.practiceAllLessons}
             </a>
             {nextLesson ? (
               <a className="btn btn-ghost" href={href({ name: 'lesson', lessonId: nextLesson.id })}>

@@ -73,6 +73,7 @@ export const fi = {
   retypeWrong: 'Ei vielä. Vertaa mallivastaukseen ja yritä uudelleen.',
   retypeDone: 'Hyvä! Tämä kortti tulee pian uudelleen.',
   modelAnswer: 'Mallivastaus',
+  diffLegend: 'Punaisella: väärin tai ylimääräistä vastauksessasi. Vihreällä: puuttui vastauksestasi.',
   overrideRight: 'Vastaukseni oli oikein',
   errorPrefix: 'Virhe',
   timeout: 'Koodin suoritus kesti liian kauan (ikuinen silmukka?)',
@@ -86,6 +87,38 @@ export const fi = {
   roundTime: (time: string) => `Aika ${time}`,
   newRound: 'Uusi kierros',
   backToTrack: 'Takaisin kurssille',
+
+  // Lesson practice, stats and weak cards
+  practiceLesson: 'Harjoittele tätä oppituntia',
+  practiceAllLessons: 'Pikakierros kaikista oppitunneista',
+  stats: 'Tilastot',
+  statsPracticed: 'Harjoiteltuja kortteja',
+  statsLearned: 'Opittuja kortteja',
+  statsAnswers: 'Vastauksia',
+  statsAccuracy: 'Oikein',
+  statsStreak: 'Päivän putki',
+  weakCards: 'Heikoimmat kortit',
+  weakIntro: 'Kortit, joissa olet erehtynyt useimmin. Harjoittele niitä erikseen, niin ne jäävät mieleen.',
+  weakNone: 'Ei heikkoja kortteja. Kaikki vastaukset ovat menneet oikein!',
+  weakNothingYet: 'Harjoittele ensin muutama pikakierros, niin heikoimmat kortit löytyvät.',
+  missedOf: (misses: number, attempts: number) => `${misses}/${attempts} väärin`,
+  practiceWeak: 'Harjoittele heikoimpia',
+  weakRound: 'Heikoimmat kortit',
+
+  // Timed challenge
+  challenge: 'Aikahaaste',
+  challengeIntro: (seconds: number) =>
+    `Kirjoita ${seconds} sekunnissa niin monta oikeaa vastausta kuin ehdit. Kortit tulevat suorittamistasi oppitunneista satunnaisessa järjestyksessä. Haaste ei vaikuta kertausaikatauluun.`,
+  challengeBest: 'Aikahaasteen ennätys',
+  challengeStart: 'Aloita',
+  challengeAgain: 'Uusi yritys',
+  challengeScore: (n: number) => `${n} oikein`,
+  challengeNewBest: 'Uusi ennätys!',
+  challengeBestWas: (n: number) => `Ennätyksesi: ${n}`,
+  challengeTimeLeft: (s: number) => `${s} s`,
+  challengeMissed: 'Nämä menivät väärin',
+  challengeSkip: 'Ohita',
+  challengeWrong: 'Väärin. Vertaa mallivastaukseen ja jatka.',
 
   // Cheat sheet
   cheatSheetIntro: 'Kaikki kurssin "Miten teen…?" -kortit mallivastauksineen.',

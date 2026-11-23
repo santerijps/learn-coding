@@ -26,7 +26,9 @@ Pushing to `main` runs the tests and deploys `dist/` to GitHub Pages (`.github/w
   - `match` cards compare against the model answer and listed variants after normalization (whitespace, quote style, optional semicolons; for shell, a pasted `$ ` prompt).
   - `test` cards run the learner's JavaScript in a throwaway Web Worker with a 2-second limit, then evaluate test expressions. Tests can read `__logs` (console output) and `__raw` (raw `console.log` arguments).
   - When the checker is too strict, the learner can press "my answer was right"; those cases are logged so the card can be fixed.
-- **Grading is automatic** (`src/srs/scheduler.ts`): wrong is Again, a hint makes it Hard, fast recall of a known card is Easy, otherwise Good. Missed cards come back once at the end of the round.
+- **Grading is automatic** (`src/srs/scheduler.ts`): wrong is Again, a hint makes it Hard, fast recall of a known card is Easy, otherwise Good. Missed cards come back once at the end of the round, and the retype step highlights how the answer differs from the model answer (`src/ui/diff.ts`).
+- **Rounds** are always 10 cards (`src/pages/PracticePage.tsx`): a track round (due → new → soonest upcoming), a single-lesson round, or the learner's weakest cards from the stats page (`src/session/weak.ts`).
+- **Timed challenge** (`src/pages/ChallengePage.tsx`): as many correct answers as possible in 60 seconds, with a personal best per track. It's logged for the stats but doesn't change review scheduling.
 - **Data for the teacher:** "Lataa vastaushistoria (JSON)" on the home page downloads every attempt (answer, correct, time, hint, override), so struggling cards can be spotted.
 
 ## Writing content
