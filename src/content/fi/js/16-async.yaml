@@ -1,0 +1,147 @@
+id: js-async
+title: Asynkronisuus
+summary: Promise, async/await ja tiedon hakeminen fetch-funktiolla.
+theory: |
+  Osa toiminnoista kestää: verkkopyyntö, tiedoston lukeminen tai ajastin. JavaScript ei jää odottamaan niitä, vaan jatkaa muun koodin suorittamista. Tällaiset toiminnot palauttavat **lupauksen** (Promise), joka täyttyy tulevaisuudessa arvolla tai hylätään virheellä.
+
+  ### async ja await
+
+  `await` odottaa lupauksen täyttymistä ja antaa sen arvon. Sitä voi käyttää `async`-funktion sisällä ja moduulien ylätasolla.
+
+  ```js
+  async function haeKayttaja() {
+    const vastaus = await fetch("/api/kayttaja");
+    const data = await vastaus.json();
+    return data.nimi;
+  }
+  ```
+
+  `async`-funktio palauttaa **aina** lupauksen. Kutsujan täytyy siis myös odottaa sitä: `const nimi = await haeKayttaja();`.
+
+  ### fetch
+
+  `fetch(url)` tekee HTTP-pyynnön ja palauttaa lupauksen vastauksesta. Vastauksen sisältö luetaan erikseen, esimerkiksi `await vastaus.json()`. Ominaisuus `vastaus.ok` kertoo, onnistuiko pyyntö (tilakoodi 200–299).
+
+  ### Virheet
+
+  Hylätty lupaus heittää `await`-kohdassa virheen, joten se käsitellään tutulla `try/catch`-rakenteella:
+
+  ```js
+  try {
+    const data = await haeKayttaja();
+  } catch (virhe) {
+    console.log("Haku epäonnistui");
+  }
+  ```
+
+  ### then
+
+  Vanhemmassa koodissa lupauksia käsitellään `then`-metodilla:
+
+  ```js
+  haeKayttaja().then((nimi) => console.log(nimi));
+  ```
+
+  ### Rinnakkain
+
+  `Promise.all` odottaa useaa lupausta yhtä aikaa ja palauttaa tulokset taulukkona samassa järjestyksessä:
+
+  ```js
+  const [kayttajat, tuotteet] = await Promise.all([haeKayttajat(), haeTuotteet()]);
+  ```
+exercises:
+  - type: choice
+    question: Mitä `async`-funktio palauttaa?
+    options: [Aina lupauksen (Promise), Paluuarvon suoraan, '`undefined`', Callback-funktion]
+    answer: 0
+    explanation: '`async`-funktion paluuarvo kääritään aina lupaukseen, joten tuloksen saa käyttöön `await`- tai `then`-rakenteella.'
+  - type: blank
+    question: Täydennä niin, että `vastaus` on palvelimen vastaus eikä lupaus.
+    code: |
+      const vastaus = ___ fetch("/api/kayttajat");
+    blanks:
+      - [await]
+    explanation: '`await` odottaa lupauksen täyttymistä ja antaa sen arvon.'
+  - type: bug
+    question: Funktio palauttaa `undefined` käyttäjän nimen sijaan.
+    code: |
+      async function haeKayttaja() {
+        const vastaus = await fetch("/api/kayttaja");
+        const data = vastaus.json();
+        return data.nimi;
+      }
+    bugLine: 3
+    explanation: '`vastaus.json()` palauttaa myös lupauksen, joten sitäkin täytyy odottaa: `const data = await vastaus.json();`'
+cards:
+  - id: js-async-function
+    prompt: Kirjoita async-funktio `haeLuku()`, joka palauttaa luvun `42`.
+    check: test
+    tests:
+      - 'haeLuku() instanceof Promise'
+      - '(await haeLuku()) === 42'
+    solution: |
+      async function haeLuku() {
+        return 42;
+      }
+  - id: js-await-value
+    prompt: Odota valmiin funktion `lataa()` palauttaman lupauksen arvo ja tallenna se vakioon `tulos`.
+    check: test
+    setup: |
+      const lataa = () => Promise.resolve("valmis");
+    tests:
+      - 'tulos === "valmis"'
+    solution: |
+      const tulos = await lataa();
+  - id: js-fetch-json
+    prompt: 'Kirjoita async-funktio `haeNimi()`, joka hakee osoitteen `"/api/kayttaja"` fetch-funktiolla, jäsentää vastauksen JSONina ja palauttaa sen kentän `nimi`.'
+    check: test
+    setup: |
+      // Harjoitusta varten fetch palauttaa valmiin vastauksen.
+      const fetch = async (url) => ({
+        ok: true,
+        json: async () => (url === "/api/kayttaja" ? { nimi: "Ada" } : {}),
+      });
+    tests:
+      - '(await haeNimi()) === "Ada"'
+    solution: |
+      async function haeNimi() {
+        const vastaus = await fetch("/api/kayttaja");
+        const data = await vastaus.json();
+        return data.nimi;
+      }
+  - id: js-then
+    prompt: Tulosta funktion `lataa()` palauttaman lupauksen arvo `then`-metodilla, eli ilman `await`-sanaa.
+    check: test
+    setup: |
+      const lataa = () => Promise.resolve("valmis");
+    tests:
+      - '__logs[0] === "valmis"'
+    solution: |
+      lataa().then((arvo) => console.log(arvo));
+  - id: js-promise-all
+    prompt: Hae `haeA()` ja `haeB()` rinnakkain `Promise.all`-metodilla ja tallenna tulokset vakioon `tulokset`.
+    check: test
+    setup: |
+      const haeA = async () => "A";
+      const haeB = async () => "B";
+    tests:
+      - 'JSON.stringify(tulokset) === JSON.stringify(["A", "B"])'
+    solution: |
+      const tulokset = await Promise.all([haeA(), haeB()]);
+  - id: js-await-try-catch
+    prompt: 'Kirjoita async-funktio `turvallinenHaku()`, joka palauttaa lausekkeen `await hae()` arvon tai merkkijonon `"virhe"`, jos lupaus hylätään.'
+    check: test
+    setup: |
+      const hae = async () => {
+        throw new Error("verkko");
+      };
+    tests:
+      - '(await turvallinenHaku()) === "virhe"'
+    solution: |
+      async function turvallinenHaku() {
+        try {
+          return await hae();
+        } catch {
+          return "virhe";
+        }
+      }

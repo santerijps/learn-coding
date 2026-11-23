@@ -1,0 +1,157 @@
+id: js-oliot
+title: Oliot
+summary: Avain–arvo-parit, ominaisuudet ja metodit.
+theory: |
+  Olio (object) kokoaa yhteen toisiinsa liittyviä arvoja. Kukin arvo tallennetaan **avaimen** eli ominaisuuden nimen alle.
+
+  ```js
+  const kayttaja = {
+    nimi: "Ada",
+    ika: 36,
+    kielet: ["fi", "en"],
+  };
+
+  kayttaja.nimi;       // "Ada"
+  kayttaja["ika"];     // 36
+  kayttaja.ika = 37;   // muokkaa
+  kayttaja.maa = "UK"; // lisää uusi ominaisuus
+  delete kayttaja.maa; // poista
+  ```
+
+  ### Piste vai hakasulkeet?
+
+  Pistemerkintä `olio.avain` on tavallisin. Hakasulkeita tarvitaan, kun avaimen nimi on muuttujassa:
+
+  ```js
+  const kentta = "nimi";
+  kayttaja[kentta]; // "Ada"
+  ```
+
+  ### Lyhyt merkintä
+
+  Jos muuttujan nimi on sama kuin avain, avaimen voi kirjoittaa vain kerran:
+
+  ```js
+  const nimi = "Linus";
+  const ika = 54;
+  const henkilo = { nimi, ika }; // { nimi: "Linus", ika: 54 }
+  ```
+
+  ### Metodit
+
+  Olion ominaisuus voi olla funktio. Metodin sisällä `this` viittaa olioon itseensä:
+
+  ```js
+  const laskuri = {
+    arvo: 0,
+    kasvata() {
+      this.arvo++;
+    },
+  };
+  laskuri.kasvata();
+  ```
+
+  ### Olioiden läpikäynti
+
+  ```js
+  const asetukset = { teema: "tumma", kieli: "fi" };
+  Object.keys(asetukset);    // ["teema", "kieli"]
+  Object.values(asetukset);  // ["tumma", "fi"]
+  Object.entries(asetukset); // [["teema", "tumma"], ["kieli", "fi"]]
+  ```
+
+  ### Valinnainen ketjutus
+
+  `?.` palauttaa arvon `undefined` kaatumatta, jos välissä oleva arvo puuttuu: `kayttaja.osoite?.katu`.
+exercises:
+  - type: choice
+    question: Avaimen nimi on muuttujassa `avain`. Miten haet sen arvon oliosta `olio`?
+    options: ['`olio.avain`', '`olio[avain]`', '`olio."avain"`', '`olio->avain`']
+    answer: 1
+    explanation: '`olio.avain` hakisi ominaisuuden, jonka nimi on kirjaimellisesti "avain". Hakasulkeissa käytetään muuttujan arvoa.'
+  - type: blank
+    question: Täydennä niin, että ohjelma tulostaa `1870`.
+    code: |
+      const kirja = { nimi: "Seitsemän veljestä", vuosi: 1870 };
+      console.log(kirja.___);
+    blanks:
+      - [vuosi]
+    explanation: Ominaisuuden arvo haetaan pistemerkinnällä ja avaimen nimellä.
+  - type: bug
+    question: Ohjelma ei käänny. Millä rivillä on syntaksivirhe?
+    code: |
+      const kayttaja = {
+        nimi: "Ada",
+        ika = 36,
+      };
+    bugLine: 3
+    explanation: 'Olion sisällä avain ja arvo erotetaan kaksoispisteellä, ei yhtäsuuruusmerkillä: `ika: 36,`'
+cards:
+  - id: js-object-create
+    prompt: 'Luo olio `kayttaja`, jolla on ominaisuudet `nimi` (arvo `"Ada"`) ja `ika` (arvo `36`).'
+    check: test
+    tests:
+      - 'kayttaja.nimi === "Ada" && kayttaja.ika === 36'
+    solution: |
+      const kayttaja = { nimi: "Ada", ika: 36 };
+  - id: js-object-read
+    prompt: Tallenna olion `tuote` hinta vakioon `hinta`.
+    check: test
+    setup: |
+      const tuote = { nimi: "Kahvi", hinta: 4.5 };
+    tests:
+      - 'hinta === 4.5'
+    solution: |
+      const hinta = tuote.hinta;
+  - id: js-object-add
+    prompt: Lisää olioon `auto` ominaisuus `vari`, jonka arvo on `"punainen"`.
+    check: test
+    setup: |
+      const auto = { merkki: "Volvo" };
+    tests:
+      - 'auto.vari === "punainen" && auto.merkki === "Volvo"'
+    solution: |
+      auto.vari = "punainen";
+  - id: js-object-bracket
+    prompt: Hae oliosta `henkilo` ominaisuus, jonka nimi on muuttujassa `kentta`, ja tallenna arvo vakioon `arvo`.
+    check: test
+    setup: |
+      const henkilo = { nimi: "Linus", kaupunki: "Helsinki" };
+      const kentta = "kaupunki";
+    tests:
+      - 'arvo === "Helsinki"'
+    solution: |
+      const arvo = henkilo[kentta];
+  - id: js-object-keys
+    prompt: Luo taulukko `avaimet`, jossa ovat olion `asetukset` avaimet.
+    check: test
+    setup: |
+      const asetukset = { teema: "tumma", kieli: "fi" };
+    tests:
+      - 'JSON.stringify(avaimet) === JSON.stringify(["teema", "kieli"])'
+    solution: |
+      const avaimet = Object.keys(asetukset);
+  - id: js-find-object
+    prompt: Etsi taulukosta `kayttajat` käyttäjä, jonka nimi on `"Grace"`, ja tallenna se vakioon `grace`.
+    check: test
+    setup: |
+      const kayttajat = [
+        { nimi: "Ada", ika: 36 },
+        { nimi: "Grace", ika: 45 },
+      ];
+    tests:
+      - 'grace === kayttajat[1]'
+    solution: |
+      const grace = kayttajat.find((k) => k.nimi === "Grace");
+  - id: js-object-method
+    prompt: Luo olio `laskuri`, jolla on ominaisuus `arvo` (alkuarvo `0`) ja metodi `kasvata()`, joka kasvattaa arvoa yhdellä.
+    check: test
+    tests:
+      - '(laskuri.kasvata(), laskuri.kasvata(), laskuri.arvo === 2)'
+    solution: |
+      const laskuri = {
+        arvo: 0,
+        kasvata() {
+          this.arvo++;
+        },
+      };

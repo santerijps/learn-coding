@@ -1,0 +1,108 @@
+id: js-tietotyypit
+title: Tietotyypit
+summary: Luvut, merkkijonot, totuusarvot, null ja undefined.
+theory: |
+  Jokaisella arvolla on **tyyppi**. Perustyypit ovat nämä:
+
+  ```js
+  const ika = 36;            // number: kokonais- ja desimaaliluvut
+  const hinta = 4.5;         // number
+  const nimi = "Ada";        // string: merkkijono
+  const onValmis = true;     // boolean: true tai false
+  const tyhja = null;        // null: tarkoituksella ei arvoa
+  let tuntematon;            // undefined: arvoa ei ole asetettu
+  ```
+
+  ### typeof
+
+  Operaattori `typeof` kertoo arvon tyypin merkkijonona:
+
+  ```js
+  typeof 42;        // "number"
+  typeof "42";      // "string"
+  typeof true;      // "boolean"
+  typeof undefined; // "undefined"
+  ```
+
+  ### Tyyppimuunnokset
+
+  Lomakkeista ja tiedostoista luetut arvot ovat usein merkkijonoja, vaikka ne näyttävät luvuilta. Ne täytyy muuntaa:
+
+  ```js
+  const syote = "42";
+  const luku = Number(syote);  // 42
+  const teksti = String(2026); // "2026"
+  Number("kissa");             // NaN ("Not a Number")
+  ```
+
+  Varo `+`-operaattoria: jos toinen puoli on merkkijono, `+` yhdistää tekstit eikä laske yhteen. `"5" + 3` on `"53"`.
+exercises:
+  - type: choice
+    question: Mitä `typeof "5"` palauttaa?
+    options:
+      - '`"number"`'
+      - '`"string"`'
+      - '`5`'
+      - '`"text"`'
+    answer: 1
+    explanation: Lainausmerkeissä oleva arvo on aina merkkijono, vaikka sen sisällä olisi numero.
+  - type: blank
+    question: Täydennä niin, että `onValmis` on totuusarvo tosi.
+    code: |
+      const onValmis = ___;
+    blanks:
+      - ['true']
+    explanation: Totuusarvot ovat `true` ja `false`, ja ne kirjoitetaan ilman lainausmerkkejä.
+  - type: bug
+    question: Ohjelman pitäisi tulostaa `8`, mutta se tulostaa `53`.
+    code: |
+      const a = "5";
+      const b = 3;
+      const summa = a + b;
+      console.log(summa);
+    bugLine: 3
+    explanation: '`a` on merkkijono, joten `+` yhdistää tekstit. Muunna se ensin luvuksi: `const summa = Number(a) + b;`'
+cards:
+  - id: js-typeof-number
+    prompt: Luo vakio `tyyppi`, jonka arvo on lausekkeen `typeof 3.14` tulos.
+    check: test
+    tests:
+      - 'tyyppi === "number"'
+    solution: |
+      const tyyppi = typeof 3.14;
+  - id: js-string-to-number
+    prompt: Muunna merkkijono `syote` luvuksi ja tallenna se vakioon `luku`.
+    check: test
+    setup: |
+      const syote = "42";
+    tests:
+      - 'luku === 42'
+    solution: |
+      const luku = Number(syote);
+  - id: js-number-to-string
+    prompt: Muunna luku `vuosi` merkkijonoksi ja tallenna se vakioon `teksti`.
+    check: test
+    setup: |
+      const vuosi = 2026;
+    tests:
+      - 'teksti === "2026"'
+    solution: |
+      const teksti = String(vuosi);
+  - id: js-null-undefined
+    prompt: Luo vakio `tyhja`, jonka arvo on `null`, ja muuttuja `tuntematon` antamatta sille arvoa.
+    check: test
+    tests:
+      - 'tyhja === null'
+      - 'tuntematon === undefined'
+    solution: |
+      const tyhja = null;
+      let tuntematon;
+  - id: js-booleans
+    prompt: Luo vakio `onTotta`, jonka arvo on tosi, ja vakio `onValetta`, jonka arvo on epätosi.
+    check: test
+    tests:
+      - 'onTotta === true'
+      - 'onValetta === false'
+    solution: |
+      const onTotta = true;
+      const onValetta = false;

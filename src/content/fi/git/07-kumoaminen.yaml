@@ -1,0 +1,101 @@
+id: git-kumoaminen
+title: Muutosten kumoaminen
+summary: restore, amend, revert ja reset, eli kun jotain meni pieleen.
+theory: |
+  Oikea kumoamistapa riippuu siitä, **missä** muutos on.
+
+  ### Muutos vain työhakemistossa
+
+  ```bash
+  git restore app.js           # hylkää tallentamattomat muutokset (ei voi perua!)
+  ```
+
+  ### Muutos valmistelualueella
+
+  ```bash
+  git restore --staged app.js  # poista valmistelualueelta, muutokset säilyvät tiedostossa
+  ```
+
+  ### Viimeisin commit, jota ei ole vielä pushattu
+
+  ```bash
+  git commit --amend -m "Parempi viesti"   # korjaa viesti
+  git add unohtunut.js
+  git commit --amend --no-edit             # lisää tiedosto samaan committiin
+  git reset --soft HEAD~1                  # peru commit, muutokset jäävät valmistelualueelle
+  ```
+
+  ### Jo pushattu commit
+
+  Jaettua historiaa ei pidä kirjoittaa uudelleen, koska se sotkee muiden kopiot. Tee sen sijaan uusi commit, joka kumoaa vanhan:
+
+  ```bash
+  git revert a1b2c3d
+  ```
+
+  ### Varo: reset --hard
+
+  `git reset --hard HEAD~1` poistaa commitin **ja** kaikki tallentamattomat muutokset. Käytä sitä vain, kun tiedät tarkalleen, mitä olet tekemässä.
+
+  - `restore`: tiedostot työhakemistossa tai valmistelualueella.
+  - `amend` / `reset`: oma paikallinen historia.
+  - `revert`: jaettu historia.
+exercises:
+  - type: choice
+    question: Commit on jo pushattu jaettuun `main`-haaraan. Mikä on turvallisin tapa kumota se?
+    options:
+      - '`git revert <commit>`'
+      - '`git reset --hard HEAD~1`'
+      - '`git commit --amend`'
+      - Poista `.git`-kansio
+    answer: 0
+    explanation: '`revert` tekee uuden commitin, joka kumoaa muutokset. Historia ei muutu, joten muiden kopiot pysyvät kunnossa.'
+  - type: blank
+    question: Täydennä komento, joka poistaa `app.js`-tiedoston valmistelualueelta menettämättä muutoksia.
+    code: |
+      git restore ___ app.js
+    blanks:
+      - ['--staged']
+    explanation: '`git restore --staged` siirtää muutokset pois valmistelualueelta. Tiedoston sisältö ei muutu.'
+  - type: bug
+    question: Jo pushatun commitin kumoaminen sotkee tiimin historian, ja viimeinen push hylätään.
+    code: |
+      git add .
+      git commit -m "Lisää kirjautuminen"
+      git push
+      git reset --hard HEAD~1
+      git push
+    bugLine: 4
+    explanation: '`reset` kirjoittaa jo jaetun historian uudelleen, joten etärepo hylkää pushin. Kumoa pushattu commit komennolla `git revert HEAD`.'
+cards:
+  - id: git-restore
+    prompt: Hylkää tiedoston `app.js` tallentamattomat muutokset työhakemistossa.
+    check: match
+    solution: git restore app.js
+    accepted:
+      - git checkout -- app.js
+  - id: git-restore-staged
+    prompt: Poista `app.js` valmistelualueelta menettämättä tiedoston muutoksia.
+    check: match
+    solution: git restore --staged app.js
+    accepted:
+      - git reset app.js
+      - git reset HEAD app.js
+  - id: git-amend-message
+    prompt: 'Korjaa viimeisimmän commitin viesti muotoon `"Korjaa kirjautuminen"`.'
+    check: match
+    solution: git commit --amend -m "Korjaa kirjautuminen"
+  - id: git-amend-no-edit
+    prompt: Unohtunut tiedosto on jo valmistelualueella. Lisää se viimeisimpään committiin muuttamatta commitin viestiä.
+    check: match
+    solution: git commit --amend --no-edit
+  - id: git-revert
+    prompt: Kumoa commit `a1b2c3d` tekemällä uusi, sen kumoava commit.
+    check: match
+    solution: git revert a1b2c3d
+  - id: git-reset-soft
+    prompt: Peru viimeisin (pushaamaton) commit niin, että sen muutokset jäävät valmistelualueelle.
+    check: match
+    solution: git reset --soft HEAD~1
+    accepted:
+      - git reset --soft HEAD^

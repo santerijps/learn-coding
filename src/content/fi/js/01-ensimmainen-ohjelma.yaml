@@ -1,0 +1,96 @@
+id: js-ensimmainen-ohjelma
+title: Ensimmäinen ohjelma
+summary: Tulostaminen, lauseet ja kommentit.
+theory: |
+  JavaScript on verkon ohjelmointikieli. Sitä ajetaan selaimessa, ja palvelimella ja komentorivillä sitä ajetaan esimerkiksi Node.js:llä tai Bunilla.
+
+  ### Tulostaminen
+
+  `console.log()` tulostaa arvon konsoliin. Sitä käytetään jatkuvasti ohjelman toiminnan tarkistamiseen ja vianetsintään.
+
+  ```js
+  console.log("Hei maailma");
+  console.log(42);
+  console.log(7 * 6);
+  ```
+
+  Teksti eli **merkkijono** kirjoitetaan lainausmerkkeihin. Luvut kirjoitetaan ilman lainausmerkkejä, ja niillä voi laskea.
+
+  ### Lauseet
+
+  Ohjelma koostuu **lauseista**, jotka suoritetaan ylhäältä alas. Lauseen loppuun kirjoitetaan yleensä puolipiste `;`. Se ei aina ole pakollinen, mutta sen käyttäminen on hyvä tapa.
+
+  ### Kommentit
+
+  Kommentit ovat muistiinpanoja ihmisille, eikä JavaScript suorita niitä.
+
+  ```js
+  // Yhden rivin kommentti
+
+  /*
+    Usean rivin
+    kommentti
+  */
+  console.log("Tämä suoritetaan"); // kommentti rivin lopussa
+  ```
+exercises:
+  - type: choice
+    question: Millä komennolla teksti tulostetaan konsoliin JavaScriptissä?
+    options:
+      - '`print("Hei")`'
+      - '`console.log("Hei")`'
+      - '`echo "Hei"`'
+      - '`System.out.println("Hei")`'
+    answer: 1
+    explanation: '`console.log()` tulostaa konsoliin. Muut vaihtoehdot ovat muiden kielten (Python, shell, Java) tapoja.'
+  - type: blank
+    question: Täydennä niin, että ohjelma tulostaa tekstin.
+    code: |
+      console.___("Hei maailma");
+    blanks:
+      - [log]
+    explanation: Tulostus tehdään metodilla `log` olion `console` kautta, eli `console.log(...)`.
+  - type: bug
+    question: Ohjelman pitäisi tulostaa kaksi riviä tekstiä.
+    code: |
+      // Tervehdys
+      console.log("Hei maailma);
+      console.log("Mitä kuuluu?");
+    bugLine: 2
+    explanation: 'Rivillä 2 puuttuu loppulainausmerkki: `console.log("Hei maailma");`'
+cards:
+  - id: js-log-text
+    prompt: Tulosta konsoliin teksti `Hei maailma`.
+    check: test
+    tests:
+      - '__logs[0] === "Hei maailma"'
+    solution: |
+      console.log("Hei maailma");
+  - id: js-log-number
+    prompt: Tulosta konsoliin luku `42` (lukuna, ei tekstinä).
+    check: test
+    tests:
+      - '__raw[0][0] === 42'
+    solution: |
+      console.log(42);
+  - id: js-log-calc
+    prompt: Tulosta laskutoimituksen `7 * 6` tulos.
+    check: test
+    tests:
+      - '__raw[0][0] === 42'
+    solution: |
+      console.log(7 * 6);
+  - id: js-comment-line
+    prompt: Kirjoita yhden rivin kommentti, jossa lukee `TODO`.
+    check: match
+    solution: |
+      // TODO
+  - id: js-log-two-lines
+    prompt: Tulosta kaksi riviä, ensin `Hei` ja sitten `Moi`.
+    check: test
+    tests:
+      - '__logs.length === 2'
+      - '__logs[0] === "Hei" && __logs[1] === "Moi"'
+    solution: |
+      console.log("Hei");
+      console.log("Moi");

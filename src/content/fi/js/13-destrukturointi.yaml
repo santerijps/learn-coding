@@ -1,0 +1,152 @@
+id: js-destrukturointi
+title: Destrukturointi ja spread
+summary: Arvojen purkaminen ja kopioiminen lyhyesti.
+theory: |
+  ### Olion destrukturointi
+
+  Ominaisuudet voi purkaa omiksi muuttujikseen yhdellä rivillä:
+
+  ```js
+  const kayttaja = { nimi: "Ada", ika: 36, maa: "UK" };
+  const { nimi, ika } = kayttaja;
+
+  // Uudelleennimeäminen ja oletusarvo
+  const { maa: kotimaa, kieli = "en" } = kayttaja;
+  ```
+
+  ### Taulukon destrukturointi
+
+  Taulukosta puretaan alkioita **järjestyksen** perusteella:
+
+  ```js
+  const [x, y] = [3, 7];
+  const [eka, ...loput] = [1, 2, 3, 4]; // eka = 1, loput = [2, 3, 4]
+
+  // Kahden muuttujan arvojen vaihtaminen
+  let a = 1;
+  let b = 2;
+  [a, b] = [b, a];
+  ```
+
+  ### Destrukturointi parametreissa
+
+  Erittäin yleinen kaava, esimerkiksi Reactissa:
+
+  ```js
+  function esittele({ nimi, ammatti }) {
+    return `${nimi} on ${ammatti}`;
+  }
+  esittele({ nimi: "Ada", ammatti: "ohjelmoija" });
+  ```
+
+  ### Spread `...`
+
+  Spread levittää taulukon tai olion sisällön uuteen taulukkoon tai olioon. Näin tehdään **kopioita** muuttamatta alkuperäistä:
+
+  ```js
+  const a = [1, 2];
+  const b = [3, 4];
+  const kaikki = [...a, ...b]; // [1, 2, 3, 4]
+
+  const kayttaja = { nimi: "Ada", ika: 36 };
+  const paivitetty = { ...kayttaja, ika: 37 }; // alkuperäinen ei muutu
+  ```
+
+  Pelkkä `const kopio = olio;` ei kopioi oliota. Molemmat nimet viittaavat silloin samaan olioon.
+
+  ### Rest-parametri
+
+  Parametri `...nimi` kerää kaikki loput argumentit taulukoksi:
+
+  ```js
+  const summaKaikki = (...luvut) => luvut.reduce((s, x) => s + x, 0);
+  summaKaikki(1, 2, 3); // 6
+  ```
+exercises:
+  - type: choice
+    question: Mikä on muuttujan `b` arvo lauseen `const [a, b] = [1, 2, 3];` jälkeen?
+    options: ['`1`', '`2`', '`3`', '`[2, 3]`']
+    answer: 1
+    explanation: Taulukon destrukturointi poimii alkiot järjestyksessä. `a` saa arvon 1 ja `b` arvon 2. Ylimääräinen alkio jää käyttämättä.
+  - type: blank
+    question: Täydennä niin, että `yhdistetty` sisältää molempien taulukoiden alkiot.
+    code: |
+      const yhdistetty = [___taulu1, ...taulu2];
+    blanks:
+      - ['...']
+    explanation: Spread `...` levittää taulukon alkiot uuden taulukon sisään.
+  - type: bug
+    question: '`asetukset.teema` muuttuu, vaikka muokattiin vain kopiota.'
+    code: |
+      const asetukset = { teema: "vaalea" };
+      const kopio = asetukset;
+      kopio.teema = "tumma";
+      console.log(asetukset.teema);
+    bugLine: 2
+    explanation: 'Sijoitus ei kopioi oliota, joten molemmat muuttujat viittaavat samaan olioon. Tee kopio spreadilla: `const kopio = { ...asetukset };`'
+cards:
+  - id: js-destructure-object
+    prompt: Pura oliosta `kayttaja` vakiot `nimi` ja `ika` destrukturoinnilla.
+    check: test
+    setup: |
+      const kayttaja = { nimi: "Ada", ika: 36, maa: "UK" };
+    tests:
+      - 'nimi === "Ada" && ika === 36'
+    solution: |
+      const { nimi, ika } = kayttaja;
+  - id: js-destructure-array
+    prompt: Pura taulukosta `piste` vakiot `x` ja `y` destrukturoinnilla.
+    check: test
+    setup: |
+      const piste = [3, 7];
+    tests:
+      - 'x === 3 && y === 7'
+    solution: |
+      const [x, y] = piste;
+  - id: js-spread-array
+    prompt: Luo taulukko `kaikki`, joka yhdistää taulukot `a` ja `b` spreadilla.
+    check: test
+    setup: |
+      const a = [1, 2];
+      const b = [3, 4];
+    tests:
+      - 'JSON.stringify(kaikki) === "[1,2,3,4]"'
+    solution: |
+      const kaikki = [...a, ...b];
+  - id: js-spread-object
+    prompt: 'Luo olio `paivitetty`, joka on kopio oliosta `kayttaja`, mutta jonka `ika` on `37`. Alkuperäinen olio ei saa muuttua.'
+    check: test
+    setup: |
+      const kayttaja = { nimi: "Ada", ika: 36 };
+    tests:
+      - 'paivitetty.ika === 37 && paivitetty.nimi === "Ada"'
+      - 'kayttaja.ika === 36 && paivitetty !== kayttaja'
+    solution: |
+      const paivitetty = { ...kayttaja, ika: 37 };
+  - id: js-rest-params
+    prompt: Kirjoita funktio `summaKaikki(...luvut)`, joka palauttaa kaikkien argumenttiensa summan.
+    check: test
+    tests:
+      - 'summaKaikki(1, 2, 3) === 6'
+      - 'summaKaikki() === 0'
+    solution: |
+      const summaKaikki = (...luvut) => luvut.reduce((s, x) => s + x, 0);
+  - id: js-destructure-params
+    prompt: 'Kirjoita funktio `esittele`, joka purkaa parametrioliostaan kentät `nimi` ja `ammatti` ja palauttaa merkkijonon `"<nimi> on <ammatti>"`.'
+    check: test
+    tests:
+      - 'esittele({ nimi: "Ada", ammatti: "ohjelmoija" }) === "Ada on ohjelmoija"'
+    solution: |
+      function esittele({ nimi, ammatti }) {
+        return `${nimi} on ${ammatti}`;
+      }
+  - id: js-swap-destructure
+    prompt: Vaihda muuttujien `a` ja `b` arvot keskenään destrukturoinnilla yhdellä rivillä.
+    check: test
+    setup: |
+      let a = 1;
+      let b = 2;
+    tests:
+      - 'a === 2 && b === 1'
+    solution: |
+      [a, b] = [b, a];

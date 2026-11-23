@@ -1,0 +1,85 @@
+id: git-aloitus
+title: Gitin perusteet
+summary: Mikä Git on, repon luominen ja tilan tarkistaminen.
+theory: |
+  Git on versionhallintajärjestelmä. Se tallentaa projektin historian **commiteiksi** kutsuttuina tilannekuvina. Niiden avulla voit palata vanhaan versioon, nähdä kuka muutti mitä ja tehdä töitä rinnakkain muiden kanssa.
+
+  ### Kolme aluetta
+
+  - **Työhakemisto**: tiedostot sellaisina kuin ne ovat levylläsi.
+  - **Valmistelualue** (staging, index): muutokset, jotka on merkitty mukaan seuraavaan committiin.
+  - **Repositorio**: tallennettu historia eli commitit, jotka sijaitsevat piilokansiossa `.git`.
+
+  ### Asetukset
+
+  Ennen ensimmäistä committia kerro Gitille, kuka olet. Asetus tehdään kerran per kone:
+
+  ```bash
+  git config --global user.name "Ada Lovelace"
+  git config --global user.email "ada@example.com"
+  ```
+
+  ### Repon luominen
+
+  ```bash
+  cd projekti
+  git init           # tekee nykyisestä kansiosta Git-repon
+  git init uusi-repo # luo uuden kansion ja repon sen sisään
+  ```
+
+  ### Tila
+
+  `git status` on komento, jota käytät eniten. Se kertoo, mitkä tiedostot ovat muuttuneet, mitkä ovat valmistelualueella ja mitä Git ei vielä seuraa.
+
+  ```bash
+  git status
+  ```
+exercises:
+  - type: choice
+    question: Mitä `git init` tekee?
+    options:
+      - Luo uuden Git-repon nykyiseen kansioon
+      - Lataa repon GitHubista
+      - Tallentaa muutokset historiaan
+      - Näyttää repon tilan
+    answer: 0
+    explanation: '`git init` luo nykyiseen kansioon `.git`-hakemiston, jolloin kansiosta tulee repositorio. Lataaminen tehdään `git clone`-komennolla, tallentaminen `git commit`-komennolla ja tila näytetään `git status`-komennolla.'
+  - type: blank
+    question: Täydennä komento, joka asettaa nimesi Gitin asetuksiin.
+    code: |
+      git config --global user.___ "Ada Lovelace"
+    blanks:
+      - [name]
+    explanation: Nimi tallennetaan asetukseen `user.name` ja sähköposti asetukseen `user.email`.
+  - type: bug
+    question: Tavoitteena on luoda uusi projekti ja tehdä siitä Git-repo.
+    code: |
+      mkdir projekti
+      cd projekti
+      git start
+      git status
+    bugLine: 3
+    explanation: 'Gitissä ei ole komentoa `git start`. Repo luodaan komennolla `git init`.'
+cards:
+  - id: git-init
+    prompt: Alusta uusi Git-repo nykyiseen kansioon.
+    check: match
+    solution: git init
+  - id: git-status
+    prompt: Näytä repon tila, eli mitkä tiedostot ovat muuttuneet ja mitkä valmistelualueella.
+    check: match
+    solution: git status
+  - id: git-config-name
+    prompt: 'Aseta nimesi globaalisti arvoon `"Ada Lovelace"`.'
+    check: match
+    solution: git config --global user.name "Ada Lovelace"
+  - id: git-config-email
+    prompt: 'Aseta sähköpostiosoitteesi globaalisti arvoon `ada@example.com`.'
+    check: match
+    solution: git config --global user.email "ada@example.com"
+    accepted:
+      - git config --global user.email ada@example.com
+  - id: git-init-dir
+    prompt: Luo yhdellä komennolla uusi kansio `projekti` ja alusta siihen Git-repo.
+    check: match
+    solution: git init projekti

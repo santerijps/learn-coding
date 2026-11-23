@@ -1,0 +1,88 @@
+id: git-commit
+title: Muutosten tallentaminen
+summary: git add ja git commit, eli tilannekuvien ottaminen.
+theory: |
+  Muutokset tallennetaan historiaan kahdessa vaiheessa:
+
+  1. `git add` siirtää muutokset **valmistelualueelle**. Näin valitset, mitä seuraavaan committiin tulee.
+  2. `git commit` tallentaa valmistelualueen sisällön uudeksi commitiksi.
+
+  ```bash
+  git add index.html        # yksi tiedosto
+  git add src/              # kokonainen kansio
+  git add .                 # kaikki muutokset nykyisessä kansiossa
+  git commit -m "Lisää etusivu"
+  ```
+
+  Ilman valintaa `-m` Git avaa tekstieditorin viestin kirjoittamista varten.
+
+  ### Pikakomento
+
+  `git commit -a` lisää kaikki **jo seuratut** muutetut tiedostot ja tekee commitin samalla kertaa. Uusia tiedostoja se ei lisää.
+
+  ```bash
+  git commit -am "Korjaa typo"
+  ```
+
+  ### Hyvä commit-viesti
+
+  - Kerro lyhyesti, mitä muutos tekee: "Lisää kirjautumislomake", ei "muutoksia".
+  - Kirjoita käskymuodossa ja enintään noin 50 merkkiä ensimmäiselle riville.
+  - Tee pieniä, yhteen asiaan keskittyviä committeja.
+
+  ### Tiedostojen poistaminen ja siirtäminen
+
+  ```bash
+  git rm vanha.txt          # poistaa levyltä ja merkitsee poiston
+  git mv vanha.js uusi.js   # nimeää uudelleen
+  ```
+exercises:
+  - type: choice
+    question: Mitä `git add` tekee?
+    options:
+      - Siirtää muutokset valmistelualueelle seuraavaa committia varten
+      - Tekee commitin
+      - Lähettää muutokset GitHubiin
+      - Lisää uuden haaran
+    answer: 0
+    explanation: '`git add` valmistelee muutokset. Varsinainen tallennus historiaan tapahtuu vasta `git commit`-komennolla.'
+  - type: blank
+    question: Täydennä komento, joka tekee commitin annetulla viestillä.
+    code: |
+      git commit ___ "Lisää etusivu"
+    blanks:
+      - ['-m']
+    explanation: Valinta `-m` antaa commit-viestin suoraan komentorivillä.
+  - type: bug
+    question: Commit epäonnistuu. Millä rivillä vika on?
+    code: |
+      git add index.html
+      git commit "Lisää etusivu"
+    bugLine: 2
+    explanation: 'Viestin edestä puuttuu valinta `-m`, joten Git tulkitsee tekstin tiedostonimeksi. Kirjoita `git commit -m "Lisää etusivu"`.'
+cards:
+  - id: git-add-file
+    prompt: Lisää tiedosto `index.html` valmistelualueelle.
+    check: match
+    solution: git add index.html
+  - id: git-add-all
+    prompt: Lisää kaikki nykyisen kansion muutokset valmistelualueelle.
+    check: match
+    solution: git add .
+    accepted:
+      - git add -A
+      - git add --all
+  - id: git-commit-message
+    prompt: 'Tee commit viestillä `"Lisää etusivu"`.'
+    check: match
+    solution: git commit -m "Lisää etusivu"
+  - id: git-commit-all
+    prompt: 'Lisää kaikki seuratut muutetut tiedostot ja tee commit samalla komennolla viestillä `"Korjaa typo"`.'
+    check: match
+    solution: git commit -am "Korjaa typo"
+    accepted:
+      - git commit -a -m "Korjaa typo"
+  - id: git-rm
+    prompt: Poista tiedosto `vanha.txt` sekä levyltä että Gitin seurannasta.
+    check: match
+    solution: git rm vanha.txt

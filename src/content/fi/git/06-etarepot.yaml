@@ -1,0 +1,100 @@
+id: git-etarepot
+title: Etärepot
+summary: clone, push, pull ja fetch, eli yhteistyö GitHubin kaltaisten palvelujen kautta.
+theory: |
+  **Etärepo** (remote) on toisaalla, yleensä GitHubissa tai GitLabissa, sijaitseva kopio reposta. Oletusnimi etärepolle on `origin`.
+
+  ### Olemassa olevan repon kopioiminen
+
+  ```bash
+  git clone https://github.com/esimerkki/projekti.git
+  ```
+
+  `clone` lataa koko historian ja asettaa etärepon nimellä `origin` automaattisesti.
+
+  ### Oman repon yhdistäminen etärepoon
+
+  ```bash
+  git remote add origin https://github.com/esimerkki/projekti.git
+  git remote -v               # näytä etärepot osoitteineen
+  git push -u origin main     # ensimmäinen push ja seurattavan haaran asetus
+  ```
+
+  Valinta `-u` (eli `--set-upstream`) muistaa, että paikallinen `main` vastaa haaraa `origin/main`. Sen jälkeen riittää pelkkä `git push` tai `git pull`.
+
+  ### Päivittäinen työnkulku
+
+  ```bash
+  git pull        # hae ja yhdistä muiden muutokset
+  # ... tee muutoksia, add, commit ...
+  git push        # lähetä omat commitit
+  ```
+
+  ### fetch vai pull?
+
+  - `git fetch` hakee etärepon uudet commitit, mutta **ei muuta** omia haarojasi. Sillä voit katsoa, mitä on tulossa.
+  - `git pull` on käytännössä `fetch` + `merge`: se hakee muutokset ja yhdistää ne nykyiseen haaraan.
+
+  Jos `push` hylätään, koska etärepossa on commiteja, joita sinulla ei ole, tee ensin `git pull` ja sitten `git push` uudelleen.
+exercises:
+  - type: choice
+    question: Mikä on komentojen `git fetch` ja `git pull` ero?
+    options:
+      - '`fetch` hakee muutokset yhdistämättä niitä, ja `pull` hakee ja yhdistää'
+      - '`fetch` lähettää ja `pull` vastaanottaa'
+      - Ne ovat sama komento
+      - '`pull` toimii vain GitHubissa'
+    answer: 0
+    explanation: '`git pull` on `git fetch` ja sen perään `git merge`. Pelkkä `fetch` ei koske omiin haaroihisi.'
+  - type: blank
+    question: Täydennä ensimmäinen push niin, että `main` jää seuraamaan etärepon haaraa.
+    code: |
+      git push ___ origin main
+    blanks:
+      - ['-u', '--set-upstream']
+    explanation: Valinta `-u` asettaa seurattavan haaran, jonka jälkeen riittää pelkkä `git push`.
+  - type: bug
+    question: Muutosten piti päätyä GitHubiin, mutta niitä ei näy siellä.
+    code: |
+      git clone https://github.com/esimerkki/projekti.git
+      cd projekti
+      git add .
+      git commit -m "Päivitä README"
+      git pull
+    bugLine: 5
+    explanation: '`git pull` vain hakee muutoksia etärevosta eikä lähetä mitään. Omat commitit lähetetään komennolla `git push`.'
+cards:
+  - id: git-clone
+    prompt: 'Kloonaa repo osoitteesta `https://github.com/esimerkki/projekti.git`.'
+    check: match
+    solution: git clone https://github.com/esimerkki/projekti.git
+  - id: git-remote-list
+    prompt: Näytä etärepot osoitteineen.
+    check: match
+    solution: git remote -v
+    accepted:
+      - git remote --verbose
+  - id: git-remote-add
+    prompt: 'Lisää etärepo nimellä `origin` osoitteeseen `https://github.com/esimerkki/projekti.git`.'
+    check: match
+    solution: git remote add origin https://github.com/esimerkki/projekti.git
+  - id: git-push-upstream
+    prompt: Lähetä haara `main` ensimmäistä kertaa etärepoon `origin` ja aseta se seurattavaksi haaraksi.
+    check: match
+    solution: git push -u origin main
+    accepted:
+      - git push --set-upstream origin main
+  - id: git-pull
+    prompt: Hae etärepon muutokset ja yhdistä ne nykyiseen haaraan.
+    check: match
+    solution: git pull
+  - id: git-fetch
+    prompt: Hae etärepon muutokset yhdistämättä niitä omiin haaroihisi.
+    check: match
+    solution: git fetch
+    accepted:
+      - git fetch origin
+  - id: git-push
+    prompt: Lähetä uudet commitisi etärepoon. Seurattava haara on jo asetettu.
+    check: match
+    solution: git push

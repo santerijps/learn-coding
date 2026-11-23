@@ -1,0 +1,85 @@
+id: git-historia
+title: Historia ja erot
+summary: git log, git diff ja git show.
+theory: |
+  ### Historia
+
+  ```bash
+  git log            # kaikki commitit tekijöineen ja päivämäärineen
+  git log --oneline  # tiivis muoto: lyhyt tunniste ja viesti
+  git log -3         # vain kolme viimeisintä
+  git log app.js     # vain tiedostoa koskevat commitit
+  ```
+
+  Jokaisella commitilla on yksilöllinen tunniste (hash), esimerkiksi `a1b2c3d`. Sen alku riittää yleensä viittaamaan commitiin.
+
+  ### Erot
+
+  `git diff` näyttää muutokset rivi riviltä:
+
+  ```bash
+  git diff           # muutokset, joita EI ole vielä lisätty valmistelualueelle
+  git diff --staged  # valmistelualueella olevat muutokset (eli mitä commit sisältää)
+  ```
+
+  Jos `git diff` ei näytä mitään, vaikka muutit tiedostoa, olet luultavasti jo lisännyt muutokset `git add`-komennolla. Kokeile silloin `git diff --staged`.
+
+  ### Yksittäinen commit
+
+  ```bash
+  git show a1b2c3d   # commitin tiedot ja sen tekemät muutokset
+  ```
+
+  `HEAD` tarkoittaa nykyistä committia. `HEAD~1` on sitä edellinen ja `HEAD~2` kahta edellinen.
+exercises:
+  - type: choice
+    question: Millä komennolla näet muutokset, jotka on lisätty valmistelualueelle mutta joita ei ole vielä commitoitu?
+    options: ['`git diff`', '`git diff --staged`', '`git log`', '`git status --diff`']
+    answer: 1
+    explanation: '`git diff --staged` (tai `--cached`) vertaa valmistelualuetta viimeisimpään committiin. Pelkkä `git diff` näyttää vain muutokset, joita ei ole vielä lisätty.'
+  - type: blank
+    question: Täydennä komento, joka näyttää historian tiiviisti, yksi commit per rivi.
+    code: |
+      git log ___
+    blanks:
+      - ['--oneline']
+    explanation: '`--oneline` näyttää jokaisesta commitista lyhyen tunnisteen ja viestin samalla rivillä.'
+  - type: bug
+    question: Kehittäjä haluaa tarkistaa, mitä tuleva commit sisältää, mutta näkee tyhjää.
+    code: |
+      git add app.js
+      git diff
+      git commit -m "Päivitä sovellus"
+    bugLine: 2
+    explanation: 'Muutokset on jo lisätty valmistelualueelle, joten `git diff` ei näytä niitä. Käytä komentoa `git diff --staged`.'
+cards:
+  - id: git-log
+    prompt: Näytä repon commit-historia.
+    check: match
+    solution: git log
+  - id: git-log-oneline
+    prompt: Näytä historia tiiviisti, yksi commit per rivi.
+    check: match
+    solution: git log --oneline
+  - id: git-log-limit
+    prompt: Näytä vain kolme viimeisintä committia.
+    check: match
+    solution: git log -3
+    accepted:
+      - git log -n 3
+      - git log -n3
+      - git log --max-count=3
+  - id: git-diff
+    prompt: Näytä muutokset, joita ei ole vielä lisätty valmistelualueelle.
+    check: match
+    solution: git diff
+  - id: git-diff-staged
+    prompt: Näytä valmistelualueelle lisätyt muutokset.
+    check: match
+    solution: git diff --staged
+    accepted:
+      - git diff --cached
+  - id: git-show
+    prompt: Näytä commitin `a1b2c3d` tiedot ja muutokset.
+    check: match
+    solution: git show a1b2c3d

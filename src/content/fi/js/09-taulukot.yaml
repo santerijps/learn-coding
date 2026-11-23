@@ -1,0 +1,117 @@
+id: js-taulukot
+title: Taulukot
+summary: Arvojen listat, indeksit ja yleisimmät muokkaukset.
+theory: |
+  Taulukko (array) on järjestetty lista arvoja. Se kirjoitetaan hakasulkeisiin.
+
+  ```js
+  const hedelmat = ["omena", "banaani", "kiivi"];
+
+  hedelmat[0];      // "omena", eli indeksit alkavat nollasta
+  hedelmat.length;  // 3
+  hedelmat.at(-1);  // "kiivi", eli viimeinen alkio
+  hedelmat[1] = "päärynä"; // alkion korvaaminen
+  ```
+
+  `const` estää vain uuden taulukon sijoittamisen muuttujaan. Taulukon sisältöä voi silti muokata.
+
+  ### Lisääminen ja poistaminen
+
+  ```js
+  const luvut = [1, 2, 3];
+  luvut.push(4);     // lisää loppuun → [1, 2, 3, 4]
+  luvut.pop();       // poistaa viimeisen ja palauttaa sen → 4
+  luvut.unshift(0);  // lisää alkuun → [0, 1, 2, 3]
+  luvut.shift();     // poistaa ensimmäisen → 0
+  ```
+
+  ### Etsiminen
+
+  ```js
+  const elaimet = ["koira", "kissa", "hevonen"];
+  elaimet.includes("kissa"); // true
+  elaimet.indexOf("hevonen"); // 2 (palauttaa -1, jos alkiota ei löydy)
+  ```
+
+  ### Merkkijonot ja taulukot
+
+  ```js
+  "opi koodia nopeasti".split(" "); // ["opi", "koodia", "nopeasti"]
+  ["a", "b", "c"].join("-");        // "a-b-c"
+  ```
+exercises:
+  - type: choice
+    question: Mikä on lausekkeen `["a", "b", "c"][1]` arvo?
+    options: ['`"a"`', '`"b"`', '`"c"`', '`undefined`']
+    answer: 1
+    explanation: Indeksointi alkaa nollasta, joten indeksi 1 on toinen alkio eli `"b"`.
+  - type: blank
+    question: Täydennä niin, että `"banaani"` lisätään taulukon loppuun.
+    code: |
+      const hedelmat = ["omena"];
+      hedelmat.___("banaani");
+    blanks:
+      - [push]
+    explanation: '`push` lisää alkion taulukon loppuun.'
+  - type: bug
+    question: Ohjelman pitäisi tulostaa `30`, mutta se tulostaa `undefined`.
+    code: |
+      const luvut = [10, 20, 30];
+      const viimeinen = luvut[luvut.length];
+      console.log(viimeinen);
+    bugLine: 2
+    explanation: 'Taulukossa on kolme alkiota, joten viimeisen indeksi on 2 eli `length - 1`. Kirjoita `luvut[luvut.length - 1]` tai `luvut.at(-1)`.'
+cards:
+  - id: js-array-create
+    prompt: Luo taulukko `varit`, jossa ovat merkkijonot `"punainen"`, `"vihreä"` ja `"sininen"` tässä järjestyksessä.
+    check: test
+    tests:
+      - 'Array.isArray(varit) && varit.length === 3'
+      - 'varit[0] === "punainen" && varit[1] === "vihreä" && varit[2] === "sininen"'
+    solution: |
+      const varit = ["punainen", "vihreä", "sininen"];
+  - id: js-array-index
+    prompt: Tallenna taulukon `nimet` ensimmäinen alkio vakioon `eka`.
+    check: test
+    setup: |
+      const nimet = ["Ada", "Linus", "Grace"];
+    tests:
+      - 'eka === "Ada"'
+    solution: |
+      const eka = nimet[0];
+  - id: js-array-push
+    prompt: Lisää luku `4` taulukon `luvut` loppuun.
+    check: test
+    setup: |
+      const luvut = [1, 2, 3];
+    tests:
+      - 'luvut.length === 4 && luvut[3] === 4'
+    solution: |
+      luvut.push(4);
+  - id: js-array-last
+    prompt: Tallenna taulukon `jono` viimeinen alkio vakioon `viimeinen`.
+    check: test
+    setup: |
+      const jono = ["a", "b", "c", "d"];
+    tests:
+      - 'viimeinen === "d"'
+    solution: |
+      const viimeinen = jono.at(-1);
+  - id: js-array-includes
+    prompt: Tarkista, onko taulukossa `elaimet` alkio `"kissa"`, ja tallenna tulos vakioon `loytyi`.
+    check: test
+    setup: |
+      const elaimet = ["koira", "kissa"];
+    tests:
+      - 'loytyi === true'
+    solution: |
+      const loytyi = elaimet.includes("kissa");
+  - id: js-string-split
+    prompt: Pilko merkkijono `lause` sanoiksi taulukkoon `sanat`.
+    check: test
+    setup: |
+      const lause = "opi koodia nopeasti";
+    tests:
+      - 'Array.isArray(sanat) && sanat.length === 3 && sanat[2] === "nopeasti"'
+    solution: |
+      const sanat = lause.split(" ");

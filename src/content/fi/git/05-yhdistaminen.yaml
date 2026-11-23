@@ -1,0 +1,81 @@
+id: git-yhdistaminen
+title: Haarojen yhdistäminen
+summary: git merge ja konfliktien ratkaiseminen.
+theory: |
+  `git merge <haara>` tuo toisen haaran muutokset **nykyiseen** haaraan. Siirry siis ensin kohdehaaraan:
+
+  ```bash
+  git switch main
+  git merge kirjautuminen
+  ```
+
+  ### Fast-forward ja merge-commit
+
+  Jos `main` ei ole muuttunut haaran luomisen jälkeen, Git vain siirtää `main`-osoittimen eteenpäin. Tätä kutsutaan **fast-forwardiksi**. Jos molemmat haarat ovat muuttuneet, Git tekee **merge-commitin**, joka yhdistää ne.
+
+  Valinta `--no-ff` tekee merge-commitin aina, jolloin historiasta näkee, että ominaisuus kehitettiin omassa haarassaan.
+
+  ### Konfliktit
+
+  Jos samaa kohtaa on muutettu molemmissa haaroissa, Git ei voi päättää, kumpi muutos voittaa. Tiedostoon ilmestyy konfliktimerkinnät:
+
+  ```text
+  <<<<<<< HEAD
+  const otsikko = "Tervetuloa";
+  =======
+  const otsikko = "Hei!";
+  >>>>>>> kirjautuminen
+  ```
+
+  Konflikti ratkaistaan näin:
+
+  - Muokkaa tiedosto haluamaksesi ja poista merkinnät `<<<<<<<`, `=======` ja `>>>>>>>`.
+  - Merkitse tiedosto ratkaistuksi: `git add tiedosto.js`.
+  - Viimeistele yhdistäminen: `git commit`.
+
+  Jos haluat perua koko yhdistämisen, aja `git merge --abort`.
+
+  ```bash
+  git branch --merged   # haarat, jotka on jo yhdistetty nykyiseen (turvallista poistaa)
+  ```
+exercises:
+  - type: choice
+    question: Haluat tuoda haaran `ominaisuus` muutokset `main`-haaraan. Missä haarassa sinun pitää olla, kun ajat `git merge ominaisuus`?
+    options: ['`main`', '`ominaisuus`', Ei ole väliä, Kummassakaan]
+    answer: 0
+    explanation: '`git merge` tuo annetun haaran muutokset nykyiseen haaraan. Siirry siis ensin `main`-haaraan.'
+  - type: blank
+    question: Täydennä komento, joka peruu kesken olevan yhdistämisen.
+    code: |
+      git ___ --abort
+    blanks:
+      - [merge]
+    explanation: '`git merge --abort` palauttaa tilanteen siihen, mikä se oli ennen yhdistämisen aloittamista.'
+  - type: bug
+    question: Tavoitteena on tuoda valmis `ominaisuus`-haara `main`-haaraan.
+    code: |
+      git switch ominaisuus
+      git merge main
+    bugLine: 1
+    explanation: 'Nyt `main` yhdistetään haaraan `ominaisuus` eikä toisin päin. Siirry ensin kohdehaaraan (`git switch main`) ja aja sitten `git merge ominaisuus`.'
+cards:
+  - id: git-merge
+    prompt: Yhdistä haara `ominaisuus` nykyiseen haaraan.
+    check: match
+    solution: git merge ominaisuus
+  - id: git-merge-abort
+    prompt: Peru kesken oleva yhdistäminen ja palaa sitä edeltäneeseen tilaan.
+    check: match
+    solution: git merge --abort
+  - id: git-resolve-add
+    prompt: Olet ratkaissut konfliktin tiedostossa `app.js`. Merkitse tiedosto ratkaistuksi.
+    check: match
+    solution: git add app.js
+  - id: git-merge-no-ff
+    prompt: Yhdistä haara `ominaisuus` niin, että syntyy aina merge-commit.
+    check: match
+    solution: git merge --no-ff ominaisuus
+  - id: git-branch-merged
+    prompt: Listaa haarat, jotka on jo yhdistetty nykyiseen haaraan.
+    check: match
+    solution: git branch --merged

@@ -1,0 +1,140 @@
+id: js-taulukkometodit
+title: Taulukkometodit
+summary: map, filter, find, some, reduce ja sort.
+theory: |
+  Modernissa JavaScriptissä taulukoita käsitellään useimmiten metodeilla, joille annetaan **callback-funktio**. Ne ovat lyhyempiä ja selkeämpiä kuin silmukat.
+
+  ### map: muunna jokainen alkio
+
+  ```js
+  const luvut = [1, 2, 3];
+  const tuplat = luvut.map((x) => x * 2); // [2, 4, 6]
+  ```
+
+  ### filter: pidä ehdon täyttävät
+
+  ```js
+  const parilliset = [1, 2, 3, 4].filter((x) => x % 2 === 0); // [2, 4]
+  ```
+
+  ### find, some ja every
+
+  ```js
+  const luvut = [4, 11, 7, 20];
+  luvut.find((x) => x > 10);  // 11, eli ensimmäinen osuma (tai undefined)
+  luvut.some((x) => x > 15);  // true, eli ainakin yksi täyttää ehdon
+  luvut.every((x) => x > 0);  // true, eli kaikki täyttävät ehdon
+  ```
+
+  ### reduce: tiivistä yhdeksi arvoksi
+
+  ```js
+  const summa = [5, 10, 15].reduce((kertyma, x) => kertyma + x, 0); // 30
+  ```
+
+  Toinen argumentti (`0`) on kertymän alkuarvo.
+
+  ### sort: järjestä
+
+  `sort` muokkaa alkuperäistä taulukkoa. Ilman vertailufunktiota se järjestää alkiot **tekstinä**, joten luvut tarvitsevat vertailufunktion:
+
+  ```js
+  [10, 1, 5].sort();                // [1, 10, 5]  ← tekstijärjestys!
+  [10, 1, 5].sort((a, b) => a - b); // [1, 5, 10]
+  ```
+
+  ### Ketjuttaminen
+
+  Koska `map` ja `filter` palauttavat uuden taulukon, niitä voi ketjuttaa:
+
+  ```js
+  const tulos = [1, 2, 3, 4, 5]
+    .filter((x) => x % 2 === 1)
+    .map((x) => x * x); // [1, 9, 25]
+  ```
+exercises:
+  - type: choice
+    question: Mikä metodi palauttaa uuden taulukon, jossa ovat vain ehdon täyttävät alkiot?
+    options: ['`map`', '`filter`', '`find`', '`forEach`']
+    answer: 1
+    explanation: '`filter` pitää alkiot, joille callback palauttaa toden. `map` muuntaa jokaisen alkion, `find` palauttaa vain ensimmäisen osuman, ja `forEach` ei palauta mitään.'
+  - type: blank
+    question: Täydennä niin, että `tuplat` sisältää jokaisen luvun kaksinkertaisena.
+    code: |
+      const tuplat = luvut.___((x) => x * 2);
+    blanks:
+      - [map]
+    explanation: '`map` muuntaa jokaisen alkion ja palauttaa uuden, yhtä pitkän taulukon.'
+  - type: bug
+    question: '`isot`-taulukon pitäisi olla `[8, 12]`, mutta se on tyhjä.'
+    code: |
+      const luvut = [3, 8, 12, 5];
+      const isot = luvut.filter((x) => { x > 6 });
+      console.log(isot);
+    bugLine: 2
+    explanation: 'Aaltosulkeiden kanssa callback ei palauta mitään, joten jokainen alkio suodatetaan pois. Kirjoita `(x) => x > 6` tai `(x) => { return x > 6; }`.'
+cards:
+  - id: js-map
+    prompt: Luo taulukko `tuplat`, jossa jokainen taulukon `luvut` alkio on kerrottu kahdella. Käytä `map`-metodia.
+    check: test
+    setup: |
+      const luvut = [1, 2, 3];
+    tests:
+      - 'JSON.stringify(tuplat) === "[2,4,6]"'
+    solution: |
+      const tuplat = luvut.map((x) => x * 2);
+  - id: js-filter
+    prompt: Luo taulukko `parilliset`, jossa ovat vain taulukon `luvut` parilliset luvut. Käytä `filter`-metodia.
+    check: test
+    setup: |
+      const luvut = [1, 2, 3, 4, 5, 6];
+    tests:
+      - 'JSON.stringify(parilliset) === "[2,4,6]"'
+    solution: |
+      const parilliset = luvut.filter((x) => x % 2 === 0);
+  - id: js-find
+    prompt: Etsi taulukosta `luvut` ensimmäinen kymmentä suurempi luku ja tallenna se vakioon `eka`. Käytä `find`-metodia.
+    check: test
+    setup: |
+      const luvut = [4, 11, 7, 20];
+    tests:
+      - 'eka === 11'
+    solution: |
+      const eka = luvut.find((x) => x > 10);
+  - id: js-reduce-sum
+    prompt: Laske taulukon `luvut` summa `reduce`-metodilla vakioon `summa`.
+    check: test
+    setup: |
+      const luvut = [5, 10, 15];
+    tests:
+      - 'summa === 30'
+    solution: |
+      const summa = luvut.reduce((kertyma, x) => kertyma + x, 0);
+  - id: js-some
+    prompt: Tarkista `some`-metodilla, onko taulukossa `luvut` yksikin negatiivinen luku, ja tallenna tulos vakioon `onNegatiivisia`.
+    check: test
+    setup: |
+      const luvut = [3, -1, 4];
+    tests:
+      - 'onNegatiivisia === true'
+    solution: |
+      const onNegatiivisia = luvut.some((x) => x < 0);
+  - id: js-sort-numbers
+    prompt: Järjestä taulukko `luvut` kasvavaan järjestykseen.
+    check: test
+    setup: |
+      const luvut = [10, 1, 5, 100];
+    tests:
+      - 'JSON.stringify(luvut) === "[1,5,10,100]"'
+    hint: Pelkkä `sort()` järjestää alkiot tekstinä. Anna sille vertailufunktio `(a, b) => a - b`.
+    solution: |
+      luvut.sort((a, b) => a - b);
+  - id: js-chain
+    prompt: Luo taulukko `tulos`, jossa ovat taulukon `luvut` parittomat luvut toiseen potenssiin korotettuina. Ketjuta `filter` ja `map`.
+    check: test
+    setup: |
+      const luvut = [1, 2, 3, 4, 5];
+    tests:
+      - 'JSON.stringify(tulos) === "[1,9,25]"'
+    solution: |
+      const tulos = luvut.filter((x) => x % 2 === 1).map((x) => x * x);

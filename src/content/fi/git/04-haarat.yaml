@@ -1,0 +1,84 @@
+id: git-haarat
+title: Haarat
+summary: Rinnakkaiset kehityslinjat git branch- ja git switch -komennoilla.
+theory: |
+  **Haara** (branch) on oma kehityslinja. Uusi ominaisuus tehdään yleensä omaan haaraansa, jotta päähaara (`main`) pysyy toimivana. Kun ominaisuus on valmis, haara yhdistetään takaisin.
+
+  Haara on käytännössä vain liikkuva osoitin commitiin, joten haarojen luominen on Gitissä nopeaa ja halpaa.
+
+  ```bash
+  git branch                 # listaa haarat (nykyinen merkitty *)
+  git branch kirjautuminen   # luo haaran, mutta ei siirry siihen
+  git switch kirjautuminen   # siirry haaraan
+  git switch -c korjaus      # luo haara ja siirry siihen samalla
+  git switch main            # takaisin päähaaraan
+  ```
+
+  ### Vanhempi syntaksi
+
+  Ennen komentoa `git switch` haaroja vaihdettiin komennolla `git checkout`, ja näet sitä yhä paljon:
+
+  ```bash
+  git checkout main
+  git checkout -b korjaus    # sama kuin git switch -c korjaus
+  ```
+
+  ### Siivous ja nimeäminen
+
+  ```bash
+  git branch -d vanha        # poista yhdistetty haara
+  git branch -D kokeilu      # pakota poisto (yhdistämättömät muutokset häviävät!)
+  git branch -m main         # nimeä nykyinen haara uudelleen
+  ```
+
+  Haaraa vaihdettaessa työhakemiston tiedostot muuttuvat vastaamaan kyseistä haaraa. Tee commit tai stash ennen vaihtamista, jos sinulla on keskeneräisiä muutoksia.
+exercises:
+  - type: choice
+    question: Millä komennolla luot uuden haaran `uusi` ja siirryt siihen samalla?
+    options: ['`git switch -c uusi`', '`git branch uusi`', '`git merge uusi`', '`git switch uusi`']
+    answer: 0
+    explanation: '`git switch -c` luo haaran ja siirtyy siihen. `git branch uusi` vain luo haaran, ja `git switch uusi` vaatii, että haara on jo olemassa.'
+  - type: blank
+    question: Täydennä komento, joka luo haaran `kirjautuminen` ja siirtyy siihen.
+    code: |
+      git ___ -c kirjautuminen
+    blanks:
+      - [switch]
+    explanation: '`git switch -c <nimi>` luo uuden haaran ja vaihtaa siihen.'
+  - type: bug
+    question: Commitin piti mennä uuteen haaraan, mutta se päätyi `main`-haaraan.
+    code: |
+      git branch uusi-ominaisuus
+      git add .
+      git commit -m "Lisää ominaisuus"
+    bugLine: 1
+    explanation: '`git branch` vain luo haaran, mutta ei siirry siihen. Käytä rivillä 1 komentoa `git switch -c uusi-ominaisuus`.'
+cards:
+  - id: git-branch-list
+    prompt: Listaa paikalliset haarat.
+    check: match
+    solution: git branch
+  - id: git-branch-create
+    prompt: Luo uusi haara `kirjautuminen` siirtymättä siihen.
+    check: match
+    solution: git branch kirjautuminen
+  - id: git-switch
+    prompt: Siirry haaraan `main`.
+    check: match
+    solution: git switch main
+    accepted:
+      - git checkout main
+  - id: git-switch-create
+    prompt: Luo haara `korjaus` ja siirry siihen samalla komennolla.
+    check: match
+    solution: git switch -c korjaus
+    accepted:
+      - git checkout -b korjaus
+  - id: git-branch-delete
+    prompt: Poista jo yhdistetty haara `vanha`.
+    check: match
+    solution: git branch -d vanha
+  - id: git-branch-rename
+    prompt: Nimeä nykyinen haara uudelleen nimelle `main`.
+    check: match
+    solution: git branch -m main

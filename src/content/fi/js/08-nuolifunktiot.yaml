@@ -1,0 +1,108 @@
+id: js-nuolifunktiot
+title: Nuolifunktiot ja oletusarvot
+summary: Lyhyempi funktiosyntaksi ja funktiot arvoina.
+theory: |
+  Nuolifunktio on lyhyempi tapa kirjoittaa funktio. Modernissa JavaScriptissä sitä käytetään erittäin paljon.
+
+  ```js
+  // Tavallinen funktio
+  function tuplaa(x) {
+    return x * 2;
+  }
+
+  // Sama nuolifunktiona
+  const tuplaa2 = (x) => {
+    return x * 2;
+  };
+
+  // Lyhin muoto: yksi lauseke palautetaan automaattisesti
+  const tuplaa3 = (x) => x * 2;
+  ```
+
+  Jos nuolen jälkeen tulee aaltosulkeet `{ }`, paluuarvo täytyy kirjoittaa `return`-lauseella. Ilman aaltosulkeita lausekkeen arvo palautetaan automaattisesti.
+
+  Yhden parametrin ympäriltä voi jättää sulut pois (`x => x * 2`). Ilman parametreja kirjoitetaan tyhjät sulut: `() => "hei"`.
+
+  ### Oletusarvot
+
+  Parametrille voi antaa oletusarvon, jota käytetään, kun argumentti puuttuu:
+
+  ```js
+  const tervehdi = (nimi = "vieras") => `Hei ${nimi}!`;
+  tervehdi("Ada"); // "Hei Ada!"
+  tervehdi();      // "Hei vieras!"
+  ```
+
+  ### Funktiot ovat arvoja
+
+  Funktion voi tallentaa muuttujaan ja antaa argumenttina toiselle funktiolle. Argumenttina annettua funktiota kutsutaan **callbackiksi**. Tätä käytetään jatkuvasti, esimerkiksi taulukkometodeissa ja tapahtumankäsittelijöissä.
+
+  ```js
+  const suorita = (f) => f();
+  suorita(() => console.log("Kutsuttiin!"));
+  ```
+exercises:
+  - type: choice
+    question: Mitä kutsu `f(2)` palauttaa, kun `const f = x => x + 1;`?
+    options: ['`3`', '`undefined`', '`"x + 1"`', Virheen]
+    answer: 0
+    explanation: Ilman aaltosulkeita nuolifunktio palauttaa lausekkeen arvon automaattisesti, eli 2 + 1 = 3.
+  - type: blank
+    question: Täydennä nuolifunktion syntaksi.
+    code: |
+      const tuplaa = (x) ___ x * 2;
+    blanks:
+      - ['=>']
+    explanation: Nuolifunktion parametrit ja runko erotetaan nuolella `=>`.
+  - type: bug
+    question: '`kerro(2, 3)` palauttaa `undefined`, vaikka sen pitäisi palauttaa `6`.'
+    code: |
+      const kerro = (a, b) => {
+        a * b;
+      };
+      console.log(kerro(2, 3));
+    bugLine: 2
+    explanation: 'Kun nuolifunktiossa käytetään aaltosulkeita, paluuarvo täytyy kirjoittaa `return`-lauseella: `return a * b;`. Toinen vaihtoehto on poistaa aaltosulkeet: `(a, b) => a * b`.'
+cards:
+  - id: js-arrow-basic
+    prompt: Kirjoita nuolifunktio `tuplaa`, joka palauttaa luvun kaksinkertaisena.
+    check: test
+    tests:
+      - 'tuplaa(4) === 8'
+      - '!Object.hasOwn(tuplaa, "prototype")'
+    solution: |
+      const tuplaa = (x) => x * 2;
+  - id: js-arrow-boolean
+    prompt: Kirjoita nuolifunktio `onTyhja(s)`, joka palauttaa `true`, jos merkkijono on tyhjä.
+    check: test
+    tests:
+      - 'onTyhja("") === true'
+      - 'onTyhja("a") === false'
+      - '!Object.hasOwn(onTyhja, "prototype")'
+    solution: |
+      const onTyhja = (s) => s.length === 0;
+  - id: js-default-param
+    prompt: 'Kirjoita funktio `tervehdi(nimi)`, joka palauttaa `` `Hei ${nimi}!` ``. Jos nimeä ei anneta, käytetään oletusarvoa `"vieras"`.'
+    check: test
+    tests:
+      - 'tervehdi("Ada") === "Hei Ada!"'
+      - 'tervehdi() === "Hei vieras!"'
+    solution: |
+      const tervehdi = (nimi = "vieras") => `Hei ${nimi}!`;
+  - id: js-callback
+    prompt: Kirjoita funktio `suorita(f)`, joka kutsuu sille annettua funktiota ja palauttaa sen paluuarvon.
+    check: test
+    tests:
+      - 'suorita(() => 5) === 5'
+      - 'suorita(() => "ok") === "ok"'
+    solution: |
+      const suorita = (f) => f();
+  - id: js-arrow-two-params
+    prompt: Kirjoita nuolifunktio `keskiarvo(a, b)`, joka palauttaa kahden luvun keskiarvon.
+    check: test
+    tests:
+      - 'keskiarvo(2, 4) === 3'
+      - 'keskiarvo(1, 2) === 1.5'
+      - '!Object.hasOwn(keskiarvo, "prototype")'
+    solution: |
+      const keskiarvo = (a, b) => (a + b) / 2;

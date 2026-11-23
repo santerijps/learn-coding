@@ -1,0 +1,129 @@
+id: js-funktiot
+title: Funktiot
+summary: Uudelleenkäytettävää koodia parametreilla ja paluuarvoilla.
+theory: |
+  Funktio on nimetty koodinpätkä, jota voi kutsua yhä uudelleen. Funktio ottaa vastaan **parametreja** ja palauttaa **paluuarvon** `return`-lauseella.
+
+  ```js
+  function summa(a, b) {
+    return a + b;
+  }
+
+  const tulos = summa(2, 3); // 5
+  console.log(summa(10, 20)); // 30
+  ```
+
+  ### return vai console.log?
+
+  `return` antaa arvon takaisin kutsujalle, jotta sitä voi käyttää muussa koodissa. `console.log` vain näyttää arvon. Jos funktiossa ei ole `return`-lausetta, se palauttaa arvon `undefined`.
+
+  ```js
+  function tuplaaJaTulosta(x) {
+    console.log(x * 2); // tulostaa, mutta ei palauta
+  }
+  const arvo = tuplaaJaTulosta(4); // tulostaa 8, mutta arvo on undefined
+  ```
+
+  `return` lopettaa funktion suorituksen heti. Sitä käytetään usein varhaiseen poistumiseen:
+
+  ```js
+  function jaa(a, b) {
+    if (b === 0) {
+      return null;
+    }
+    return a / b;
+  }
+  ```
+
+  ### Näkyvyys
+
+  Funktion sisällä esitellyt muuttujat näkyvät vain funktion sisällä. Funktio näkee kuitenkin ulkopuolellaan esitellyt muuttujat.
+exercises:
+  - type: choice
+    question: Mitä funktio palauttaa, jos siinä ei ole `return`-lausetta?
+    options: ['`undefined`', '`null`', '`0`', Se aiheuttaa virheen]
+    answer: 0
+    explanation: Funktio, joka ei palauta mitään, palauttaa aina arvon `undefined`.
+  - type: blank
+    question: Täydennä funktio, joka palauttaa luvun kaksinkertaisena.
+    code: |
+      function tuplaa(x) {
+        ___ x * 2;
+      }
+    blanks:
+      - [return]
+    explanation: Funktio antaa arvon takaisin kutsujalle `return`-lauseella.
+  - type: bug
+    question: '`summa(2, 3)` palauttaa `undefined`, vaikka sen pitäisi palauttaa `5`.'
+    code: |
+      function summa(a, b) {
+        const tulos = a + b;
+      }
+      console.log(summa(2, 3));
+    bugLine: 2
+    explanation: 'Tulos lasketaan, mutta sitä ei palauteta. Kirjoita `return a + b;` tai lisää rivi `return tulos;`.'
+cards:
+  - id: js-function-return
+    prompt: Kirjoita funktio `tervehdi`, joka palauttaa merkkijonon `"Hei!"`.
+    check: test
+    tests:
+      - 'tervehdi() === "Hei!"'
+    solution: |
+      function tervehdi() {
+        return "Hei!";
+      }
+  - id: js-function-param
+    prompt: Kirjoita funktio `nelio(x)`, joka palauttaa luvun neliön.
+    check: test
+    tests:
+      - 'nelio(3) === 9'
+      - 'nelio(-2) === 4'
+    solution: |
+      function nelio(x) {
+        return x * x;
+      }
+  - id: js-function-two-params
+    prompt: Kirjoita funktio `summa(a, b)`, joka palauttaa kahden luvun summan.
+    check: test
+    tests:
+      - 'summa(2, 3) === 5'
+      - 'summa(-1, 1) === 0'
+    solution: |
+      function summa(a, b) {
+        return a + b;
+      }
+  - id: js-function-boolean
+    prompt: Kirjoita funktio `onAikuinen(ika)`, joka palauttaa `true`, jos ikä on vähintään 18, ja muuten `false`.
+    check: test
+    tests:
+      - 'onAikuinen(18) === true'
+      - 'onAikuinen(17) === false'
+    solution: |
+      function onAikuinen(ika) {
+        return ika >= 18;
+      }
+  - id: js-function-max
+    prompt: Kirjoita funktio `maksimi(a, b)`, joka palauttaa suuremman luvuista. Älä käytä `Math.max`-funktiota.
+    check: test
+    tests:
+      - 'maksimi(3, 7) === 7'
+      - 'maksimi(9, 2) === 9'
+      - '!String(maksimi).includes("Math.max")'
+    solution: |
+      function maksimi(a, b) {
+        if (a > b) {
+          return a;
+        }
+        return b;
+      }
+  - id: js-function-call
+    prompt: Kutsu valmista funktiota `laske` argumenteilla `4` ja `5` ja tallenna tulos vakioon `tulos`.
+    check: test
+    setup: |
+      function laske(a, b) {
+        return a * b + 1;
+      }
+    tests:
+      - 'tulos === 21'
+    solution: |
+      const tulos = laske(4, 5);

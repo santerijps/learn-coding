@@ -1,0 +1,189 @@
+id: js-luokat
+title: Luokat
+summary: Olioiden pohjapiirrokset, konstruktorit ja periytyminen.
+theory: |
+  Luokka (class) on pohjapiirros, josta voi luoda monta samanlaista oliota. Oliot luodaan `new`-avainsanalla.
+
+  ```js
+  class Henkilo {
+    constructor(nimi, ika) {
+      this.nimi = nimi;
+      this.ika = ika;
+    }
+
+    tervehdi() {
+      return `Hei, olen ${this.nimi}`;
+    }
+  }
+
+  const ada = new Henkilo("Ada", 36);
+  ada.tervehdi(); // "Hei, olen Ada"
+  ```
+
+  - `constructor` ajetaan, kun olio luodaan, ja se alustaa olion ominaisuudet.
+  - `this` viittaa luotavaan olioon.
+  - Metodit kirjoitetaan luokan sisään ilman `function`-sanaa.
+
+  ### Periytyminen
+
+  `extends` luo luokan, joka perii toisen luokan ominaisuudet ja metodit. `super(...)` kutsuu yliluokan konstruktoria.
+
+  ```js
+  class Elain {
+    constructor(nimi) {
+      this.nimi = nimi;
+    }
+    aantele() {
+      return "...";
+    }
+  }
+
+  class Koira extends Elain {
+    aantele() {
+      return "Hau!";
+    }
+  }
+
+  new Koira("Rekku").aantele(); // "Hau!"
+  ```
+
+  Jos aliluokalla on oma konstruktori, sen täytyy kutsua `super(...)`-metodia ennen kuin se käyttää `this`-viittausta:
+
+  ```js
+  class Opiskelija extends Henkilo {
+    constructor(nimi, ika, koulu) {
+      super(nimi, ika);
+      this.koulu = koulu;
+    }
+  }
+  ```
+
+  ### instanceof
+
+  `olio instanceof Luokka` kertoo, onko olio luotu luokasta (tai sen aliluokasta).
+exercises:
+  - type: choice
+    question: Millä avainsanalla luokasta luodaan uusi olio?
+    options: ['`create`', '`new`', '`make`', '`class`']
+    answer: 1
+    explanation: '`new Luokka(...)` luo olion ja ajaa luokan konstruktorin.'
+  - type: blank
+    question: Täydennä metodin nimi, joka ajetaan oliota luotaessa.
+    code: |
+      class Koira {
+        ___(nimi) {
+          this.nimi = nimi;
+        }
+      }
+    blanks:
+      - [constructor]
+    explanation: Konstruktori on metodi nimeltä `constructor`.
+  - type: bug
+    question: '`kasvata()` kaatuu virheeseen `ReferenceError: arvo is not defined`.'
+    code: |
+      class Laskuri {
+        constructor() {
+          this.arvo = 0;
+        }
+        kasvata() {
+          arvo++;
+        }
+      }
+    bugLine: 6
+    explanation: 'Olion ominaisuuksiin viitataan luokan sisällä `this`-viittauksen kautta: `this.arvo++;`'
+cards:
+  - id: js-class-constructor
+    prompt: Luo luokka `Henkilo`, jonka konstruktori tallentaa parametrin `nimi` ominaisuuteen `nimi`.
+    check: test
+    tests:
+      - 'new Henkilo("Ada").nimi === "Ada"'
+    solution: |
+      class Henkilo {
+        constructor(nimi) {
+          this.nimi = nimi;
+        }
+      }
+  - id: js-class-method
+    prompt: 'Luo luokka `Henkilo`, jonka konstruktori ottaa parametrin `nimi` ja jonka metodi `tervehdi()` palauttaa merkkijonon `"Hei, olen <nimi>"`.'
+    check: test
+    tests:
+      - 'new Henkilo("Ada").tervehdi() === "Hei, olen Ada"'
+      - 'new Henkilo("Linus").tervehdi() === "Hei, olen Linus"'
+    solution: |
+      class Henkilo {
+        constructor(nimi) {
+          this.nimi = nimi;
+        }
+        tervehdi() {
+          return `Hei, olen ${this.nimi}`;
+        }
+      }
+  - id: js-class-new
+    prompt: Luo valmiista luokasta `Auto` olio `auto`, jonka merkki on `"Volvo"`.
+    check: test
+    setup: |
+      class Auto {
+        constructor(merkki) {
+          this.merkki = merkki;
+        }
+      }
+    tests:
+      - 'auto instanceof Auto && auto.merkki === "Volvo"'
+    solution: |
+      const auto = new Auto("Volvo");
+  - id: js-class-state
+    prompt: Luo luokka `Laskuri`, jonka ominaisuus `arvo` alkaa nollasta ja jonka metodi `kasvata()` kasvattaa arvoa yhdellä.
+    check: test
+    tests:
+      - '(() => { const l = new Laskuri(); l.kasvata(); l.kasvata(); return l.arvo === 2; })()'
+      - 'new Laskuri().arvo === 0'
+    solution: |
+      class Laskuri {
+        constructor() {
+          this.arvo = 0;
+        }
+        kasvata() {
+          this.arvo++;
+        }
+      }
+  - id: js-class-extends
+    prompt: 'Luo luokka `Kissa`, joka perii valmiin luokan `Elain` ja jonka metodi `aantele()` palauttaa merkkijonon `"Miau"`.'
+    check: test
+    setup: |
+      class Elain {
+        constructor(nimi) {
+          this.nimi = nimi;
+        }
+        aantele() {
+          return "...";
+        }
+      }
+    tests:
+      - 'new Kissa("Mirri") instanceof Elain'
+      - 'new Kissa("Mirri").aantele() === "Miau"'
+      - 'new Kissa("Mirri").nimi === "Mirri"'
+    solution: |
+      class Kissa extends Elain {
+        aantele() {
+          return "Miau";
+        }
+      }
+  - id: js-class-super
+    prompt: 'Luo luokka `Opiskelija`, joka perii valmiin luokan `Henkilo`. Sen konstruktori ottaa parametrit `nimi` ja `koulu`, välittää nimen yliluokalle ja tallentaa koulun ominaisuuteen `koulu`.'
+    check: test
+    setup: |
+      class Henkilo {
+        constructor(nimi) {
+          this.nimi = nimi;
+        }
+      }
+    tests:
+      - '(() => { const o = new Opiskelija("Ada", "Aalto"); return o instanceof Henkilo && o.nimi === "Ada" && o.koulu === "Aalto"; })()'
+    hint: Kutsu konstruktorissa ensin `super(nimi);` ja aseta vasta sitten `this.koulu`.
+    solution: |
+      class Opiskelija extends Henkilo {
+        constructor(nimi, koulu) {
+          super(nimi);
+          this.koulu = koulu;
+        }
+      }

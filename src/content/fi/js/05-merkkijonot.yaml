@@ -1,0 +1,117 @@
+id: js-merkkijonot
+title: Merkkijonot
+summary: Template literalit ja tärkeimmät merkkijonometodit.
+theory: |
+  Merkkijonon voi kirjoittaa lainausmerkkeihin `"..."`, heittomerkkeihin `'...'` tai takahipsuihin `` `...` ``.
+
+  ### Template literal
+
+  Takahipsuilla kirjoitettuun merkkijonoon voi upottaa arvoja merkinnällä `${...}`. Tämä on yleisin tapa rakentaa tekstiä:
+
+  ```js
+  const nimi = "Ada";
+  const ika = 36;
+  const viesti = `Hei ${nimi}, olet ${ika}-vuotias.`;
+  // "Hei Ada, olet 36-vuotias."
+  ```
+
+  Merkintä `${}` toimii **vain** takahipsujen sisällä. Tavallisissa lainausmerkeissä se jää tekstiksi.
+
+  ### Pituus ja yksittäiset merkit
+
+  ```js
+  const sana = "koodi";
+  sana.length; // 5
+  sana[0];     // "k", eli indeksointi alkaa nollasta
+  sana.at(-1); // "i", eli viimeinen merkki
+  ```
+
+  ### Hyödyllisiä metodeja
+
+  Metodit eivät muuta alkuperäistä merkkijonoa, vaan palauttavat uuden.
+
+  ```js
+  "apua".toUpperCase();          // "APUA"
+  "HEI".toLowerCase();           // "hei"
+  "  hei  ".trim();              // "hei"
+  "JavaScript".includes("Script"); // true
+  "JavaScript".startsWith("Java"); // true
+  "JavaScript".slice(0, 4);      // "Java", eli merkit 0–3
+  "a-b-c".replaceAll("-", "+");  // "a+b+c"
+  ```
+exercises:
+  - type: choice
+    question: Mitä `"Hei".length` palauttaa?
+    options: ['`3`', '`2`', '`"Hei"`', '`undefined`']
+    answer: 0
+    explanation: '`length` kertoo merkkien määrän. Sanassa "Hei" on kolme merkkiä.'
+  - type: blank
+    question: Täydennä niin, että `viesti` sisältää muuttujan `nimi` arvon.
+    code: |
+      const viesti = `Hei ${___}!`;
+    blanks:
+      - [nimi]
+    explanation: Template literaliin upotetaan arvo kirjoittamalla lauseke merkinnän `${}` sisään.
+  - type: bug
+    question: Ohjelman pitäisi tulostaa `Hei Ada!`, mutta se tulostaa `Hei ${nimi}!`.
+    code: |
+      const nimi = "Ada";
+      const tervehdys = "Hei ${nimi}!";
+      console.log(tervehdys);
+    bugLine: 2
+    explanation: '`${}` toimii vain takahipsujen sisällä: `` const tervehdys = `Hei ${nimi}!`; ``'
+cards:
+  - id: js-template-literal
+    prompt: Luo vakio `tervehdys`, jonka arvo on `Hei Ada!`. Rakenna se template literalilla muuttujasta `nimi`.
+    check: test
+    setup: |
+      const nimi = "Ada";
+    tests:
+      - 'tervehdys === "Hei Ada!"'
+    solution: |
+      const tervehdys = `Hei ${nimi}!`;
+  - id: js-string-length
+    prompt: Tallenna merkkijonon `sana` pituus vakioon `pituus`.
+    check: test
+    setup: |
+      const sana = "ohjelmointi";
+    tests:
+      - 'pituus === 11'
+    solution: |
+      const pituus = sana.length;
+  - id: js-uppercase
+    prompt: Muuta merkkijono `huuto` isoiksi kirjaimiksi ja tallenna tulos vakioon `isona`.
+    check: test
+    setup: |
+      const huuto = "apua";
+    tests:
+      - 'isona === "APUA"'
+    solution: |
+      const isona = huuto.toUpperCase();
+  - id: js-includes-string
+    prompt: Tarkista, sisältääkö `lause` tekstin `"koodi"`, ja tallenna tulos vakioon `loytyi`.
+    check: test
+    setup: |
+      const lause = "Rakastan koodia";
+    tests:
+      - 'loytyi === true'
+    solution: |
+      const loytyi = lause.includes("koodi");
+  - id: js-slice-start
+    prompt: Ota merkkijonon `teksti` kolme ensimmäistä merkkiä vakioon `alku`.
+    check: test
+    setup: |
+      const teksti = "JavaScript";
+    tests:
+      - 'alku === "Jav"'
+    solution: |
+      const alku = teksti.slice(0, 3);
+  - id: js-trim
+    prompt: Poista välilyönnit merkkijonon `syote` alusta ja lopusta ja tallenna tulos vakioon `siisti`.
+    check: test
+    setup: |
+      const syote = "  hei  ";
+    tests:
+      - 'siisti === "hei"'
+    solution: |
+      const siisti = syote.trim();

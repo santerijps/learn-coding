@@ -1,0 +1,106 @@
+id: js-moduulit
+title: Moduulit
+summary: Koodin jakaminen tiedostoihin import- ja export-lauseilla.
+theory: |
+  Isompi ohjelma jaetaan tiedostoihin eli **moduuleihin**. Moduuli päättää `export`-lauseella, mitä se paljastaa muille, ja muut tuovat sen käyttöönsä `import`-lauseella.
+
+  ### Nimetyt viennit
+
+  Tiedostossa voi olla monta nimettyä vientiä. Tuodessa nimet kirjoitetaan aaltosulkeisiin, ja niiden täytyy täsmätä:
+
+  ```js
+  // laskin.js
+  export const PI = 3.14;
+  export function summa(a, b) {
+    return a + b;
+  }
+
+  // main.js
+  import { summa, PI } from "./laskin.js";
+  ```
+
+  ### Oletusvienti
+
+  Tiedostossa voi olla **enintään yksi** oletusvienti (`export default`). Se tuodaan ilman aaltosulkeita, ja sille voi antaa minkä tahansa nimen:
+
+  ```js
+  // tervehdys.js
+  export default function tervehdi(nimi) {
+    return `Hei ${nimi}`;
+  }
+
+  // main.js
+  import tervehdi from "./tervehdys.js";
+  ```
+
+  ### Muita muotoja
+
+  ```js
+  import * as apu from "./apu.js";          // kaikki viennit nimiavaruuteen apu
+  import { summa as plus } from "./laskin.js"; // uudelleennimeäminen
+  import React, { useState } from "react";  // oletus ja nimetty yhdessä
+  ```
+
+  Paketit (esim. npm:stä asennetut) tuodaan pelkällä nimellä, kuten `"react"`. Omat tiedostot tuodaan suhteellisella polulla, joka alkaa `./` tai `../`.
+
+  Selaimessa moduulit vaativat `<script type="module">`-tagin. Node ja Bun tukevat moduuleja suoraan.
+exercises:
+  - type: choice
+    question: Montako oletusvientiä (`export default`) yhdessä tiedostossa voi olla?
+    options: [Ei yhtään, Enintään yksi, Rajattomasti, Tasan kaksi]
+    answer: 1
+    explanation: Oletusvientejä voi olla enintään yksi. Nimettyjä vientejä voi olla rajattomasti.
+  - type: blank
+    question: Täydennä niin, että funktio on nimetty vienti.
+    code: |
+      ___ function summa(a, b) {
+        return a + b;
+      }
+    blanks:
+      - [export]
+    explanation: Nimetty vienti tehdään kirjoittamalla `export` esittelyn eteen.
+  - type: bug
+    question: '`summa` on tuonnin jälkeen `undefined`.'
+    code: |
+      // laskin.js
+      export default function summa(a, b) {
+        return a + b;
+      }
+
+      // main.js
+      import { summa } from "./laskin.js";
+    bugLine: 7
+    explanation: 'Oletusvienti tuodaan ilman aaltosulkeita: `import summa from "./laskin.js";`. Aaltosulkeet hakevat nimettyä vientiä, jota tiedostossa ei ole.'
+cards:
+  - id: js-import-named
+    prompt: Tuo nimetty vienti `summa` tiedostosta `./laskin.js`.
+    check: match
+    solution: |
+      import { summa } from "./laskin.js";
+  - id: js-import-default
+    prompt: Tuo paketin `react` oletusvienti nimellä `React`.
+    check: match
+    solution: |
+      import React from "react";
+  - id: js-import-multiple
+    prompt: Tuo nimetyt viennit `useState` ja `useEffect` paketista `react`.
+    check: match
+    solution: |
+      import { useState, useEffect } from "react";
+    accepted:
+      - 'import { useEffect, useState } from "react";'
+  - id: js-export-const
+    prompt: Vie vakio `PI`, jonka arvo on `3.14`, nimettynä vientinä.
+    check: match
+    solution: |
+      export const PI = 3.14;
+  - id: js-export-default
+    prompt: Funktio `tervehdi` on jo määritelty. Vie se tiedoston oletusvientinä.
+    check: match
+    solution: |
+      export default tervehdi;
+  - id: js-import-namespace
+    prompt: Tuo kaikki tiedoston `./apu.js` viennit nimiavaruuteen `apu`.
+    check: match
+    solution: |
+      import * as apu from "./apu.js";

@@ -1,0 +1,131 @@
+id: js-ehtolauseet
+title: Ehtolauseet
+summary: Päätösten tekeminen if-, else- ja ternary-rakenteilla.
+theory: |
+  Ehtolause suorittaa koodin vain, jos ehto on tosi.
+
+  ```js
+  const lampotila = 28;
+
+  if (lampotila > 25) {
+    console.log("Kuuma");
+  } else if (lampotila > 15) {
+    console.log("Lämmin");
+  } else {
+    console.log("Viileä");
+  }
+  ```
+
+  Ehdot tarkistetaan ylhäältä alas, ja vain **ensimmäinen** tosi haara suoritetaan. `else` on vapaaehtoinen, ja se suoritetaan, jos mikään ehto ei ollut tosi.
+
+  ### Ternary-operaattori
+
+  Kun valitaan kahdesta arvosta, ehtolausekkeen `ehto ? arvoJosTosi : arvoJosEpätosi` voi kirjoittaa yhdelle riville:
+
+  ```js
+  const ika = 20;
+  const tila = ika >= 18 ? "aikuinen" : "alaikäinen";
+  ```
+
+  ### Truthy ja falsy
+
+  Ehdoksi kelpaa mikä tahansa arvo. Nämä arvot tulkitaan epätosiksi (**falsy**): `false`, `0`, `""` (tyhjä merkkijono), `null`, `undefined` ja `NaN`. Kaikki muut arvot ovat tosia (**truthy**).
+
+  ```js
+  const nimi = "";
+  if (nimi) {
+    console.log(`Hei ${nimi}`);
+  } else {
+    console.log("Nimi puuttuu");
+  }
+  ```
+exercises:
+  - type: choice
+    question: Mikä näistä arvoista on falsy?
+    options: ['`"0"`', '`0`', '`"false"`', '`[]`']
+    answer: 1
+    explanation: Luku `0` on falsy. Merkkijonot `"0"` ja `"false"` eivät ole tyhjiä, joten ne ovat truthy. Myös tyhjä taulukko `[]` on truthy.
+  - type: blank
+    question: Täydennä rakenne, joka tulostaa `Ei kuuma`, kun ehto ei ole tosi.
+    code: |
+      if (lampotila > 25) {
+        console.log("Kuuma");
+      } ___ {
+        console.log("Ei kuuma");
+      }
+    blanks:
+      - [else]
+    explanation: '`else`-haara suoritetaan, kun yksikään edellisistä ehdoista ei ollut tosi.'
+  - type: bug
+    question: Ohjelma tulostaa `Täysi-ikäinen`, vaikka `ika` on 16.
+    code: |
+      const ika = 16;
+      if (ika >= 18); {
+        console.log("Täysi-ikäinen");
+      }
+    bugLine: 2
+    explanation: 'Puolipiste ehdon perässä päättää if-lauseen heti, joten aaltosulkeiden lohko suoritetaan aina. Poista puolipiste: `if (ika >= 18) {`'
+cards:
+  - id: js-if-simple
+    prompt: Tulosta `Pakkasta`, jos `lampotila` on alle nollan.
+    check: test
+    setup: |
+      const lampotila = -5;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Pakkasta"'
+    solution: |
+      if (lampotila < 0) {
+        console.log("Pakkasta");
+      }
+  - id: js-if-else
+    prompt: Tulosta `Parillinen` tai `Pariton` sen mukaan, onko `luku` parillinen.
+    check: test
+    setup: |
+      const luku = 7;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Pariton"'
+    solution: |
+      if (luku % 2 === 0) {
+        console.log("Parillinen");
+      } else {
+        console.log("Pariton");
+      }
+  - id: js-else-if
+    prompt: 'Aseta muuttujaan `arvosana` arvo `"A"`, jos `pisteet` ≥ 90, `"B"`, jos `pisteet` ≥ 70, ja muuten `"C"`.'
+    check: test
+    setup: |
+      const pisteet = 75;
+    tests:
+      - 'arvosana === "B"'
+    hint: Esittele ensin `let arvosana;` ja aseta arvo sitten if / else if / else -rakenteessa.
+    solution: |
+      let arvosana;
+      if (pisteet >= 90) {
+        arvosana = "A";
+      } else if (pisteet >= 70) {
+        arvosana = "B";
+      } else {
+        arvosana = "C";
+      }
+  - id: js-ternary
+    prompt: 'Luo vakio `tila` ternary-operaattorilla: `"auki"`, jos `onAuki` on tosi, muuten `"kiinni"`.'
+    check: test
+    setup: |
+      const onAuki = false;
+    tests:
+      - 'tila === "kiinni"'
+    solution: |
+      const tila = onAuki ? "auki" : "kiinni";
+  - id: js-truthy-check
+    prompt: Tulosta `Tervetuloa`, jos `kayttaja` ei ole tyhjä merkkijono, ja muuten `Kirjaudu sisään`.
+    check: test
+    setup: |
+      const kayttaja = "";
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Kirjaudu sisään"'
+    solution: |
+      if (kayttaja) {
+        console.log("Tervetuloa");
+      } else {
+        console.log("Kirjaudu sisään");
+      }

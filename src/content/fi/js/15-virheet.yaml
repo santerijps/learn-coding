@@ -1,0 +1,120 @@
+id: js-virheet
+title: Virheenkäsittely
+summary: Virheiden heittäminen ja kiinni ottaminen try/catch-rakenteella.
+theory: |
+  Ohjelmissa tapahtuu virheitä: verkko katkeaa, syöte on rikki tai tiedosto puuttuu. Käsittelemätön virhe kaataa ohjelman. `try/catch` ottaa virheen kiinni, jotta siihen voi reagoida hallitusti.
+
+  ```js
+  try {
+    const data = JSON.parse("{ rikki");
+    console.log(data);
+  } catch (virhe) {
+    console.log("Jäsennys epäonnistui:", virhe.message);
+  } finally {
+    console.log("Tämä ajetaan aina");
+  }
+  ```
+
+  - `try`-lohkon koodi suoritetaan, kunnes tapahtuu virhe.
+  - `catch` saa virheolion, ja virheen kuvaus on sen ominaisuudessa `message`.
+  - `finally` suoritetaan aina, tapahtui virhe tai ei. Sitä käytetään esimerkiksi siivoamiseen.
+
+  ### Virheen heittäminen
+
+  Omassa koodissa virhe heitetään `throw`-lauseella. Heitä aina `Error`-olio, älä pelkkää merkkijonoa, jotta virheestä saadaan mukaan myös pinojälki:
+
+  ```js
+  function jaa(a, b) {
+    if (b === 0) {
+      throw new Error("Nollalla ei voi jakaa");
+    }
+    return a / b;
+  }
+  ```
+
+  ### Milloin catch?
+
+  Ota virhe kiinni siellä, missä osaat tehdä sille jotain järkevää, kuten näyttää viestin, yrittää uudelleen tai käyttää oletusarvoa. Tyhjä `catch {}` piilottaa ongelmat, joten vältä sitä.
+exercises:
+  - type: choice
+    question: Mikä lohko suoritetaan aina, tapahtui virhe tai ei?
+    options: ['`try`', '`catch`', '`finally`', '`throw`']
+    answer: 2
+    explanation: '`finally` ajetaan aina `try`- ja `catch`-lohkojen jälkeen.'
+  - type: blank
+    question: Täydennä niin, että funktio heittää virheen.
+    code: |
+      ___ new Error("Virheellinen syöte");
+    blanks:
+      - [throw]
+    explanation: Virhe heitetään `throw`-lauseella.
+  - type: bug
+    question: '`catch` tulostaa `undefined` virheviestin sijaan.'
+    code: |
+      try {
+        const tulos = JSON.parse("{ rikki");
+        console.log(tulos);
+      } catch (virhe) {
+        console.log(virhe.mesage);
+      }
+    bugLine: 5
+    explanation: 'Ominaisuuden nimessä on kirjoitusvirhe. Oikea nimi on `message`, joten kirjoita `virhe.message`.'
+cards:
+  - id: js-throw-error
+    prompt: 'Kirjoita funktio `jaa(a, b)`, joka heittää virheen `new Error("Nollalla ei voi jakaa")`, jos `b` on nolla, ja muuten palauttaa osamäärän.'
+    check: test
+    tests:
+      - 'jaa(6, 3) === 2'
+      - '(() => { try { jaa(1, 0); return false; } catch (e) { return e instanceof Error && e.message === "Nollalla ei voi jakaa"; } })()'
+    solution: |
+      function jaa(a, b) {
+        if (b === 0) {
+          throw new Error("Nollalla ei voi jakaa");
+        }
+        return a / b;
+      }
+  - id: js-try-catch-json
+    prompt: Jäsennä merkkijono `json` muuttujaan `data` käyttäen `JSON.parse`-funktiota. Jos jäsennys epäonnistuu, aseta muuttujan `data` arvoksi `null`.
+    check: test
+    setup: |
+      const json = "{ rikki";
+    tests:
+      - 'data === null'
+    solution: |
+      let data;
+      try {
+        data = JSON.parse(json);
+      } catch {
+        data = null;
+      }
+  - id: js-catch-message
+    prompt: Kirjoita funktio `turvallinen(f)`, joka kutsuu funktiota `f` ja palauttaa sen paluuarvon. Jos `f` heittää virheen, funktio palauttaa virheen viestin (`message`).
+    check: test
+    tests:
+      - 'turvallinen(() => 1) === 1'
+      - 'turvallinen(() => { throw new Error("hups"); }) === "hups"'
+    solution: |
+      function turvallinen(f) {
+        try {
+          return f();
+        } catch (virhe) {
+          return virhe.message;
+        }
+      }
+  - id: js-finally
+    prompt: Kutsu funktiota `riskialtis()` niin, että sen heittämä virhe otetaan kiinni, ja tulosta `Valmis` finally-lohkossa.
+    check: test
+    setup: |
+      function riskialtis() {
+        throw new Error("pum");
+      }
+    tests:
+      - '__logs.includes("Valmis")'
+    solution: |
+      try {
+        riskialtis();
+      } catch (virhe) {
+        console.log(virhe.message);
+      } finally {
+        console.log("Valmis");
+      }

@@ -1,0 +1,105 @@
+id: js-muuttujat
+title: Muuttujat
+summary: Arvojen tallentaminen nimellä, eli const ja let.
+theory: |
+  Muuttuja on nimi, jonka taakse tallennetaan arvo. JavaScriptissä muuttuja esitellään avainsanalla `const` tai `let`.
+
+  ```js
+  const nimi = "Ada";
+  let pisteet = 0;
+
+  pisteet = pisteet + 10;
+  console.log(nimi, pisteet); // Ada 10
+  ```
+
+  ### const vai let?
+
+  - `const` tarkoittaa, ettei muuttujaan voi myöhemmin sijoittaa uutta arvoa. **Käytä tätä oletuksena.**
+  - `let` sallii uuden arvon sijoittamisen. Käytä sitä, kun arvo oikeasti muuttuu, esimerkiksi laskurissa.
+  - `var` on vanha tapa, jota näet vanhassa koodissa. Uudessa koodissa sitä ei kannata käyttää.
+
+  ```js
+  const vuosi = 2026;
+  vuosi = 2027; // TypeError: Assignment to constant variable.
+  ```
+
+  ### Nimeäminen
+
+  Nimet kirjoitetaan yleensä **camelCase**-tyyliin: `kayttajanNimi`, `maxPisteet`. Nimi ei voi alkaa numerolla, eikä siinä voi olla välilyöntejä. Isot ja pienet kirjaimet ovat eri merkkejä: `nimi` ja `Nimi` ovat eri muuttujia.
+
+  Hyvä nimi kertoo, mitä arvo tarkoittaa: `hinta` on parempi kuin `x`.
+exercises:
+  - type: choice
+    question: Kumpaa kannattaa käyttää oletuksena uutta muuttujaa esitellessä?
+    options:
+      - '`const`'
+      - '`let`'
+      - '`var`'
+      - Ei ole väliä
+    answer: 0
+    explanation: '`const` estää vahingossa tehdyt uudelleensijoitukset. Vaihda `let`:iin vain, kun arvoa todella täytyy muuttaa.'
+  - type: blank
+    question: Täydennä niin, että pisteitä voi kasvattaa.
+    code: |
+      ___ pisteet = 0;
+      pisteet = pisteet + 10;
+    blanks:
+      - [let]
+    explanation: Koska `pisteet`-muuttujaan sijoitetaan myöhemmin uusi arvo, se täytyy esitellä `let`-avainsanalla.
+  - type: bug
+    question: Ohjelma kaatuu virheeseen. Missä vika on?
+    code: |
+      const ika = 30;
+      console.log(ika);
+      ika = 31;
+      console.log(ika);
+    bugLine: 3
+    explanation: '`const`-muuttujaan ei voi sijoittaa uutta arvoa. Jos ikä muuttuu, esittele se rivillä 1 `let`-avainsanalla.'
+cards:
+  - id: js-const-string
+    prompt: Luo vakio `nimi`, jonka arvo on merkkijono `"Ada"`.
+    check: test
+    tests:
+      - 'nimi === "Ada"'
+      - '__isConst(() => { nimi = "x"; })'
+    solution: |
+      const nimi = "Ada";
+  - id: js-let-counter
+    prompt: Luo muuttuja `laskuri`, jonka arvo on `0` ja jonka arvoa voi myöhemmin muuttaa.
+    check: test
+    tests:
+      - 'laskuri === 0'
+      - '!__isConst(() => { laskuri = laskuri; })'
+    solution: |
+      let laskuri = 0;
+  - id: js-let-update
+    prompt: Luo muuttuja `pisteet` arvolla `10` ja kasvata sen arvoa sitten viidellä.
+    check: test
+    tests:
+      - 'pisteet === 15'
+    solution: |
+      let pisteet = 10;
+      pisteet = pisteet + 5;
+  - id: js-const-calc
+    prompt: Luo vakiot `leveys` (4) ja `korkeus` (3) sekä vakio `ala`, joka on niiden tulo.
+    check: test
+    tests:
+      - 'leveys === 4 && korkeus === 3'
+      - 'ala === 12'
+    solution: |
+      const leveys = 4;
+      const korkeus = 3;
+      const ala = leveys * korkeus;
+  - id: js-swap-temp
+    prompt: Vaihda muuttujien `a` ja `b` arvot keskenään apumuuttujan avulla.
+    check: test
+    setup: |
+      let a = 1;
+      let b = 2;
+    tests:
+      - 'a === 2 && b === 1'
+    hint: Tallenna `a`:n arvo ensin apumuuttujaan, esimerkiksi `const apu = a;`.
+    solution: |
+      const apu = a;
+      a = b;
+      b = apu;

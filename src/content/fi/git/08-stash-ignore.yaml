@@ -1,0 +1,103 @@
+id: git-stash-ignore
+title: Stash ja .gitignore
+summary: Keskeneräisten muutosten säilöminen ja tiedostojen jättäminen seurannan ulkopuolelle.
+theory: |
+  ### git stash
+
+  Joskus pitää vaihtaa haaraa kesken työn, esimerkiksi kiireellisen korjauksen takia, eikä keskeneräistä työtä halua vielä commitoida. `git stash` siirtää muutokset sivuun ja palauttaa työhakemiston siistiksi.
+
+  ```bash
+  git stash              # siirrä muutokset sivuun
+  git switch main        # ... tee muuta ...
+  git switch ominaisuus
+  git stash pop          # palauta muutokset ja poista ne stash-listalta
+  ```
+
+  ```bash
+  git stash list         # näytä sivuun siirretyt muutokset
+  git stash -u           # ota mukaan myös seuraamattomat (uudet) tiedostot
+  git stash apply        # palauta, mutta jätä myös listalle
+  git stash drop         # poista viimeisin stash (sisältö häviää!)
+  ```
+
+  ### .gitignore
+
+  `.gitignore`-tiedosto kertoo, mitä tiedostoja Git ei seuraa. Sinne kuuluvat esimerkiksi riippuvuudet, käännöstulokset, lokit ja salaisuudet.
+
+  ```gitignore
+  node_modules/
+  dist/
+  *.log
+  .env
+  ```
+
+  - `kansio/` jättää huomiotta koko kansion.
+  - `*.log` jättää huomiotta kaikki tiedostot, joiden pääte on `.log`.
+  - `!tarkea.log` tekee poikkeuksen aiempaan sääntöön.
+
+  `.gitignore` vaikuttaa vain tiedostoihin, joita Git ei vielä seuraa. Jos tiedosto on jo commitoitu, se täytyy poistaa seurannasta:
+
+  ```bash
+  git rm --cached .env   # lopettaa seuraamisen, mutta tiedosto jää levylle
+  ```
+exercises:
+  - type: choice
+    question: Mitä `git stash pop` tekee?
+    options:
+      - Palauttaa viimeisimmän stashin ja poistaa sen listalta
+      - Poistaa viimeisimmän stashin palauttamatta sitä
+      - Siirtää muutokset sivuun
+      - Lähettää stashin etärepoon
+    answer: 0
+    explanation: '`pop` = `apply` + `drop`, eli muutokset palautetaan ja stash poistetaan listalta.'
+  - type: blank
+    question: Täydennä `.gitignore` niin, että kaikki `.log`-päätteiset tiedostot jätetään huomiotta.
+    code: |
+      node_modules/
+      *.___
+    blanks:
+      - [log]
+    explanation: '`*` vastaa mitä tahansa merkkejä, joten `*.log` osuu jokaiseen `.log`-tiedostoon.'
+  - type: bug
+    question: Keskeneräisten muutosten piti palata takaisin, mutta ne katosivat.
+    code: |
+      git stash
+      git switch main
+      git switch ominaisuus
+      git stash drop
+    bugLine: 4
+    explanation: '`git stash drop` poistaa stashin palauttamatta sitä. Muutokset palautetaan komennolla `git stash pop`.'
+cards:
+  - id: git-stash
+    prompt: Siirrä keskeneräiset muutokset väliaikaisesti sivuun.
+    check: match
+    solution: git stash
+    accepted:
+      - git stash push
+  - id: git-stash-pop
+    prompt: Palauta viimeisin stash ja poista se listalta.
+    check: match
+    solution: git stash pop
+  - id: git-stash-list
+    prompt: Listaa sivuun siirretyt muutokset.
+    check: match
+    solution: git stash list
+  - id: git-stash-untracked
+    prompt: Siirrä muutokset sivuun niin, että mukaan tulevat myös seuraamattomat (uudet) tiedostot.
+    check: match
+    solution: git stash -u
+    accepted:
+      - git stash --include-untracked
+      - git stash push -u
+  - id: git-rm-cached
+    prompt: Lopeta tiedoston `.env` seuraaminen poistamatta sitä levyltä.
+    check: match
+    solution: git rm --cached .env
+  - id: git-ignore-folder
+    prompt: Kirjoita `.gitignore`-rivi, joka jättää huomiotta kansion `node_modules`.
+    check: match
+    solution: node_modules/
+    accepted:
+      - node_modules
+      - /node_modules/
+      - /node_modules

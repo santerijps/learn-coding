@@ -1,0 +1,126 @@
+id: js-operaattorit
+title: Operaattorit
+summary: Laskeminen, vertailu ja loogiset operaattorit.
+theory: |
+  ### Laskutoimitukset
+
+  ```js
+  10 + 3;  // 13
+  10 - 3;  // 7
+  10 * 3;  // 30
+  10 / 3;  // 3.333...
+  10 % 3;  // 1, eli jakojäännös
+  2 ** 3;  // 8, eli potenssi
+  ```
+
+  Jakojäännös `%` on yllättävän hyödyllinen: `luku % 2 === 0` kertoo, onko luku parillinen.
+
+  ### Lyhennetyt sijoitukset
+
+  ```js
+  let pisteet = 10;
+  pisteet += 5;  // sama kuin pisteet = pisteet + 5
+  pisteet -= 2;
+  pisteet *= 2;
+  pisteet++;     // kasvattaa yhdellä
+  pisteet--;     // vähentää yhdellä
+  ```
+
+  ### Vertailu
+
+  Vertailu tuottaa totuusarvon (`true` tai `false`):
+
+  ```js
+  5 === 5;    // true: yhtä suuri (arvo ja tyyppi)
+  5 !== 3;    // true: eri suuri
+  5 > 3;      // true
+  5 <= 5;     // true
+  5 === "5";  // false: eri tyypit
+  ```
+
+  Käytä aina operaattoreita `===` ja `!==`. Vanhemmat `==` ja `!=` muuntavat tyyppejä yllättävästi (`5 == "5"` on `true`).
+
+  ### Loogiset operaattorit
+
+  - `&&` (JA) on tosi, kun molemmat puolet ovat tosia.
+  - `||` (TAI) on tosi, kun vähintään toinen puoli on tosi.
+  - `!` (EI) kääntää totuusarvon.
+
+  ```js
+  const ika = 20;
+  const onLippu = true;
+  const paaseeSisaan = ika >= 18 && onLippu; // true
+  const eiPaase = !paaseeSisaan;             // false
+  ```
+exercises:
+  - type: choice
+    question: Mikä on lausekkeen `10 % 3` arvo?
+    options: ['1', '3', '3.33', '0']
+    answer: 0
+    explanation: '`%` antaa jakojäännöksen. 10 = 3 · 3 + 1, joten jakojäännös on 1.'
+  - type: blank
+    question: Täydennä niin, että `onParillinen` kertoo, onko `luku` parillinen.
+    code: |
+      const onParillinen = luku ___ 2 === 0;
+    blanks:
+      - ['%']
+    explanation: Luku on parillinen, kun sen jakojäännös kahdella jaettuna on nolla.
+  - type: bug
+    question: '`samat`-muuttujan pitäisi olla `false`, koska arvojen tyypit eroavat.'
+    code: |
+      const a = 5;
+      const b = "5";
+      const samat = a == b;
+      console.log(samat);
+    bugLine: 3
+    explanation: '`==` muuntaa tyypit ennen vertailua, joten `5 == "5"` on `true`. Käytä tiukkaa vertailua `===`.'
+cards:
+  - id: js-modulo
+    prompt: Laske jakojäännös, kun `luku` jaetaan kolmella, ja tallenna se vakioon `jaannos`.
+    check: test
+    setup: |
+      const luku = 17;
+    tests:
+      - 'jaannos === 2'
+    solution: |
+      const jaannos = luku % 3;
+  - id: js-is-even
+    prompt: Luo vakio `onParillinen`, joka on `true`, jos `luku` on parillinen.
+    check: test
+    setup: |
+      const luku = 8;
+    tests:
+      - 'onParillinen === true'
+    solution: |
+      const onParillinen = luku % 2 === 0;
+  - id: js-plus-assign
+    prompt: Kasvata muuttujan `pisteet` arvoa kymmenellä käyttäen operaattoria `+=`.
+    check: match
+    solution: |
+      pisteet += 10;
+  - id: js-increment
+    prompt: Kasvata muuttujaa `i` yhdellä lyhimmällä mahdollisella tavalla.
+    check: match
+    solution: |
+      i++;
+    accepted:
+      - '++i;'
+  - id: js-and
+    prompt: Luo vakio `paaseeSisaan`, joka on tosi, kun `ika` on vähintään 18 **ja** `onLippu` on tosi.
+    check: test
+    setup: |
+      const ika = 20;
+      const onLippu = true;
+    tests:
+      - 'paaseeSisaan === true'
+    solution: |
+      const paaseeSisaan = ika >= 18 && onLippu;
+  - id: js-not
+    prompt: Luo vakio `eiSada`, jonka arvo on muuttujan `sataa` vastakohta.
+    check: test
+    setup: |
+      const sataa = false;
+    tests:
+      - 'eiSada === true'
+    solution: |
+      const eiSada = !sataa;
