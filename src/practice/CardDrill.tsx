@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { DeckCard } from '../content/schema'
 import { checkAnswer } from '../check/check'
+import { preloadPython } from '../check/python'
 import { logAttempt } from '../storage/progress'
+import { answerPlaceholder, checkingLabel, checkMessages, submitHint } from './answerUi'
 import { m } from '../i18n'
 import { Editor } from '../ui/Editor'
 import { CodeBlock } from '../ui/CodeBlock'
@@ -18,8 +20,6 @@ export type DrillResult = {
 
 type Phase = 'answer' | 'checking' | 'correct' | 'retype' | 'retyped'
 
-const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
-
 /**
  * One rapid-fire card: type the answer from memory. On a miss the model answer is shown and must be
  * typed out once before moving on, since writing it is what builds recall.
@@ -34,6 +34,11 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
   const [error, setError] = useState<string | undefined>()
   const startedAt = useRef(performance.now())
   const answerMs = useRef(0)
+
+  // Start downloading the Python runtime while the learner types, so the first check is fast.
+  useEffect(() => {
+    if (card.language === 'python') preloadPython().catch(() => {})
+  }, [card.language])
 
   const record = (correct: boolean, override = false, err?: string) =>
     logAttempt({
@@ -52,7 +57,7 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
     if (phase !== 'answer' || !answer.trim()) return
     answerMs.current = performance.now() - startedAt.current
     setPhase('checking')
-    const res = await checkAnswer(card, answer, m.timeout)
+    const res = await checkAnswer(card, answer, checkMessages())
     record(res.correct, false, res.error)
     setError(res.error)
     setPhase(res.correct ? 'correct' : 'retype')
@@ -67,7 +72,7 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
   const submitRetype = async () => {
     if (phase !== 'retype' || !retype.trim() || busy) return
     setBusy(true)
-    const res = await checkAnswer(card, retype, m.timeout)
+    const res = await checkAnswer(card, retype, checkMessages())
     setBusy(false)
     if (res.correct) setPhase('retyped')
     else setRetypeWrong(true)
@@ -78,7 +83,7 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
     onFinish({ correct: phase === 'correct' || override, usedHint, ms: answerMs.current, override })
   }
 
-  const submitHint = card.language === 'js' ? m.submitHintJs(isMac ? '⌘' : 'Ctrl') : m.submitHintShell
+  const hint = submitHint(card.language)
 
   return (
     <div className="drill">
@@ -103,10 +108,10 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
             language={card.language}
             onChange={setAnswer}
             onSubmit={submitAnswer}
-            placeholder={card.language === 'js' ? m.answerPlaceholderJs : m.answerPlaceholderShell}
+            placeholder={answerPlaceholder(card.language)}
             ariaLabel={m.answerLabel}
           />
-          <p className="muted small">{submitHint}</p>
+          <p className="muted small">{hint}</p>
           {usedHint && card.hint ? (
             <p className="hint">
               💡 <Inline text={card.hint} />
@@ -114,7 +119,7 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
           ) : null}
           <div className="actions">
             <button className="btn btn-primary" onClick={submitAnswer} disabled={phase === 'checking' || !answer.trim()}>
-              {phase === 'checking' ? m.checking : m.check}
+              {phase === 'checking' ? checkingLabel(card.language) : m.check}
             </button>
             {card.hint && !usedHint ? (
               <button className="btn btn-ghost" onClick={() => setUsedHint(true)}>
@@ -166,11 +171,11 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
             placeholder={m.retypePlaceholder}
             ariaLabel={m.retypePlaceholder}
           />
-          <p className="muted small">{submitHint}</p>
+          <p className="muted small">{hint}</p>
           {retypeWrong ? <p className="error">{m.retypeWrong}</p> : null}
           <div className="actions">
             <button className="btn btn-primary" onClick={submitRetype} disabled={!retype.trim() || busy}>
-              {busy ? m.checking : m.check}
+              {busy ? checkingLabel(card.language) : m.check}
             </button>
             {answer.trim() ? (
               <button className="btn btn-link" onClick={() => finish(true)}>

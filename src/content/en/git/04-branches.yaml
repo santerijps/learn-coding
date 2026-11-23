@@ -1,0 +1,103 @@
+id: git-haarat
+title: Branches
+summary: Parallel lines of work with git branch and git switch.
+theory: |
+  A **branch** is its own line of development. A new feature is usually built in its own branch so the main branch (`main`) keeps working. When the feature is ready, the branch is merged back.
+
+  A branch is really just a movable pointer to a commit, so creating branches in Git is quick and cheap.
+
+  ```bash
+  git branch               # list branches (the current one marked with *)
+  git branch login         # create a branch, but don't switch to it
+  git switch login         # switch to a branch
+  git switch -c fix        # create a branch and switch to it at once
+  git switch main          # back to the main branch
+  git switch -             # back to the previous branch
+  ```
+
+  ### Older syntax
+
+  Before `git switch`, branches were switched with `git checkout`, and you'll still see it a lot:
+
+  ```bash
+  git checkout main
+  git checkout -b fix      # same as git switch -c fix
+  ```
+
+  ### Cleaning up and renaming
+
+  ```bash
+  git branch -d old        # delete a merged branch
+  git branch -D experiment # force delete (unmerged changes are lost!)
+  git branch -m main       # rename the current branch
+  ```
+
+  When you switch branches, the files in your working directory change to match that branch. Commit or stash unfinished changes before switching.
+exercises:
+  - type: choice
+    question: Which command creates a new branch `new` and switches to it at the same time?
+    options: ['`git switch -c new`', '`git branch new`', '`git merge new`', '`git switch new`']
+    answer: 0
+    explanation: '`git switch -c` creates a branch and switches to it. `git branch new` only creates it, and `git switch new` requires the branch to exist already.'
+  - type: blank
+    question: Complete the command that creates the branch `login` and switches to it.
+    code: |
+      git ___ -c login
+    blanks:
+      - [switch]
+    explanation: '`git switch -c <name>` creates a new branch and switches to it.'
+  - type: bug
+    question: The commit was supposed to go into the new branch, but it ended up in `main`.
+    code: |
+      git branch new-feature
+      git add .
+      git commit -m "Add feature"
+    bugLine: 1
+    explanation: '`git branch` only creates the branch; it doesn''t switch to it. Use `git switch -c new-feature` on line 1.'
+cards:
+  - id: git-branch-list
+    prompt: List the local branches.
+    check: match
+    solution: git branch
+  - id: git-branch-create
+    prompt: Create a new branch `login` without switching to it.
+    check: match
+    solution: git branch login
+  - id: git-switch
+    prompt: Switch to the branch `main`.
+    check: match
+    solution: git switch main
+    accepted:
+      - git checkout main
+  - id: git-switch-create
+    prompt: Create the branch `fix` and switch to it in the same command.
+    check: match
+    solution: git switch -c fix
+    accepted:
+      - git checkout -b fix
+  - id: git-branch-delete
+    prompt: Delete the already merged branch `old`.
+    check: match
+    solution: git branch -d old
+  - id: git-branch-rename
+    prompt: Rename the current branch to `main`.
+    check: match
+    solution: git branch -m main
+  - id: git-checkout-old
+    prompt: Switch to the branch `develop` using the older `checkout` command.
+    check: match
+    solution: git checkout develop
+  - id: git-checkout-b-old
+    prompt: Create the branch `test` and switch to it using the older `checkout` command.
+    check: match
+    solution: git checkout -b test
+  - id: git-branch-force-delete
+    prompt: Delete the unmerged branch `experiment` by forcing the deletion.
+    check: match
+    solution: git branch -D experiment
+  - id: git-switch-previous
+    prompt: Go back to the branch you were on before the current one.
+    check: match
+    solution: git switch -
+    accepted:
+      - git checkout -

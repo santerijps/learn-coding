@@ -1,0 +1,169 @@
+id: py-sanakirjat
+title: Dictionaries and sets
+summary: Key–value pairs, looping over them, and sets.
+theory: |
+  A dictionary (dict) stores values under **keys**. It's written in curly braces.
+
+  ```python
+  user = {"name": "Ada", "age": 36}
+
+  user["name"]          # "Ada"
+  user["age"] = 37      # change
+  user["country"] = "UK"  # add a new key
+  del user["country"]   # remove
+  "name" in user        # True, checks for a key
+  ```
+
+  ### get
+
+  A missing key in square brackets raises a `KeyError`. `get` returns `None` or a default value instead:
+
+  ```python
+  user.get("phone")          # None
+  user.get("language", "en") # "en"
+  ```
+
+  ### Looping
+
+  ```python
+  for key in user:                  # keys
+      print(key)
+  for key, value in user.items():   # key–value pairs
+      print(key, value)
+  list(user.keys())                 # ["name", "age"]
+  list(user.values())               # ["Ada", 37]
+  ```
+
+  ### Counting into a dictionary
+
+  A common pattern is counting occurrences:
+
+  ```python
+  counts = {}
+  for word in ["a", "b", "a"]:
+      counts[word] = counts.get(word, 0) + 1
+  # {"a": 2, "b": 1}
+  ```
+
+  ### Sets
+
+  A set holds each value only once, and checking membership is fast:
+
+  ```python
+  unique = set([1, 2, 2, 3])   # {1, 2, 3}
+  unique.add(4)
+  ```
+exercises:
+  - type: choice
+    question: What does `user.get("phone")` return if the key doesn't exist?
+    options: ['`None`', 'A `KeyError`', '`""`', '`False`']
+    answer: 0
+    explanation: '`get` returns `None` (or the default you give it), whereas `user["phone"]` would raise a `KeyError`.'
+  - type: blank
+    question: Complete the loop that goes through both keys and values.
+    code: |
+      for key, value in user.___():
+          print(key, value)
+    blanks:
+      - [items]
+    explanation: '`items()` returns the key–value pairs.'
+  - type: bug
+    question: The program crashes with a `KeyError` when the key doesn't exist yet.
+    code: |
+      counts = {}
+      for word in ["a", "b", "a"]:
+          counts[word] = counts[word] + 1
+    bugLine: 3
+    explanation: 'The first time, the key isn''t there. Use a default: `counts[word] = counts.get(word, 0) + 1`.'
+cards:
+  - id: py-dict-create
+    prompt: 'Create a dictionary `user` where the key `"name"` has the value `"Ada"` and the key `"age"` has the value `36`.'
+    check: test
+    tests:
+      - 'user == {"name": "Ada", "age": 36}'
+    solution: |
+      user = {"name": "Ada", "age": 36}
+  - id: py-dict-read
+    prompt: 'Store the value of the key `"price"` in the dictionary `product` in a variable `price`.'
+    check: test
+    setup: |
+      product = {"name": "Coffee", "price": 4.5}
+    tests:
+      - 'price == 4.5'
+    solution: |
+      price = product["price"]
+  - id: py-dict-add
+    prompt: 'Add the key `"color"` with the value `"red"` to the dictionary `car`.'
+    check: test
+    setup: |
+      car = {"make": "Volvo"}
+    tests:
+      - 'car == {"make": "Volvo", "color": "red"}'
+    solution: |
+      car["color"] = "red"
+  - id: py-dict-get-default
+    prompt: 'Get the value of the key `"language"` from the dictionary `settings` into a variable `language`, with the default `"en"`.'
+    check: test
+    setup: |
+      settings = {"theme": "dark"}
+    tests:
+      - 'language == "en"'
+    solution: |
+      language = settings.get("language", "en")
+  - id: py-dict-del
+    prompt: 'Remove the key `"password"` from the dictionary `user`.'
+    check: test
+    setup: |
+      user = {"name": "Ada", "password": "1234"}
+    tests:
+      - 'user == {"name": "Ada"}'
+    solution: |
+      del user["password"]
+  - id: py-dict-in
+    prompt: 'Check whether the dictionary `user` has the key `"email"` and store the result in a variable `has_email`.'
+    check: test
+    setup: |
+      user = {"name": "Ada", "email": "ada@example.com"}
+    tests:
+      - 'has_email is True'
+    solution: |
+      has_email = "email" in user
+  - id: py-dict-items
+    prompt: 'Print each key and value of the dictionary `prices` in the form `coffee 4.5`.'
+    check: test
+    setup: |
+      prices = {"coffee": 4.5, "tea": 3.0}
+    tests:
+      - '__logs == ["coffee 4.5", "tea 3.0"]'
+    solution: |
+      for item, price in prices.items():
+          print(item, price)
+  - id: py-dict-keys
+    prompt: Create a list `keys` containing the keys of the dictionary `settings`.
+    check: test
+    setup: |
+      settings = {"theme": "dark", "language": "en"}
+    tests:
+      - 'keys == ["theme", "language"]'
+    solution: |
+      keys = list(settings.keys())
+  - id: py-dict-count
+    prompt: Count into a dictionary `counts` how many times each word appears in the list `words`.
+    check: test
+    setup: |
+      words = ["a", "b", "a"]
+    tests:
+      - 'counts == {"a": 2, "b": 1}'
+    solution: |
+      counts = {}
+      for word in words:
+          counts[word] = counts.get(word, 0) + 1
+  - id: py-set-unique
+    prompt: Create a set `unique` containing each value of the list `numbers` only once.
+    check: test
+    setup: |
+      numbers = [1, 2, 2, 3, 3, 3]
+    tests:
+      - 'unique == {1, 2, 3}'
+    solution: |
+      unique = set(numbers)

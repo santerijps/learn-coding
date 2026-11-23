@@ -21,8 +21,9 @@ const matchCard = z.strictObject({
 })
 
 /**
- * The answer runs after `setup`; every expression in `tests` must be truthy.
- * Tests can read `__logs` (console.log output as strings) and `__raw` (the raw console.log arguments).
+ * The answer runs after `setup`; every expression in `tests` must be truthy. Tests are written in
+ * the track's language. JavaScript tests can read `__logs` (console.log output as strings) and
+ * `__raw` (the raw console.log arguments); Python tests can read `__logs` (printed lines).
  */
 const testCard = z.strictObject({
   ...cardBase,
@@ -80,9 +81,10 @@ export const lessonSchema = z.strictObject({
   cards: z.array(cardSchema).min(1),
 })
 
-export type TrackId = 'js' | 'git'
-/** `js` answers are normalized as JavaScript, `shell` answers as terminal commands. */
-export type AnswerLanguage = 'js' | 'shell'
+export type TrackId = 'js' | 'py' | 'git'
+export const TRACK_IDS: TrackId[] = ['js', 'py', 'git']
+/** `js` and `python` answers are normalized as code (and test cards run in that language), `shell` answers as terminal commands. */
+export type AnswerLanguage = 'js' | 'python' | 'shell'
 
 export type Card = z.infer<typeof cardSchema>
 export type Exercise = z.infer<typeof exerciseSchema>

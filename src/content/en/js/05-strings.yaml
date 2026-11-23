@@ -1,0 +1,154 @@
+id: js-merkkijonot
+title: Strings
+summary: Template literals and the most useful string methods.
+theory: |
+  You can write a string in double quotes `"..."`, single quotes `'...'` or backticks `` `...` ``.
+
+  ### Template literals
+
+  Inside a backtick string you can embed values with `${...}`. This is the most common way to build text:
+
+  ```js
+  const name = "Ada";
+  const age = 36;
+  const message = `Hi ${name}, you are ${age} years old.`;
+  // "Hi Ada, you are 36 years old."
+  ```
+
+  `${}` works **only** inside backticks. In normal quotes it stays as plain text.
+
+  ### Length and single characters
+
+  ```js
+  const word = "code";
+  word.length; // 4
+  word[0];     // "c", indexes start at zero
+  word.at(-1); // "e", the last character
+  ```
+
+  ### Useful methods
+
+  Methods don't change the original string; they return a new one.
+
+  ```js
+  "help".toUpperCase();            // "HELP"
+  "HI".toLowerCase();              // "hi"
+  "  hi  ".trim();                 // "hi"
+  "JavaScript".includes("Script"); // true
+  "JavaScript".startsWith("Java"); // true
+  "JavaScript".slice(0, 4);        // "Java", characters 0–3
+  "a-b-c".replaceAll("-", "+");    // "a+b+c"
+  ```
+exercises:
+  - type: choice
+    question: What does `"Hey".length` return?
+    options: ['`3`', '`2`', '`"Hey"`', '`undefined`']
+    answer: 0
+    explanation: '`length` is the number of characters. "Hey" has three.'
+  - type: blank
+    question: Fill in the blank so that `message` contains the value of the variable `name`.
+    code: |
+      const message = `Hi ${___}!`;
+    blanks:
+      - [name]
+    explanation: To embed a value in a template literal, put the expression inside `${}`.
+  - type: bug
+    question: The program should print `Hi Ada!`, but it prints `Hi ${name}!`.
+    code: |
+      const name = "Ada";
+      const greeting = "Hi ${name}!";
+      console.log(greeting);
+    bugLine: 2
+    explanation: '`${}` only works inside backticks: `` const greeting = `Hi ${name}!`; ``'
+cards:
+  - id: js-template-literal
+    prompt: Create a constant `greeting` whose value is `Hi Ada!`. Build it with a template literal from the variable `name`.
+    check: test
+    setup: |
+      const name = "Ada";
+    tests:
+      - 'greeting === "Hi Ada!"'
+    solution: |
+      const greeting = `Hi ${name}!`;
+  - id: js-string-length
+    prompt: Store the length of the string `word` in a constant `length`.
+    check: test
+    setup: |
+      const word = "programming";
+    tests:
+      - 'length === 11'
+    solution: |
+      const length = word.length;
+  - id: js-uppercase
+    prompt: Convert the string `shout` to upper case and store it in a constant `loud`.
+    check: test
+    setup: |
+      const shout = "help";
+    tests:
+      - 'loud === "HELP"'
+    solution: |
+      const loud = shout.toUpperCase();
+  - id: js-includes-string
+    prompt: Check whether `sentence` contains the text `"code"` and store the result in a constant `found`.
+    check: test
+    setup: |
+      const sentence = "I love clean code";
+    tests:
+      - 'found === true'
+    solution: |
+      const found = sentence.includes("code");
+  - id: js-slice-start
+    prompt: Store the first three characters of the string `text` in a constant `start`.
+    check: test
+    setup: |
+      const text = "JavaScript";
+    tests:
+      - 'start === "Jav"'
+    solution: |
+      const start = text.slice(0, 3);
+  - id: js-trim
+    prompt: Remove the spaces from the start and end of the string `input` and store the result in a constant `clean`.
+    check: test
+    setup: |
+      const input = "  hi  ";
+    tests:
+      - 'clean === "hi"'
+    solution: |
+      const clean = input.trim();
+  - id: js-lowercase
+    prompt: Convert the string `email` to lower case and store it in a constant `lower`.
+    check: test
+    setup: |
+      const email = "Ada@Example.COM";
+    tests:
+      - 'lower === "ada@example.com"'
+    solution: |
+      const lower = email.toLowerCase();
+  - id: js-starts-with
+    prompt: Check whether `url` starts with `"https"` and store the result in a constant `isSecure`.
+    check: test
+    setup: |
+      const url = "https://example.com";
+    tests:
+      - 'isSecure === true'
+    solution: |
+      const isSecure = url.startsWith("https");
+  - id: js-first-char
+    prompt: Store the first character of the string `name` in a constant `initial`.
+    check: test
+    setup: |
+      const name = "Grace";
+    tests:
+      - 'initial === "G"'
+    solution: |
+      const initial = name[0];
+  - id: js-template-expression
+    prompt: 'Create a constant `label` whose value is `Price: 12 €`. Calculate the total inside the template literal with `qty * price`.'
+    check: test
+    setup: |
+      const qty = 3;
+      const price = 4;
+    tests:
+      - 'label === "Price: 12 €"'
+    solution: |
+      const label = `Price: ${qty * price} €`;

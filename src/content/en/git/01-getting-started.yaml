@@ -1,0 +1,119 @@
+id: git-aloitus
+title: Git basics
+summary: What Git is, creating a repository and checking its status.
+theory: |
+  Git is a version control system. It saves your project's history as snapshots called **commits**. With them you can go back to an old version, see who changed what, and work in parallel with others.
+
+  ### Three areas
+
+  - **Working directory**: the files as they are on your disk.
+  - **Staging area** (the index): the changes marked to go into the next commit.
+  - **Repository**: the saved history, i.e. the commits, kept in the hidden `.git` folder.
+
+  ### Settings
+
+  Before your first commit, tell Git who you are. This is done once per machine:
+
+  ```bash
+  git --version                                  # check that Git is installed
+  git config --global user.name "Ada Lovelace"
+  git config --global user.email "ada@example.com"
+  git config --global init.defaultBranch main    # name of the main branch in new repos
+  git config user.name                           # show a single setting
+  git config --list                              # show all settings
+  ```
+
+  ### Creating a repository
+
+  ```bash
+  cd project
+  git init           # turns the current folder into a Git repository
+  git init new-repo  # creates a new folder with a repository inside
+  ```
+
+  ### Status
+
+  `git status` is the command you'll use most. It tells you which files have changed, which are staged, and which Git isn't tracking yet.
+
+  ```bash
+  git status
+  git status -s   # short format: one line per file
+  ```
+exercises:
+  - type: choice
+    question: What does `git init` do?
+    options:
+      - Creates a new Git repository in the current folder
+      - Downloads a repository from GitHub
+      - Saves the changes to history
+      - Shows the repository's status
+    answer: 0
+    explanation: '`git init` creates a `.git` folder in the current folder, which makes it a repository. Downloading is `git clone`, saving is `git commit` and the status is `git status`.'
+  - type: blank
+    question: Complete the command that sets your name in Git's settings.
+    code: |
+      git config --global user.___ "Ada Lovelace"
+    blanks:
+      - [name]
+    explanation: Your name goes in the setting `user.name` and your email in `user.email`.
+  - type: bug
+    question: The goal is to create a new project and make it a Git repository.
+    code: |
+      mkdir project
+      cd project
+      git start
+      git status
+    bugLine: 3
+    explanation: 'Git has no `git start` command. A repository is created with `git init`.'
+cards:
+  - id: git-init
+    prompt: Initialise a new Git repository in the current folder.
+    check: match
+    solution: git init
+  - id: git-status
+    prompt: Show the repository's status, i.e. which files have changed and which are staged.
+    check: match
+    solution: git status
+  - id: git-config-name
+    prompt: 'Set your name globally to `"Ada Lovelace"`.'
+    check: match
+    solution: git config --global user.name "Ada Lovelace"
+  - id: git-config-email
+    prompt: 'Set your email address globally to `ada@example.com`.'
+    check: match
+    solution: git config --global user.email "ada@example.com"
+    accepted:
+      - git config --global user.email ada@example.com
+  - id: git-init-dir
+    prompt: With one command, create a new folder `project` and initialise a Git repository in it.
+    check: match
+    solution: git init project
+  - id: git-version
+    prompt: Check which version of Git is installed.
+    check: match
+    solution: git --version
+    accepted:
+      - git version
+  - id: git-config-list
+    prompt: List all of Git's settings.
+    check: match
+    solution: git config --list
+    accepted:
+      - git config -l
+  - id: git-config-get-name
+    prompt: Show which user name (`user.name`) is set in Git.
+    check: match
+    solution: git config user.name
+    accepted:
+      - git config --get user.name
+      - git config --global user.name
+  - id: git-status-short
+    prompt: Show the repository's status in the short format, one line per file.
+    check: match
+    solution: git status -s
+    accepted:
+      - git status --short
+  - id: git-default-branch
+    prompt: Set globally that the main branch of new repositories is called `main`.
+    check: match
+    solution: git config --global init.defaultBranch main

@@ -1,0 +1,242 @@
+id: js-luokat
+title: Classes
+summary: Blueprints for objects, constructors and inheritance.
+theory: |
+  A class is a blueprint you can create many similar objects from. Objects are created with `new`.
+
+  ```js
+  class Person {
+    constructor(name, age) {
+      this.name = name;
+      this.age = age;
+    }
+
+    greet() {
+      return `Hi, I'm ${this.name}`;
+    }
+  }
+
+  const ada = new Person("Ada", 36);
+  ada.greet(); // "Hi, I'm Ada"
+  ```
+
+  - `constructor` runs when an object is created and sets up its properties.
+  - `this` refers to the object being created.
+  - Methods are written inside the class without the `function` keyword.
+
+  ### Inheritance
+
+  `extends` creates a class that inherits another class's properties and methods. `super(...)` calls the parent class's constructor.
+
+  ```js
+  class Animal {
+    constructor(name) {
+      this.name = name;
+    }
+    speak() {
+      return "...";
+    }
+  }
+
+  class Dog extends Animal {
+    speak() {
+      return "Woof!";
+    }
+  }
+
+  new Dog("Rex").speak(); // "Woof!"
+  ```
+
+  If a subclass has its own constructor, it must call `super(...)` before using `this`:
+
+  ```js
+  class Student extends Person {
+    constructor(name, age, school) {
+      super(name, age);
+      this.school = school;
+    }
+  }
+  ```
+
+  ### instanceof
+
+  `obj instanceof Class` tells whether an object was created from a class (or one of its subclasses).
+exercises:
+  - type: choice
+    question: Which keyword creates a new object from a class?
+    options: ['`create`', '`new`', '`make`', '`class`']
+    answer: 1
+    explanation: '`new Class(...)` creates an object and runs the class''s constructor.'
+  - type: blank
+    question: Fill in the name of the method that runs when an object is created.
+    code: |
+      class Dog {
+        ___(name) {
+          this.name = name;
+        }
+      }
+    blanks:
+      - [constructor]
+    explanation: The constructor is the method named `constructor`.
+  - type: bug
+    question: '`increment()` crashes with `ReferenceError: value is not defined`.'
+    code: |
+      class Counter {
+        constructor() {
+          this.value = 0;
+        }
+        increment() {
+          value++;
+        }
+      }
+    bugLine: 6
+    explanation: 'Inside a class, refer to the object''s properties through `this`: `this.value++;`'
+cards:
+  - id: js-class-constructor
+    prompt: Create a class `Person` whose constructor stores the parameter `name` in the property `name`.
+    check: test
+    tests:
+      - 'new Person("Ada").name === "Ada"'
+    solution: |
+      class Person {
+        constructor(name) {
+          this.name = name;
+        }
+      }
+  - id: js-class-method
+    prompt: 'Create a class `Person` whose constructor takes a `name` and whose method `greet()` returns the string `"Hi, I''m <name>"`.'
+    check: test
+    tests:
+      - 'new Person("Ada").greet() === "Hi, I''m Ada"'
+      - 'new Person("Linus").greet() === "Hi, I''m Linus"'
+    solution: |
+      class Person {
+        constructor(name) {
+          this.name = name;
+        }
+        greet() {
+          return `Hi, I'm ${this.name}`;
+        }
+      }
+  - id: js-class-new
+    prompt: Create an object `car` from the existing class `Car` with the make `"Volvo"`.
+    check: test
+    setup: |
+      class Car {
+        constructor(make) {
+          this.make = make;
+        }
+      }
+    tests:
+      - 'car instanceof Car && car.make === "Volvo"'
+    solution: |
+      const car = new Car("Volvo");
+  - id: js-class-state
+    prompt: Create a class `Counter` whose `value` starts at zero and whose method `increment()` increases it by one.
+    check: test
+    tests:
+      - '(() => { const c = new Counter(); c.increment(); c.increment(); return c.value === 2; })()'
+      - 'new Counter().value === 0'
+    solution: |
+      class Counter {
+        constructor() {
+          this.value = 0;
+        }
+        increment() {
+          this.value++;
+        }
+      }
+  - id: js-class-extends
+    prompt: 'Create a class `Cat` that extends the existing class `Animal` and whose method `speak()` returns the string `"Meow"`.'
+    check: test
+    setup: |
+      class Animal {
+        constructor(name) {
+          this.name = name;
+        }
+        speak() {
+          return "...";
+        }
+      }
+    tests:
+      - 'new Cat("Tom") instanceof Animal'
+      - 'new Cat("Tom").speak() === "Meow"'
+      - 'new Cat("Tom").name === "Tom"'
+    solution: |
+      class Cat extends Animal {
+        speak() {
+          return "Meow";
+        }
+      }
+  - id: js-class-super
+    prompt: 'Create a class `Student` that extends the existing class `Person`. Its constructor takes `name` and `school`, passes the name to the parent class and stores the school in the property `school`.'
+    check: test
+    setup: |
+      class Person {
+        constructor(name) {
+          this.name = name;
+        }
+      }
+    tests:
+      - '(() => { const s = new Student("Ada", "MIT"); return s instanceof Person && s.name === "Ada" && s.school === "MIT"; })()'
+    hint: In the constructor, call `super(name);` first and only then set `this.school`.
+    solution: |
+      class Student extends Person {
+        constructor(name, school) {
+          super(name);
+          this.school = school;
+        }
+      }
+  - id: js-class-default-param
+    prompt: Create a class `Account` whose constructor takes a parameter `balance` (default `0`) and stores it in the property `balance`.
+    check: test
+    tests:
+      - 'new Account().balance === 0'
+      - 'new Account(50).balance === 50'
+    solution: |
+      class Account {
+        constructor(balance = 0) {
+          this.balance = balance;
+        }
+      }
+  - id: js-class-method-param
+    prompt: Create a class `Account` whose `balance` starts at zero and whose method `deposit(amount)` increases the balance by the amount.
+    check: test
+    tests:
+      - '(() => { const a = new Account(); a.deposit(20); a.deposit(5); return a.balance === 25; })()'
+    solution: |
+      class Account {
+        constructor() {
+          this.balance = 0;
+        }
+        deposit(amount) {
+          this.balance += amount;
+        }
+      }
+  - id: js-class-two-instances
+    prompt: Create two objects from the existing class `Point`, `a` (x = 1, y = 2) and `b` (x = 3, y = 4).
+    check: test
+    setup: |
+      class Point {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+      }
+    tests:
+      - 'a instanceof Point && a.x === 1 && a.y === 2'
+      - 'b instanceof Point && b.x === 3 && b.y === 4'
+    solution: |
+      const a = new Point(1, 2);
+      const b = new Point(3, 4);
+  - id: js-instanceof
+    prompt: Store in a constant `isAnimal` whether `pet` is an object of the class `Animal`. Use `instanceof`.
+    check: test
+    setup: |
+      class Animal {}
+      class Dog extends Animal {}
+      const pet = new Dog();
+    tests:
+      - 'isAnimal === true'
+    solution: |
+      const isAnimal = pet instanceof Animal;

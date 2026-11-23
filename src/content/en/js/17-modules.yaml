@@ -1,0 +1,132 @@
+id: js-moduulit
+title: Modules
+summary: Splitting code into files with import and export.
+theory: |
+  A larger program is split into files, called **modules**. A module decides with `export` what it exposes to others, and others bring it in with `import`.
+
+  ### Named exports
+
+  A file can have many named exports. When importing, the names go in curly braces and must match:
+
+  ```js
+  // calculator.js
+  export const PI = 3.14;
+  export function sum(a, b) {
+    return a + b;
+  }
+
+  // main.js
+  import { sum, PI } from "./calculator.js";
+  ```
+
+  ### Default export
+
+  A file can have **at most one** default export (`export default`). It's imported without curly braces, and you can give it any name:
+
+  ```js
+  // greeting.js
+  export default function greet(name) {
+    return `Hi ${name}`;
+  }
+
+  // main.js
+  import greet from "./greeting.js";
+  ```
+
+  ### Other forms
+
+  ```js
+  import * as utils from "./utils.js";            // all exports in the utils namespace
+  import { sum as plus } from "./calculator.js";  // renaming
+  import React, { useState } from "react";        // default and named together
+  ```
+
+  Packages (for example ones installed from npm) are imported by name only, like `"react"`. Your own files are imported with a relative path starting with `./` or `../`.
+
+  In the browser, modules need a `<script type="module">` tag. Node and Bun support modules directly.
+exercises:
+  - type: choice
+    question: How many default exports (`export default`) can one file have?
+    options: [None, At most one, Unlimited, Exactly two]
+    answer: 1
+    explanation: A file can have at most one default export, but any number of named exports.
+  - type: blank
+    question: Fill in the blank so the function is a named export.
+    code: |
+      ___ function sum(a, b) {
+        return a + b;
+      }
+    blanks:
+      - [export]
+    explanation: A named export is made by writing `export` in front of the declaration.
+  - type: bug
+    question: '`sum` is `undefined` after the import.'
+    code: |
+      // calculator.js
+      export default function sum(a, b) {
+        return a + b;
+      }
+
+      // main.js
+      import { sum } from "./calculator.js";
+    bugLine: 7
+    explanation: 'A default export is imported without curly braces: `import sum from "./calculator.js";`. Curly braces look for a named export that doesn''t exist.'
+cards:
+  - id: js-import-named
+    prompt: Import the named export `sum` from the file `./calculator.js`.
+    check: match
+    solution: |
+      import { sum } from "./calculator.js";
+  - id: js-import-default
+    prompt: Import the default export of the package `react` as `React`.
+    check: match
+    solution: |
+      import React from "react";
+  - id: js-import-multiple
+    prompt: Import the named exports `useState` and `useEffect` from the package `react`.
+    check: match
+    solution: |
+      import { useState, useEffect } from "react";
+    accepted:
+      - 'import { useEffect, useState } from "react";'
+  - id: js-export-const
+    prompt: Export a constant `PI` with the value `3.14` as a named export.
+    check: match
+    solution: |
+      export const PI = 3.14;
+  - id: js-export-default
+    prompt: The function `greet` is already defined. Export it as the file's default export.
+    check: match
+    solution: |
+      export default greet;
+  - id: js-import-namespace
+    prompt: Import all exports of the file `./utils.js` into the namespace `utils`.
+    check: match
+    solution: |
+      import * as utils from "./utils.js";
+  - id: js-import-rename
+    prompt: Import the named export `sum` from `./calculator.js` so that it's called `plus` in your file.
+    check: match
+    solution: |
+      import { sum as plus } from "./calculator.js";
+  - id: js-import-default-and-named
+    prompt: On one line, import the default export of the package `react` as `React` and the named export `useState`.
+    check: match
+    solution: |
+      import React, { useState } from "react";
+  - id: js-export-function
+    prompt: Write a function `double(x)` that returns the number doubled, as a named export.
+    check: match
+    solution: |
+      export function double(x) {
+        return x * 2;
+      }
+    accepted:
+      - 'export const double = (x) => x * 2;'
+      - 'export const double = x => x * 2;'
+      - 'export function double(x) { return 2 * x; }'
+  - id: js-import-parent-dir
+    prompt: Import the named export `api` from the file `api.js`, which is in the folder `services` one level up.
+    check: match
+    solution: |
+      import { api } from "../services/api.js";

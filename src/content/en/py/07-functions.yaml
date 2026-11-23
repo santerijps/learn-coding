@@ -1,0 +1,158 @@
+id: py-funktiot
+title: Functions and modules
+summary: def, return, default values, keyword arguments and import.
+theory: |
+  A function is defined with `def`. The body is indented, and a value is returned with `return`.
+
+  ```python
+  def add(a, b):
+      return a + b
+
+  result = add(2, 3)   # 5
+  ```
+
+  A function without `return` returns `None`.
+
+  ### Default values and keyword arguments
+
+  ```python
+  def greet(name, greeting="Hi"):
+      return f"{greeting} {name}!"
+
+  greet("Ada")                    # "Hi Ada!"
+  greet("Ada", greeting="Hello")  # "Hello Ada!"
+  ```
+
+  ### Several return values
+
+  A function can return a tuple, which the caller unpacks into variables:
+
+  ```python
+  def min_max(numbers):
+      return min(numbers), max(numbers)
+
+  smallest, largest = min_max([3, 9, 1])
+  ```
+
+  ### Modules
+
+  Python's standard library comes with lots of ready-made modules. Bring them in with `import`:
+
+  ```python
+  import math
+  math.sqrt(16)            # 4.0
+
+  from math import pi      # import a single name
+  from random import randint
+  randint(1, 6)            # a random integer from 1 to 6
+  ```
+exercises:
+  - type: choice
+    question: What does a function return if it has no `return` statement?
+    options: ['`None`', '`0`', '`""`', An error]
+    answer: 0
+    explanation: In Python, a function that returns nothing returns `None`.
+  - type: blank
+    question: Complete the function definition.
+    code: |
+      ___ double(x):
+          return x * 2
+    blanks:
+      - [def]
+    explanation: A function is defined with the keyword `def`.
+  - type: bug
+    question: '`add(2, 3)` returns `None` even though it should return `5`.'
+    code: |
+      def add(a, b):
+          result = a + b
+
+      print(add(2, 3))
+    bugLine: 2
+    explanation: 'The result is calculated but never returned. Write `return a + b`.'
+cards:
+  - id: py-def-return
+    prompt: 'Write a function `greet()` that returns the string `"Hi!"`.'
+    check: test
+    tests:
+      - 'greet() == "Hi!"'
+    solution: |
+      def greet():
+          return "Hi!"
+  - id: py-def-param
+    prompt: Write a function `square(x)` that returns the square of a number.
+    check: test
+    tests:
+      - 'square(3) == 9'
+      - 'square(-2) == 4'
+    solution: |
+      def square(x):
+          return x * x
+  - id: py-def-two-params
+    prompt: Write a function `add(a, b)` that returns the sum of two numbers.
+    check: test
+    tests:
+      - 'add(2, 3) == 5'
+    solution: |
+      def add(a, b):
+          return a + b
+  - id: py-def-bool
+    prompt: Write a function `is_adult(age)` that returns `True` if the age is at least 18, and `False` otherwise.
+    check: test
+    tests:
+      - 'is_adult(18) is True'
+      - 'is_adult(17) is False'
+    solution: |
+      def is_adult(age):
+          return age >= 18
+  - id: py-default-param
+    prompt: 'Write a function `greet(name="guest")` that returns the string `f"Hi {name}!"`.'
+    check: test
+    tests:
+      - 'greet("Ada") == "Hi Ada!"'
+      - 'greet() == "Hi guest!"'
+    solution: |
+      def greet(name="guest"):
+          return f"Hi {name}!"
+  - id: py-keyword-arg
+    prompt: Call the existing function `create_user` with `name` set to `"Ada"` and `admin` set to `True` as keyword arguments. Store the result in a variable `user`.
+    check: test
+    setup: |
+      def create_user(name, age=None, admin=False):
+          return {"name": name, "age": age, "admin": admin}
+    tests:
+      - 'user == {"name": "Ada", "age": None, "admin": True}'
+    solution: |
+      user = create_user(name="Ada", admin=True)
+  - id: py-return-tuple
+    prompt: Write a function `min_max(numbers)` that returns the smallest and largest number of a list as a tuple.
+    check: test
+    tests:
+      - 'min_max([3, 9, 1]) == (1, 9)'
+    solution: |
+      def min_max(numbers):
+          return min(numbers), max(numbers)
+  - id: py-early-return
+    prompt: Write a function `divide(a, b)` that returns `None` if `b` is zero, and the quotient `a / b` otherwise.
+    check: test
+    tests:
+      - 'divide(6, 2) == 3'
+      - 'divide(1, 0) is None'
+    solution: |
+      def divide(a, b):
+          if b == 0:
+              return None
+          return a / b
+  - id: py-import-math
+    prompt: Import the `math` module and calculate the square root of `16` into a variable `root` with `math.sqrt`.
+    check: test
+    tests:
+      - 'root == 4.0'
+      - 'math.sqrt(4) == 2'
+    solution: |
+      import math
+      root = math.sqrt(16)
+  - id: py-from-import
+    prompt: Import only the function `randint` from the module `random`.
+    check: match
+    solution: |
+      from random import randint

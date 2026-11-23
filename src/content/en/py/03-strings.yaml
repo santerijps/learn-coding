@@ -1,0 +1,161 @@
+id: py-merkkijonot
+title: Strings
+summary: f-strings, slicing and the most useful methods.
+theory: |
+  You can write a string in double quotes `"..."` or single quotes `'...'`. They work exactly the same.
+
+  ### f-strings
+
+  Put an `f` in front of a string and you can embed values and expressions in curly braces. This is the most common way to build text:
+
+  ```python
+  name = "Ada"
+  age = 36
+  message = f"Hi {name}, you are {age} years old."
+  total = f"Total {3 * 4} €"
+  ```
+
+  ### Length, indexes and slices
+
+  ```python
+  word = "Python"
+  len(word)     # 6
+  word[0]       # "P", indexes start at zero
+  word[-1]      # "n", the last character
+  word[0:3]     # "Pyt", characters 0–2
+  word[2:]      # "thon", from index 2 to the end
+  ```
+
+  ### Methods
+
+  Methods return a new string; they don't change the original.
+
+  ```python
+  "help".upper()                  # "HELP"
+  "HI".lower()                    # "hi"
+  "  hi  ".strip()                # "hi"
+  "a-b-c".replace("-", "+")       # "a+b+c"
+  "Python".startswith("Py")       # True
+  "code" in "I love clean code"   # True
+  ```
+
+  ### Splitting and joining
+
+  ```python
+  "learn code fast".split()    # ["learn", "code", "fast"]
+  "a,b,c".split(",")           # ["a", "b", "c"]
+  "-".join(["a", "b", "c"])    # "a-b-c"
+  ```
+exercises:
+  - type: choice
+    question: What does `"Python"[-1]` return?
+    options: ['`"n"`', '`"P"`', '`"o"`', An error]
+    answer: 0
+    explanation: A negative index counts from the end, so `-1` is the last character.
+  - type: blank
+    question: Fill in the blank so that `message` contains the value of the variable `name`.
+    code: |
+      message = ___"Hi {name}!"
+    blanks:
+      - [f]
+    explanation: 'Only with the `f` prefix are the curly braces replaced with the value.'
+  - type: bug
+    question: The program should print `Hi Ada!`, but it prints `Hi {name}!`.
+    code: |
+      name = "Ada"
+      greeting = "Hi {name}!"
+      print(greeting)
+    bugLine: 2
+    explanation: 'The string is missing the `f` prefix: `greeting = f"Hi {name}!"`'
+cards:
+  - id: py-fstring
+    prompt: 'Create a variable `greeting` whose value is `Hi Ada!`. Build it with an f-string from the variable `name`.'
+    check: test
+    setup: |
+      name = "Ada"
+    tests:
+      - 'greeting == "Hi Ada!"'
+    solution: |
+      greeting = f"Hi {name}!"
+  - id: py-fstring-expression
+    prompt: 'Create a variable `label` whose value is `Price: 12 €`. Calculate the total inside the f-string with `qty * price`.'
+    check: test
+    setup: |
+      qty = 3
+      price = 4
+    tests:
+      - 'label == "Price: 12 €"'
+    solution: |
+      label = f"Price: {qty * price} €"
+  - id: py-len
+    prompt: Store the length of the string `word` in a variable `length`.
+    check: test
+    setup: |
+      word = "programming"
+    tests:
+      - 'length == 11'
+    solution: |
+      length = len(word)
+  - id: py-upper
+    prompt: Convert the string `shout` to upper case in a variable `loud`.
+    check: test
+    setup: |
+      shout = "help"
+    tests:
+      - 'loud == "HELP"'
+    solution: |
+      loud = shout.upper()
+  - id: py-strip
+    prompt: Remove the spaces from the start and end of the string `user_input` into a variable `clean`.
+    check: test
+    setup: |
+      user_input = "  hi  "
+    tests:
+      - 'clean == "hi"'
+    solution: |
+      clean = user_input.strip()
+  - id: py-in-string
+    prompt: Check whether `sentence` contains the text `"code"` and store the result in a variable `found`.
+    check: test
+    setup: |
+      sentence = "I love clean code"
+    tests:
+      - 'found is True'
+    solution: |
+      found = "code" in sentence
+  - id: py-slice
+    prompt: Store the first three characters of the string `text` in a variable `start`.
+    check: test
+    setup: |
+      text = "Python"
+    tests:
+      - 'start == "Pyt"'
+    solution: |
+      start = text[:3]
+  - id: py-last-char
+    prompt: Store the last character of the string `word` in a variable `last`.
+    check: test
+    setup: |
+      word = "code"
+    tests:
+      - 'last == "e"'
+    solution: |
+      last = word[-1]
+  - id: py-split
+    prompt: Split the string `sentence` into a list of words called `words`.
+    check: test
+    setup: |
+      sentence = "learn code fast"
+    tests:
+      - 'words == ["learn", "code", "fast"]'
+    solution: |
+      words = sentence.split()
+  - id: py-join
+    prompt: 'Join the elements of the list `parts` into a string `path` with `"/"` as the separator.'
+    check: test
+    setup: |
+      parts = ["home", "ada", "code"]
+    tests:
+      - 'path == "home/ada/code"'
+    solution: |
+      path = "/".join(parts)

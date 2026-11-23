@@ -1,0 +1,116 @@
+id: git-commit
+title: Saving changes
+summary: git add and git commit, i.e. taking snapshots.
+theory: |
+  Changes are saved to history in two steps:
+
+  1. `git add` moves changes to the **staging area**. This is how you choose what goes into the next commit.
+  2. `git commit` saves the staging area's contents as a new commit.
+
+  ```bash
+  git add index.html          # one file
+  git add index.html app.js   # several files at once
+  git add src/                # a whole folder
+  git add *.js                # all .js files in the current folder
+  git add .                   # all changes in the current folder
+  git commit -m "Add home page"
+  ```
+
+  Without the `-m` option, Git opens a text editor for the message.
+
+  ### A shortcut
+
+  `git commit -a` stages all **already tracked** modified files and commits in one go. It doesn't add new files.
+
+  ```bash
+  git commit -am "Fix typo"
+  ```
+
+  ### A good commit message
+
+  - Say briefly what the change does: "Add login form", not "changes".
+  - Use the imperative mood and keep the first line to about 50 characters.
+  - Make small commits that each focus on one thing.
+
+  ### Removing and moving files
+
+  ```bash
+  git rm old.txt           # deletes from disk and stages the deletion
+  git mv old.js new.js     # renames
+  ```
+exercises:
+  - type: choice
+    question: What does `git add` do?
+    options:
+      - Moves changes to the staging area for the next commit
+      - Makes a commit
+      - Sends changes to GitHub
+      - Adds a new branch
+    answer: 0
+    explanation: '`git add` stages changes. They''re only saved to history by `git commit`.'
+  - type: blank
+    question: Complete the command that commits with the given message.
+    code: |
+      git commit ___ "Add home page"
+    blanks:
+      - ['-m']
+    explanation: The `-m` option gives the commit message directly on the command line.
+  - type: bug
+    question: The commit fails. Which line has the bug?
+    code: |
+      git add index.html
+      git commit "Add home page"
+    bugLine: 2
+    explanation: 'The message is missing the `-m` option in front, so Git treats the text as a file name. Write `git commit -m "Add home page"`.'
+cards:
+  - id: git-add-file
+    prompt: Stage the file `index.html`.
+    check: match
+    solution: git add index.html
+  - id: git-add-all
+    prompt: Stage all changes in the current folder.
+    check: match
+    solution: git add .
+    accepted:
+      - git add -A
+      - git add --all
+  - id: git-commit-message
+    prompt: 'Commit with the message `"Add home page"`.'
+    check: match
+    solution: git commit -m "Add home page"
+  - id: git-commit-all
+    prompt: 'Stage all tracked modified files and commit them in the same command with the message `"Fix typo"`.'
+    check: match
+    solution: git commit -am "Fix typo"
+    accepted:
+      - git commit -a -m "Fix typo"
+  - id: git-rm
+    prompt: Delete the file `old.txt` both from disk and from Git's tracking.
+    check: match
+    solution: git rm old.txt
+  - id: git-add-two-files
+    prompt: Stage the files `index.html` and `style.css` in the same command.
+    check: match
+    solution: git add index.html style.css
+    accepted:
+      - git add style.css index.html
+  - id: git-add-folder
+    prompt: Stage the whole folder `src`.
+    check: match
+    solution: git add src
+    accepted:
+      - git add src/
+  - id: git-add-pattern
+    prompt: Stage all `.js` files in the current folder.
+    check: match
+    solution: git add *.js
+    accepted:
+      - git add "*.js"
+  - id: git-commit-editor
+    prompt: Commit so that Git opens a text editor for writing the message.
+    check: match
+    solution: git commit
+  - id: git-mv
+    prompt: Rename the file `old.js` to `new.js` with a Git command.
+    check: match
+    solution: git mv old.js new.js

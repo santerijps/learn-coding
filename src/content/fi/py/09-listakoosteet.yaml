@@ -1,0 +1,151 @@
+id: py-listakoosteet
+title: Listakoosteet ja lambdat
+summary: Listojen muuntaminen ja suodattaminen yhdellä rivillä.
+theory: |
+  **Listakooste** (list comprehension) luo uuden listan toisesta kokoelmasta. Se on Pythonin tapa tehdä se, mihin JavaScriptissä käytetään `map`- ja `filter`-metodeja.
+
+  ```python
+  luvut = [1, 2, 3, 4, 5]
+
+  tuplat = [x * 2 for x in luvut]              # [2, 4, 6, 8, 10]
+  parilliset = [x for x in luvut if x % 2 == 0]  # [2, 4]
+  nelio = [x * x for x in luvut if x % 2 == 1]   # [1, 9, 25]
+  ```
+
+  Muoto on `[lauseke for alkio in kokoelma if ehto]`, jossa `if`-osa on vapaaehtoinen.
+
+  ### Sanakirjakooste
+
+  ```python
+  nimet = ["Ada", "Linus"]
+  pituudet = {nimi: len(nimi) for nimi in nimet}   # {"Ada": 3, "Linus": 5}
+  ```
+
+  ### Hyödyllisiä funktioita
+
+  ```python
+  sum(luvut), min(luvut), max(luvut)
+  any(x < 0 for x in luvut)     # onko yksikin negatiivinen?
+  all(x > 0 for x in luvut)     # ovatko kaikki positiivisia?
+  ```
+
+  ### lambda
+
+  `lambda` on lyhyt nimetön funktio. Sitä käytetään usein `sorted`-funktion `key`-argumenttina:
+
+  ```python
+  kayttajat = [{"nimi": "Grace", "ika": 45}, {"nimi": "Ada", "ika": 36}]
+  sorted(kayttajat, key=lambda k: k["ika"])          # nuorin ensin
+  sorted(nimet, key=len, reverse=True)               # pisin nimi ensin
+  ```
+exercises:
+  - type: choice
+    question: Mitä `[x * 2 for x in [1, 2, 3]]` tuottaa?
+    options: ['`[2, 4, 6]`', '`[1, 2, 3, 1, 2, 3]`', '`12`', '`[2]`']
+    answer: 0
+    explanation: Listakooste laskee lausekkeen `x * 2` jokaiselle alkiolle.
+  - type: blank
+    question: Täydennä listakooste, joka pitää vain parilliset luvut.
+    code: |
+      parilliset = [x for x in luvut ___ x % 2 == 0]
+    blanks:
+      - [if]
+    explanation: Listakoosteen suodatusehto kirjoitetaan `if`-sanan perään.
+  - type: bug
+    question: Listan pitäisi järjestyä käyttäjien iän mukaan.
+    code: |
+      kayttajat = [{"nimi": "Grace", "ika": 45}, {"nimi": "Ada", "ika": 36}]
+      jarjestetty = sorted(kayttajat, key="ika")
+      print(jarjestetty)
+    bugLine: 2
+    explanation: '`key`-argumentin täytyy olla funktio, ei merkkijono: `key=lambda k: k["ika"]`.'
+cards:
+  - id: py-comprehension-map
+    prompt: Luo listakoosteella lista `tuplat`, jossa jokainen listan `luvut` alkio on kerrottu kahdella.
+    check: test
+    setup: |
+      luvut = [1, 2, 3]
+    tests:
+      - 'tuplat == [2, 4, 6]'
+    solution: |
+      tuplat = [x * 2 for x in luvut]
+  - id: py-comprehension-filter
+    prompt: Luo listakoosteella lista `parilliset`, jossa ovat vain listan `luvut` parilliset luvut.
+    check: test
+    setup: |
+      luvut = [1, 2, 3, 4, 5, 6]
+    tests:
+      - 'parilliset == [2, 4, 6]'
+    solution: |
+      parilliset = [x for x in luvut if x % 2 == 0]
+  - id: py-comprehension-both
+    prompt: Luo lista `tulos`, jossa ovat listan `luvut` parittomat luvut toiseen potenssiin korotettuina.
+    check: test
+    setup: |
+      luvut = [1, 2, 3, 4, 5]
+    tests:
+      - 'tulos == [1, 9, 25]'
+    solution: |
+      tulos = [x * x for x in luvut if x % 2 == 1]
+  - id: py-comprehension-strings
+    prompt: Luo lista `isot`, jossa listan `nimet` nimet ovat isoilla kirjaimilla.
+    check: test
+    setup: |
+      nimet = ["ada", "linus"]
+    tests:
+      - 'isot == ["ADA", "LINUS"]'
+    solution: |
+      isot = [nimi.upper() for nimi in nimet]
+  - id: py-dict-comprehension
+    prompt: Luo sanakirjakoosteella sanakirja `pituudet`, jossa listan `nimet` jokaisen nimen arvona on sen pituus.
+    check: test
+    setup: |
+      nimet = ["Ada", "Linus"]
+    tests:
+      - 'pituudet == {"Ada": 3, "Linus": 5}'
+    solution: |
+      pituudet = {nimi: len(nimi) for nimi in nimet}
+  - id: py-any
+    prompt: Tarkista `any`-funktiolla, onko listassa `luvut` yksikin negatiivinen luku, ja tallenna tulos muuttujaan `on_negatiivisia`.
+    check: test
+    setup: |
+      luvut = [3, -1, 4]
+    tests:
+      - 'on_negatiivisia is True'
+    solution: |
+      on_negatiivisia = any(x < 0 for x in luvut)
+  - id: py-all
+    prompt: Tarkista `all`-funktiolla, ovatko kaikki listan `pisteet` luvut vähintään 50, ja tallenna tulos muuttujaan `kaikki_lapi`.
+    check: test
+    setup: |
+      pisteet = [55, 70, 49]
+    tests:
+      - 'kaikki_lapi is False'
+    solution: |
+      kaikki_lapi = all(p >= 50 for p in pisteet)
+  - id: py-sorted-key
+    prompt: 'Järjestä lista `kayttajat` iän (`"ika"`) mukaan nuorimmasta vanhimpaan uuteen listaan `jarjestetty`.'
+    check: test
+    setup: |
+      kayttajat = [{"nimi": "Grace", "ika": 45}, {"nimi": "Ada", "ika": 36}]
+    tests:
+      - '[k["nimi"] for k in jarjestetty] == ["Ada", "Grace"]'
+    solution: |
+      jarjestetty = sorted(kayttajat, key=lambda k: k["ika"])
+  - id: py-sorted-reverse
+    prompt: Järjestä lista `nimet` pituuden mukaan pisimmästä lyhimpään uuteen listaan `jarjestetty`.
+    check: test
+    setup: |
+      nimet = ["Ada", "Grace", "Linus", "Al"]
+    tests:
+      - '[len(n) for n in jarjestetty] == [5, 5, 3, 2]'
+    solution: |
+      jarjestetty = sorted(nimet, key=len, reverse=True)
+  - id: py-lambda
+    prompt: Luo lambda-funktio `tuplaa`, joka palauttaa luvun kaksinkertaisena.
+    check: test
+    tests:
+      - 'tuplaa(4) == 8'
+      - 'tuplaa.__name__ == "<lambda>"'
+    solution: |
+      tuplaa = lambda x: x * 2

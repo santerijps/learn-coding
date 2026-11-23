@@ -1,0 +1,148 @@
+id: js-muuttujat
+title: Variables
+summary: Storing values under a name with const and let.
+theory: |
+  A variable is a name you store a value under. In JavaScript you declare one with `const` or `let`.
+
+  ```js
+  const name = "Ada";
+  let score = 0;
+
+  score = score + 10;
+  console.log(name, score); // Ada 10
+  ```
+
+  ### const or let?
+
+  - `const` means the variable can't be assigned a new value later. **Use it by default.**
+  - `let` allows assigning a new value. Use it when the value really changes, like a counter.
+  - `var` is the old way you'll see in older code. Don't use it in new code.
+
+  ```js
+  const year = 2026;
+  year = 2027; // TypeError: Assignment to constant variable.
+  ```
+
+  ### Naming
+
+  Names are usually written in **camelCase**: `userName`, `maxScore`. A name can't start with a digit or contain spaces. Upper and lower case matter: `name` and `Name` are different variables.
+
+  A good name says what the value means: `price` is better than `x`.
+exercises:
+  - type: choice
+    question: Which one should you use by default when declaring a new variable?
+    options:
+      - '`const`'
+      - '`let`'
+      - '`var`'
+      - It doesn't matter
+    answer: 0
+    explanation: '`const` prevents accidental reassignment. Switch to `let` only when the value really has to change.'
+  - type: blank
+    question: Fill in the blank so the score can be increased.
+    code: |
+      ___ score = 0;
+      score = score + 10;
+    blanks:
+      - [let]
+    explanation: '`score` is assigned a new value later, so it must be declared with `let`.'
+  - type: bug
+    question: The program crashes with an error. Where is the bug?
+    code: |
+      const age = 30;
+      console.log(age);
+      age = 31;
+      console.log(age);
+    bugLine: 3
+    explanation: 'A `const` variable can''t be assigned a new value. If the age changes, declare it with `let` on line 1.'
+cards:
+  - id: js-const-string
+    prompt: Create a constant `name` whose value is the string `"Ada"`.
+    check: test
+    tests:
+      - 'name === "Ada"'
+      - '__isConst(() => { name = "x"; })'
+    solution: |
+      const name = "Ada";
+  - id: js-let-counter
+    prompt: Create a variable `counter` with the value `0` that can be changed later.
+    check: test
+    tests:
+      - 'counter === 0'
+      - '!__isConst(() => { counter = counter; })'
+    solution: |
+      let counter = 0;
+  - id: js-let-update
+    prompt: Create a variable `score` with the value `10`, then increase it by five.
+    check: test
+    tests:
+      - 'score === 15'
+    solution: |
+      let score = 10;
+      score = score + 5;
+  - id: js-const-calc
+    prompt: Create constants `width` (4) and `height` (3), and a constant `area` that is their product.
+    check: test
+    tests:
+      - 'width === 4 && height === 3'
+      - 'area === 12'
+    solution: |
+      const width = 4;
+      const height = 3;
+      const area = width * height;
+  - id: js-swap-temp
+    prompt: Swap the values of the variables `a` and `b` using a temporary variable.
+    check: test
+    setup: |
+      let a = 1;
+      let b = 2;
+    tests:
+      - 'a === 2 && b === 1'
+    hint: Store the value of `a` in a temporary variable first, e.g. `const temp = a;`.
+    solution: |
+      const temp = a;
+      a = b;
+      b = temp;
+  - id: js-const-number
+    prompt: Create a constant `year` whose value is the number `2026`.
+    check: test
+    tests:
+      - 'year === 2026'
+      - '__isConst(() => { year = 1; })'
+    solution: |
+      const year = 2026;
+  - id: js-let-decrease
+    prompt: Create a variable `lives` with the value `3`, then decrease it by one.
+    check: test
+    tests:
+      - 'lives === 2'
+    solution: |
+      let lives = 3;
+      lives = lives - 1;
+  - id: js-const-from-variable
+    prompt: Create a constant `double` whose value is the variable `number` multiplied by two.
+    check: test
+    setup: |
+      const number = 21;
+    tests:
+      - 'double === 42'
+    solution: |
+      const double = number * 2;
+  - id: js-let-reassign-string
+    prompt: 'Create a variable `status` with the value `"loading"`, then change its value to `"done"`.'
+    check: test
+    tests:
+      - 'status === "done"'
+      - '!__isConst(() => { status = status; })'
+    solution: |
+      let status = "loading";
+      status = "done";
+  - id: js-log-variable
+    prompt: 'Create a constant `message` with the value `"Hi"` and print it to the console.'
+    check: test
+    tests:
+      - 'message === "Hi"'
+      - '__logs[0] === "Hi"'
+    solution: |
+      const message = "Hi";
+      console.log(message);

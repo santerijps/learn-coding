@@ -1,0 +1,211 @@
+id: py-luokat
+title: Luokat
+summary: Olioiden pohjapiirrokset, __init__, self ja periytyminen.
+theory: |
+  Luokka on pohjapiirros, josta luodaan olioita. Olio luodaan kutsumalla luokkaa kuin funktiota.
+
+  ```python
+  class Henkilo:
+      def __init__(self, nimi, ika):
+          self.nimi = nimi
+          self.ika = ika
+
+      def tervehdi(self):
+          return f"Hei, olen {self.nimi}"
+
+  ada = Henkilo("Ada", 36)
+  ada.tervehdi()    # "Hei, olen Ada"
+  ada.ika += 1
+  ```
+
+  - `__init__` ajetaan, kun olio luodaan, ja se alustaa olion ominaisuudet.
+  - `self` viittaa olioon itseensä. Se on jokaisen metodin ensimmäinen parametri, mutta kutsuessa sitä ei anneta.
+
+  ### Periytyminen
+
+  ```python
+  class Elain:
+      def __init__(self, nimi):
+          self.nimi = nimi
+
+      def aantele(self):
+          return "..."
+
+  class Koira(Elain):
+      def aantele(self):
+          return "Hau!"
+
+  class Opiskelija(Henkilo):
+      def __init__(self, nimi, ika, koulu):
+          super().__init__(nimi, ika)
+          self.koulu = koulu
+  ```
+
+  `super()` kutsuu yliluokan metodia. `isinstance(olio, Luokka)` kertoo, onko olio luokan (tai sen aliluokan) olio.
+
+  ### __str__
+
+  Metodi `__str__` määrää, miltä olio näyttää tulostettuna:
+
+  ```python
+  class Piste:
+      def __init__(self, x, y):
+          self.x, self.y = x, y
+
+      def __str__(self):
+          return f"({self.x}, {self.y})"
+
+  print(Piste(1, 2))   # (1, 2)
+  ```
+exercises:
+  - type: choice
+    question: Mikä metodi ajetaan, kun luokasta luodaan uusi olio?
+    options: ['`__init__`', '`__str__`', '`constructor`', '`new`']
+    answer: 0
+    explanation: '`__init__` alustaa uuden olion. (JavaScriptissä vastaava on `constructor`.)'
+  - type: blank
+    question: Täydennä metodin ensimmäinen parametri.
+    code: |
+      class Koira:
+          def __init__(___, nimi):
+              self.nimi = nimi
+    blanks:
+      - [self]
+    explanation: Jokaisen metodin ensimmäinen parametri on olio itse, ja sen nimeksi kirjoitetaan sopimuksen mukaan `self`.
+  - type: bug
+    question: '`kasvata()` kaatuu virheeseen `NameError: name ''arvo'' is not defined`.'
+    code: |
+      class Laskuri:
+          def __init__(self):
+              self.arvo = 0
+
+          def kasvata(self):
+              arvo += 1
+    bugLine: 6
+    explanation: 'Olion ominaisuuksiin viitataan `self`-viittauksen kautta: `self.arvo += 1`.'
+cards:
+  - id: py-class-init
+    prompt: Luo luokka `Henkilo`, jonka `__init__` tallentaa parametrin `nimi` ominaisuuteen `nimi`.
+    check: test
+    tests:
+      - 'Henkilo("Ada").nimi == "Ada"'
+    solution: |
+      class Henkilo:
+          def __init__(self, nimi):
+              self.nimi = nimi
+  - id: py-class-method
+    prompt: 'Luo luokka `Henkilo`, joka saa parametrin `nimi` ja jonka metodi `tervehdi()` palauttaa merkkijonon `"Hei, olen <nimi>"`.'
+    check: test
+    tests:
+      - 'Henkilo("Ada").tervehdi() == "Hei, olen Ada"'
+    solution: |
+      class Henkilo:
+          def __init__(self, nimi):
+              self.nimi = nimi
+
+          def tervehdi(self):
+              return f"Hei, olen {self.nimi}"
+  - id: py-class-new
+    prompt: Luo valmiista luokasta `Auto` olio `auto`, jonka merkki on `"Volvo"`.
+    check: test
+    setup: |
+      class Auto:
+          def __init__(self, merkki):
+              self.merkki = merkki
+    tests:
+      - 'isinstance(auto, Auto) and auto.merkki == "Volvo"'
+    solution: |
+      auto = Auto("Volvo")
+  - id: py-class-state
+    prompt: Luo luokka `Laskuri`, jonka ominaisuus `arvo` alkaa nollasta ja jonka metodi `kasvata()` kasvattaa arvoa yhdellä.
+    check: test
+    tests:
+      - 'Laskuri().arvo == 0'
+      - '(lambda l: (l.kasvata(), l.kasvata(), l.arvo)[-1])(Laskuri()) == 2'
+    solution: |
+      class Laskuri:
+          def __init__(self):
+              self.arvo = 0
+
+          def kasvata(self):
+              self.arvo += 1
+  - id: py-class-default
+    prompt: Luo luokka `Tili`, jonka `__init__` ottaa parametrin `saldo` (oletusarvo `0`) ja tallentaa sen ominaisuuteen `saldo`.
+    check: test
+    tests:
+      - 'Tili().saldo == 0 and Tili(50).saldo == 50'
+    solution: |
+      class Tili:
+          def __init__(self, saldo=0):
+              self.saldo = saldo
+  - id: py-class-method-param
+    prompt: Luo luokka `Tili`, jonka `saldo` alkaa nollasta ja jonka metodi `talleta(summa)` kasvattaa saldoa.
+    check: test
+    tests:
+      - '(lambda t: (t.talleta(20), t.talleta(5), t.saldo)[-1])(Tili()) == 25'
+    solution: |
+      class Tili:
+          def __init__(self):
+              self.saldo = 0
+
+          def talleta(self, summa):
+              self.saldo += summa
+  - id: py-inherit
+    prompt: 'Luo luokka `Kissa`, joka perii valmiin luokan `Elain` ja jonka metodi `aantele()` palauttaa `"Miau"`.'
+    check: test
+    setup: |
+      class Elain:
+          def __init__(self, nimi):
+              self.nimi = nimi
+
+          def aantele(self):
+              return "..."
+    tests:
+      - 'isinstance(Kissa("Mirri"), Elain)'
+      - 'Kissa("Mirri").aantele() == "Miau" and Kissa("Mirri").nimi == "Mirri"'
+    solution: |
+      class Kissa(Elain):
+          def aantele(self):
+              return "Miau"
+  - id: py-super
+    prompt: Luo luokka `Opiskelija`, joka perii valmiin luokan `Henkilo`. Sen `__init__` ottaa parametrit `nimi` ja `koulu`, välittää nimen yliluokalle `super()`-kutsulla ja tallentaa koulun.
+    check: test
+    setup: |
+      class Henkilo:
+          def __init__(self, nimi):
+              self.nimi = nimi
+    tests:
+      - '(lambda o: isinstance(o, Henkilo) and o.nimi == "Ada" and o.koulu == "Aalto")(Opiskelija("Ada", "Aalto"))'
+    solution: |
+      class Opiskelija(Henkilo):
+          def __init__(self, nimi, koulu):
+              super().__init__(nimi)
+              self.koulu = koulu
+  - id: py-str-method
+    prompt: Lisää luokkaan `Piste` metodi `__str__`, joka palauttaa merkkijonon muodossa `(1, 2)`. Kirjoita koko luokka, jonka `__init__` ottaa `x`:n ja `y`:n.
+    check: test
+    tests:
+      - 'str(Piste(1, 2)) == "(1, 2)"'
+    solution: |
+      class Piste:
+          def __init__(self, x, y):
+              self.x = x
+              self.y = y
+
+          def __str__(self):
+              return f"({self.x}, {self.y})"
+  - id: py-isinstance
+    prompt: Tallenna muuttujaan `on_elain` tieto siitä, onko `lemmikki` luokan `Elain` olio. Käytä `isinstance`-funktiota.
+    check: test
+    setup: |
+      class Elain:
+          pass
+
+      class Koira(Elain):
+          pass
+
+      lemmikki = Koira()
+    tests:
+      - 'on_elain is True'
+    solution: |
+      on_elain = isinstance(lemmikki, Elain)

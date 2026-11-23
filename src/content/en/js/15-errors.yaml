@@ -1,0 +1,200 @@
+id: js-virheet
+title: Error handling
+summary: Throwing errors and catching them with try/catch.
+theory: |
+  Programs run into errors: the network drops, the input is broken or a file is missing. An unhandled error crashes the program. `try/catch` catches an error so you can respond to it in a controlled way.
+
+  ```js
+  try {
+    const data = JSON.parse("{ broken");
+    console.log(data);
+  } catch (error) {
+    console.log("Parsing failed:", error.message);
+  } finally {
+    console.log("This always runs");
+  }
+  ```
+
+  - Code in `try` runs until an error happens.
+  - `catch` receives the error object; its description is in the `message` property.
+  - `finally` always runs, whether there was an error or not. Use it for cleanup, for example.
+
+  ### Throwing errors
+
+  In your own code, throw an error with `throw`. Always throw an `Error` object, not a plain string, so the error carries a stack trace:
+
+  ```js
+  function divide(a, b) {
+    if (b === 0) {
+      throw new Error("Cannot divide by zero");
+    }
+    return a / b;
+  }
+  ```
+
+  ### When to catch?
+
+  Catch an error where you can do something sensible about it, like show a message, retry or use a default value. An empty `catch {}` hides problems, so avoid it.
+exercises:
+  - type: choice
+    question: Which block always runs, whether or not there was an error?
+    options: ['`try`', '`catch`', '`finally`', '`throw`']
+    answer: 2
+    explanation: '`finally` always runs after the `try` and `catch` blocks.'
+  - type: blank
+    question: Fill in the blank so the function throws an error.
+    code: |
+      ___ new Error("Invalid input");
+    blanks:
+      - [throw]
+    explanation: An error is thrown with `throw`.
+  - type: bug
+    question: '`catch` prints `undefined` instead of the error message.'
+    code: |
+      try {
+        const result = JSON.parse("{ broken");
+        console.log(result);
+      } catch (error) {
+        console.log(error.mesage);
+      }
+    bugLine: 5
+    explanation: 'The property name has a typo. It''s `message`, so write `error.message`.'
+cards:
+  - id: js-throw-error
+    prompt: 'Write a function `divide(a, b)` that throws `new Error("Cannot divide by zero")` if `b` is zero, and otherwise returns the quotient.'
+    check: test
+    tests:
+      - 'divide(6, 3) === 2'
+      - '(() => { try { divide(1, 0); return false; } catch (e) { return e instanceof Error && e.message === "Cannot divide by zero"; } })()'
+    solution: |
+      function divide(a, b) {
+        if (b === 0) {
+          throw new Error("Cannot divide by zero");
+        }
+        return a / b;
+      }
+  - id: js-try-catch-json
+    prompt: Parse the string `json` into a variable `data` with `JSON.parse`. If parsing fails, set `data` to `null`.
+    check: test
+    setup: |
+      const json = "{ broken";
+    tests:
+      - 'data === null'
+    solution: |
+      let data;
+      try {
+        data = JSON.parse(json);
+      } catch {
+        data = null;
+      }
+  - id: js-catch-message
+    prompt: Write a function `safe(f)` that calls `f` and returns its return value. If `f` throws, return the error's `message` instead.
+    check: test
+    tests:
+      - 'safe(() => 1) === 1'
+      - 'safe(() => { throw new Error("oops"); }) === "oops"'
+    solution: |
+      function safe(f) {
+        try {
+          return f();
+        } catch (error) {
+          return error.message;
+        }
+      }
+  - id: js-finally
+    prompt: Call `risky()` so that its error is caught, and print `Done` in a finally block.
+    check: test
+    setup: |
+      function risky() {
+        throw new Error("boom");
+      }
+    tests:
+      - '__logs.includes("Done")'
+    solution: |
+      try {
+        risky();
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        console.log("Done");
+      }
+  - id: js-error-object
+    prompt: 'Create a constant `error` that is a new `Error` with the message `"Oops"`, and print its message.'
+    check: test
+    tests:
+      - 'error instanceof Error && error.message === "Oops"'
+      - '__logs[0] === "Oops"'
+    solution: |
+      const error = new Error("Oops");
+      console.log(error.message);
+  - id: js-throw-validate
+    prompt: 'Write a function `checkAge(age)` that throws `new Error("Age cannot be negative")` if the age is below zero, and otherwise returns the age.'
+    check: test
+    tests:
+      - 'checkAge(30) === 30'
+      - '(() => { try { checkAge(-1); return false; } catch (e) { return e.message === "Age cannot be negative"; } })()'
+    solution: |
+      function checkAge(age) {
+        if (age < 0) {
+          throw new Error("Age cannot be negative");
+        }
+        return age;
+      }
+  - id: js-catch-log
+    prompt: Call `load()` inside a try/catch and print the error's message if the call fails.
+    check: test
+    setup: |
+      function load() {
+        throw new Error("File not found");
+      }
+    tests:
+      - '__logs[0] === "File not found"'
+    solution: |
+      try {
+        load();
+      } catch (error) {
+        console.log(error.message);
+      }
+  - id: js-parse-number-or-throw
+    prompt: 'Write a function `readNumber(text)` that returns `Number(text)`, but throws `new Error("Not a number")` if the result is NaN.'
+    check: test
+    tests:
+      - 'readNumber("5") === 5'
+      - '(() => { try { readNumber("cat"); return false; } catch (e) { return e.message === "Not a number"; } })()'
+    solution: |
+      function readNumber(text) {
+        const number = Number(text);
+        if (Number.isNaN(number)) {
+          throw new Error("Not a number");
+        }
+        return number;
+      }
+  - id: js-parse-or-default
+    prompt: Write a function `parse(json)` that returns the result of `JSON.parse(json)`, or an empty object `{}` if parsing fails.
+    check: test
+    tests:
+      - 'parse(''{"a": 1}'').a === 1'
+      - 'JSON.stringify(parse("broken")) === "{}"'
+    solution: |
+      function parse(json) {
+        try {
+          return JSON.parse(json);
+        } catch {
+          return {};
+        }
+      }
+  - id: js-try-flag
+    prompt: Set the variable `succeeded` to `true` if `JSON.parse(input)` works, and to `false` if it throws.
+    check: test
+    setup: |
+      const input = '{"ok": true}';
+    tests:
+      - 'succeeded === true'
+    solution: |
+      let succeeded;
+      try {
+        JSON.parse(input);
+        succeeded = true;
+      } catch {
+        succeeded = false;
+      }

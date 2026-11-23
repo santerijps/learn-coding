@@ -1,0 +1,206 @@
+id: js-silmukat
+title: Loops
+summary: Repeating with for, for...of and while.
+theory: |
+  A loop repeats code. These are the three most common loops in JavaScript.
+
+  ### for
+
+  The classic counter loop: `for (start; condition; update)`.
+
+  ```js
+  for (let i = 0; i < 3; i++) {
+    console.log(i); // 0, 1, 2
+  }
+  ```
+
+  ### for...of
+
+  Goes through the elements of an array (or the characters of a string). This is the most readable option when you don't need the index.
+
+  ```js
+  const names = ["Ada", "Linus", "Grace"];
+  for (const name of names) {
+    console.log(name);
+  }
+  ```
+
+  ### while
+
+  Repeats as long as the condition is true. Remember to update whatever the condition depends on, or the loop never ends.
+
+  ```js
+  let i = 3;
+  while (i > 0) {
+    console.log(i);
+    i--;
+  }
+  ```
+
+  ### break and continue
+
+  `break` stops the loop entirely, and `continue` skips to the next round.
+
+  ### Accumulating
+
+  A common pattern is to build up a result in a variable:
+
+  ```js
+  const numbers = [4, 8, 15];
+  let sum = 0;
+  for (const number of numbers) {
+    sum += number;
+  }
+  // sum is 27
+  ```
+exercises:
+  - type: choice
+    question: How many times does the loop `for (let i = 0; i < 3; i++)` run?
+    options: ['2', '3', '4', Forever]
+    answer: 1
+    explanation: '`i` takes the values 0, 1 and 2. When `i` is 3, the condition `i < 3` is false and the loop ends.'
+  - type: blank
+    question: Complete the loop that goes through the elements of `names`.
+    code: |
+      for (const name ___ names) {
+        console.log(name);
+      }
+    blanks:
+      - [of]
+    explanation: '`for...of` goes through the elements of an array in order.'
+  - type: bug
+    question: The sum should be `6`, but the result is `NaN`.
+    code: |
+      const numbers = [1, 2, 3];
+      let sum = 0;
+      for (let i = 0; i <= numbers.length; i++) {
+        sum += numbers[i];
+      }
+      console.log(sum);
+    bugLine: 3
+    explanation: 'The `<=` condition goes one index too far. `numbers[3]` is `undefined`, and a number + `undefined` is `NaN`. Use `i < numbers.length`.'
+cards:
+  - id: js-for-count
+    prompt: Print the numbers 1–5 with a for loop, each on its own line.
+    check: test
+    tests:
+      - '__logs.join(",") === "1,2,3,4,5"'
+    solution: |
+      for (let i = 1; i <= 5; i++) {
+        console.log(i);
+      }
+  - id: js-for-of
+    prompt: Print each name in the array `names` with a for...of loop.
+    check: test
+    setup: |
+      const names = ["Ada", "Linus"];
+    tests:
+      - '__logs.join(",") === "Ada,Linus"'
+    solution: |
+      for (const name of names) {
+        console.log(name);
+      }
+  - id: js-loop-sum
+    prompt: Add up the elements of the array `numbers` with a loop into a variable `sum`.
+    check: test
+    setup: |
+      const numbers = [4, 8, 15, 16];
+    tests:
+      - 'sum === 43'
+    solution: |
+      let sum = 0;
+      for (const number of numbers) {
+        sum += number;
+      }
+  - id: js-loop-count-even
+    prompt: Count how many even numbers the array `numbers` contains, in a variable `evens`.
+    check: test
+    setup: |
+      const numbers = [1, 2, 3, 4, 6];
+    tests:
+      - 'evens === 3'
+    solution: |
+      let evens = 0;
+      for (const number of numbers) {
+        if (number % 2 === 0) {
+          evens++;
+        }
+      }
+  - id: js-for-down
+    prompt: Print the numbers 10, 8, 6, 4 and 2 in that order with a loop.
+    check: test
+    tests:
+      - '__logs.join(",") === "10,8,6,4,2"'
+    solution: |
+      for (let i = 10; i > 0; i -= 2) {
+        console.log(i);
+      }
+  - id: js-loop-find-index
+    prompt: Write a function `find(array, target)` that returns the index of the target using a loop, or `-1` if it isn't found.
+    check: test
+    tests:
+      - 'find([5, 7, 9], 9) === 2'
+      - 'find([1], 3) === -1'
+      - '!String(find).includes("indexOf")'
+    solution: |
+      function find(array, target) {
+        for (let i = 0; i < array.length; i++) {
+          if (array[i] === target) {
+            return i;
+          }
+        }
+        return -1;
+      }
+  - id: js-while-countdown
+    prompt: Print the numbers `3`, `2` and `1` in that order with a while loop.
+    check: test
+    tests:
+      - '__logs.join(",") === "3,2,1"'
+    solution: |
+      let i = 3;
+      while (i > 0) {
+        console.log(i);
+        i--;
+      }
+  - id: js-loop-max
+    prompt: Find the largest number in the array `numbers` with a loop and store it in a variable `largest`. Don't use `Math.max`.
+    check: test
+    setup: |
+      const numbers = [3, 17, 8, 12];
+    tests:
+      - 'largest === 17'
+    solution: |
+      let largest = numbers[0];
+      for (const number of numbers) {
+        if (number > largest) {
+          largest = number;
+        }
+      }
+  - id: js-loop-break
+    prompt: Print the elements of the array `numbers` in order, but stop the loop with `break` as soon as you hit a negative number.
+    check: test
+    setup: |
+      const numbers = [4, 7, -1, 9];
+    tests:
+      - '__logs.join(",") === "4,7"'
+    solution: |
+      for (const number of numbers) {
+        if (number < 0) {
+          break;
+        }
+        console.log(number);
+      }
+  - id: js-loop-chars
+    prompt: Count with a loop how many `"a"` letters the string `word` contains, and store the count in a variable `count`.
+    check: test
+    setup: |
+      const word = "banana";
+    tests:
+      - 'count === 3'
+    solution: |
+      let count = 0;
+      for (const letter of word) {
+        if (letter === "a") {
+          count++;
+        }
+      }

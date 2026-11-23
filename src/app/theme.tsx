@@ -8,7 +8,7 @@ export type Theme = 'auto' | 'light' | 'dark'
 export const THEME_KEY = 'learn-coding.theme'
 
 const ORDER: Theme[] = ['auto', 'light', 'dark']
-const ICON: Record<Theme, string> = { auto: '◐', light: '☀', dark: '☾' }
+const ICON: Record<Theme, string> = { auto: '🌓', light: '☀️', dark: '🌙' }
 
 export function loadTheme(): Theme {
   try {

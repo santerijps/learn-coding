@@ -1,0 +1,128 @@
+id: py-ensimmainen-ohjelma
+title: Your first program
+summary: Printing, arithmetic and comments.
+theory: |
+  Python is an easy-to-read language used for data analysis, automation, web services, machine learning and much more. Programs are run with `python3 program.py`.
+
+  ### Printing
+
+  `print()` prints a value. Text, called a **string**, goes in quotes; numbers don't.
+
+  ```python
+  print("Hello world")
+  print(42)
+  print(7 * 6)
+  ```
+
+  `print` can take several values separated by commas. They're printed on one line with spaces in between:
+
+  ```python
+  print("Answer:", 42)   # Answer: 42
+  ```
+
+  ### Arithmetic
+
+  ```python
+  10 + 3    # 13
+  10 - 3    # 7
+  10 * 3    # 30
+  10 / 3    # 3.333..., division always gives a decimal number
+  10 // 3   # 3, integer (floor) division
+  10 % 3    # 1, the remainder
+  2 ** 3    # 8, the power
+  ```
+
+  ### Comments and indentation
+
+  Text after `#` is a comment, and Python doesn't run it. Python doesn't use semicolons at the end of lines. **Indentation** at the start of a line matters, so don't indent lines without a reason.
+exercises:
+  - type: choice
+    question: Which function prints text in Python?
+    options: ['`print("Hi")`', '`console.log("Hi")`', '`echo "Hi"`', '`printf("Hi")`']
+    answer: 0
+    explanation: Python prints with `print()`. `console.log` is JavaScript and `echo` is the shell.
+  - type: blank
+    question: Fill in the blank so the program prints the result of the integer division `17 // 5`.
+    code: |
+      ___(17 // 5)
+    blanks:
+      - [print]
+    explanation: '`print()` prints the value it''s given, here `3`.'
+  - type: bug
+    question: The program crashes with `IndentationError`.
+    code: |
+      # Greeting
+      print("Hi")
+        print("How are you?")
+    bugLine: 3
+    explanation: 'Indentation matters in Python. Line 3 is indented for no reason, so remove the spaces at its start.'
+cards:
+  - id: py-print-text
+    prompt: Print the text `Hello world`.
+    check: test
+    tests:
+      - '__logs == ["Hello world"]'
+    solution: |
+      print("Hello world")
+  - id: py-print-number
+    prompt: Print the number `42`.
+    check: test
+    tests:
+      - '__logs == ["42"]'
+    solution: |
+      print(42)
+  - id: py-print-calc
+    prompt: Print the result of `7 * 6`.
+    check: test
+    tests:
+      - '__logs == ["42"]'
+    solution: |
+      print(7 * 6)
+  - id: py-comment
+    prompt: Write a comment that says `TODO`.
+    check: match
+    solution: |
+      # TODO
+  - id: py-print-two-lines
+    prompt: Print two lines, first `Hi` and then `Bye`.
+    check: test
+    tests:
+      - '__logs == ["Hi", "Bye"]'
+    solution: |
+      print("Hi")
+      print("Bye")
+  - id: py-print-multi-args
+    prompt: With a single `print` call, print the text `Answer:` and the number `42` as two arguments.
+    check: test
+    tests:
+      - '__logs == ["Answer: 42"]'
+    solution: |
+      print("Answer:", 42)
+  - id: py-floor-division
+    prompt: Print the result of the integer division `17 // 5`.
+    check: test
+    tests:
+      - '__logs == ["3"]'
+    solution: |
+      print(17 // 5)
+  - id: py-modulo
+    prompt: Print the remainder of dividing `17` by five.
+    check: test
+    tests:
+      - '__logs == ["2"]'
+    solution: |
+      print(17 % 5)
+  - id: py-power
+    prompt: Print `2` to the power of `10`.
+    check: test
+    tests:
+      - '__logs == ["1024"]'
+    solution: |
+      print(2 ** 10)
+  - id: py-print-division
+    prompt: Print the result of the division `7 / 2`.
+    check: test
+    tests:
+      - '__logs == ["3.5"]'
+    solution: |
+      print(7 / 2)

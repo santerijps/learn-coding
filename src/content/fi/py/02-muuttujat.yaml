@@ -1,0 +1,149 @@
+id: py-muuttujat
+title: Muuttujat ja tietotyypit
+summary: Arvojen tallentaminen, perustyypit ja tyyppimuunnokset.
+theory: |
+  Pythonissa muuttuja syntyy, kun sille sijoitetaan arvo. Erillistä esittelysanaa (kuten JavaScriptin `let`) ei ole.
+
+  ```python
+  nimi = "Ada"
+  ika = 36
+  ika = ika + 1      # uusi arvo samaan muuttujaan
+  ika += 1           # lyhyempi tapa
+  print(nimi, ika)   # Ada 38
+  ```
+
+  Nimet kirjoitetaan **snake_case**-tyyliin: `kayttajan_nimi`, `max_pisteet`. Kokonaan isoilla kirjoitettu nimi (`MAX_KOKO = 100`) on sopimus siitä, ettei arvoa muuteta.
+
+  ### Perustyypit
+
+  ```python
+  ika = 36           # int: kokonaisluku
+  hinta = 4.5        # float: desimaaliluku
+  nimi = "Ada"       # str: merkkijono
+  valmis = True      # bool: True tai False (isolla alkukirjaimella!)
+  tyhja = None       # None: ei arvoa
+  ```
+
+  `type()` kertoo arvon tyypin: `type(42)` on `<class 'int'>`.
+
+  ### Tyyppimuunnokset
+
+  Syötteet ja tiedostot antavat usein merkkijonoja, jotka täytyy muuntaa:
+
+  ```python
+  luku = int("42")       # 42
+  hinta = float("4.95")  # 4.95
+  teksti = str(2026)     # "2026"
+  ```
+
+  `"5" + 3` aiheuttaa virheen `TypeError`, koska Python ei yhdistä merkkijonoa ja lukua automaattisesti. Muunna ensin: `int("5") + 3`.
+
+  Useamman muuttujan voi asettaa kerralla, ja kahden muuttujan arvot voi vaihtaa yhdellä rivillä: `a, b = b, a`.
+exercises:
+  - type: choice
+    question: Mikä on tosi-arvon oikea kirjoitusasu Pythonissa?
+    options: ['`True`', '`true`', '`TRUE`', '`"True"`']
+    answer: 0
+    explanation: 'Pythonin totuusarvot ovat `True` ja `False` isolla alkukirjaimella. `"True"` olisi merkkijono.'
+  - type: blank
+    question: Täydennä niin, että merkkijono muunnetaan kokonaisluvuksi.
+    code: |
+      luku = ___("42")
+    blanks:
+      - [int]
+    explanation: '`int()` muuntaa merkkijonon kokonaisluvuksi. Desimaaliluvuille käytetään `float()`-funktiota.'
+  - type: bug
+    question: Ohjelma kaatuu virheeseen `TypeError`.
+    code: |
+      ika = 36
+      viesti = "Ikä: " + ika
+      print(viesti)
+    bugLine: 2
+    explanation: 'Merkkijonoa ja lukua ei voi yhdistää `+`-operaattorilla. Muunna luku ensin: `"Ikä: " + str(ika)`, tai käytä f-merkkijonoa.'
+cards:
+  - id: py-assign-string
+    prompt: 'Luo muuttuja `nimi`, jonka arvo on `"Ada"`.'
+    check: test
+    tests:
+      - 'nimi == "Ada"'
+    solution: |
+      nimi = "Ada"
+  - id: py-assign-update
+    prompt: Luo muuttuja `pisteet` arvolla `10` ja kasvata sitä sitten viidellä operaattorilla `+=`.
+    check: test
+    tests:
+      - 'pisteet == 15'
+    solution: |
+      pisteet = 10
+      pisteet += 5
+  - id: py-assign-calc
+    prompt: Luo muuttujat `leveys` (4) ja `korkeus` (3) sekä muuttuja `ala`, joka on niiden tulo.
+    check: test
+    tests:
+      - 'leveys == 4 and korkeus == 3'
+      - 'ala == 12'
+    solution: |
+      leveys = 4
+      korkeus = 3
+      ala = leveys * korkeus
+  - id: py-bool
+    prompt: Luo muuttuja `valmis`, jonka arvo on tosi, ja muuttuja `kesken`, jonka arvo on epätosi.
+    check: test
+    tests:
+      - 'valmis is True and kesken is False'
+    solution: |
+      valmis = True
+      kesken = False
+  - id: py-none
+    prompt: Luo muuttuja `tulos`, jolla ei ole arvoa (`None`).
+    check: test
+    tests:
+      - '"tulos" in dir() and tulos is None'
+    solution: |
+      tulos = None
+  - id: py-str-to-int
+    prompt: Muunna merkkijono `syote` kokonaisluvuksi muuttujaan `luku`.
+    check: test
+    setup: |
+      syote = "42"
+    tests:
+      - 'luku == 42 and type(luku) is int'
+    solution: |
+      luku = int(syote)
+  - id: py-str-to-float
+    prompt: Muunna merkkijono `hinta_teksti` desimaaliluvuksi muuttujaan `hinta`.
+    check: test
+    setup: |
+      hinta_teksti = "4.95"
+    tests:
+      - 'hinta == 4.95'
+    solution: |
+      hinta = float(hinta_teksti)
+  - id: py-int-to-str
+    prompt: Muunna luku `vuosi` merkkijonoksi muuttujaan `teksti`.
+    check: test
+    setup: |
+      vuosi = 2026
+    tests:
+      - 'teksti == "2026"'
+    solution: |
+      teksti = str(vuosi)
+  - id: py-type
+    prompt: Tallenna muuttujan `arvo` tyyppi muuttujaan `tyyppi` funktiolla `type`.
+    check: test
+    setup: |
+      arvo = 3.14
+    tests:
+      - 'tyyppi is float'
+    solution: |
+      tyyppi = type(arvo)
+  - id: py-swap
+    prompt: Vaihda muuttujien `a` ja `b` arvot keskenään yhdellä rivillä.
+    check: test
+    setup: |
+      a = 1
+      b = 2
+    tests:
+      - 'a == 2 and b == 1'
+    solution: |
+      a, b = b, a

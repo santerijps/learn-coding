@@ -1,0 +1,124 @@
+id: git-kumoaminen
+title: Undoing changes
+summary: restore, amend, revert and reset, for when something went wrong.
+theory: |
+  The right way to undo depends on **where** the change is.
+
+  ### A change only in the working directory
+
+  ```bash
+  git restore app.js           # discard unsaved changes (can't be undone!)
+  git restore .                # the same for every file in the current folder
+  ```
+
+  ### A staged change
+
+  ```bash
+  git restore --staged app.js  # unstage; the changes stay in the file
+  git restore --staged .       # empty the whole staging area
+  ```
+
+  ### The latest commit, not yet pushed
+
+  ```bash
+  git commit --amend -m "Better message"   # fix the message
+  git add forgotten.js
+  git commit --amend --no-edit             # add the file to the same commit
+  git reset --soft HEAD~1                  # undo the commit, keep the changes staged
+  ```
+
+  ### A commit that's already pushed
+
+  Shared history shouldn't be rewritten, because it breaks other people's copies. Instead, make a new commit that undoes the old one:
+
+  ```bash
+  git revert a1b2c3d
+  git revert HEAD     # undo the latest commit
+  ```
+
+  ### Careful: reset --hard
+
+  `git reset --hard HEAD~1` deletes the commit **and** all unsaved changes. Use it only when you know exactly what you're doing.
+
+  - `restore`: files in the working directory or the staging area.
+  - `amend` / `reset`: your own local history.
+  - `revert`: shared history.
+exercises:
+  - type: choice
+    question: A commit has already been pushed to the shared `main` branch. What's the safest way to undo it?
+    options:
+      - '`git revert <commit>`'
+      - '`git reset --hard HEAD~1`'
+      - '`git commit --amend`'
+      - Delete the `.git` folder
+    answer: 0
+    explanation: '`revert` makes a new commit that undoes the changes. History doesn''t change, so other people''s copies stay intact.'
+  - type: blank
+    question: Complete the command that unstages `app.js` without losing the changes.
+    code: |
+      git restore ___ app.js
+    blanks:
+      - ['--staged']
+    explanation: '`git restore --staged` moves the changes out of the staging area. The file''s contents don''t change.'
+  - type: bug
+    question: Undoing an already pushed commit messes up the team's history, and the last push is rejected.
+    code: |
+      git add .
+      git commit -m "Add login"
+      git push
+      git reset --hard HEAD~1
+      git push
+    bugLine: 4
+    explanation: '`reset` rewrites history that''s already shared, so the remote rejects the push. Undo a pushed commit with `git revert HEAD`.'
+cards:
+  - id: git-restore
+    prompt: Discard the unsaved changes to the file `app.js` in the working directory.
+    check: match
+    solution: git restore app.js
+    accepted:
+      - git checkout -- app.js
+  - id: git-restore-staged
+    prompt: Unstage `app.js` without losing the file's changes.
+    check: match
+    solution: git restore --staged app.js
+    accepted:
+      - git reset app.js
+      - git reset HEAD app.js
+  - id: git-amend-message
+    prompt: 'Change the latest commit''s message to `"Fix login"`.'
+    check: match
+    solution: git commit --amend -m "Fix login"
+  - id: git-amend-no-edit
+    prompt: A forgotten file is already staged. Add it to the latest commit without changing the commit message.
+    check: match
+    solution: git commit --amend --no-edit
+  - id: git-revert
+    prompt: Undo the commit `a1b2c3d` by making a new commit that reverses it.
+    check: match
+    solution: git revert a1b2c3d
+  - id: git-reset-soft
+    prompt: Undo the latest (unpushed) commit so that its changes stay staged.
+    check: match
+    solution: git reset --soft HEAD~1
+    accepted:
+      - git reset --soft HEAD^
+  - id: git-restore-all
+    prompt: Discard the unsaved changes of every file in the current folder.
+    check: match
+    solution: git restore .
+  - id: git-unstage-all
+    prompt: Empty the whole staging area without losing the files' changes.
+    check: match
+    solution: git restore --staged .
+    accepted:
+      - git reset
+  - id: git-revert-head
+    prompt: Undo the latest (already pushed) commit by making a new commit that reverses it.
+    check: match
+    solution: git revert HEAD
+  - id: git-reset-hard
+    prompt: Delete the latest unpushed commit and all its changes completely. This can't be undone!
+    check: match
+    solution: git reset --hard HEAD~1
+    accepted:
+      - git reset --hard HEAD^

@@ -1,0 +1,184 @@
+id: py-ehtolauseet
+title: Ehtolauseet
+summary: if, elif ja else, vertailut ja loogiset operaattorit.
+theory: |
+  Ehtolause suorittaa sisennetyn lohkon vain, jos ehto on tosi. Ehdon perään tulee kaksoispiste, ja lohko **sisennetään** neljällä välilyönnillä.
+
+  ```python
+  lampotila = 28
+
+  if lampotila > 25:
+      print("Kuuma")
+  elif lampotila > 15:
+      print("Lämmin")
+  else:
+      print("Viileä")
+  ```
+
+  Ehdot tarkistetaan ylhäältä alas, ja vain ensimmäinen tosi haara suoritetaan.
+
+  ### Vertailu ja logiikka
+
+  ```python
+  5 == 5          # True: yhtä suuri
+  5 != 3          # True: eri suuri
+  5 >= 5          # True
+  1 <= x <= 10    # True, jos x on välillä 1–10 (vertailuja voi ketjuttaa)
+  ```
+
+  Loogiset operaattorit kirjoitetaan sanoina: `and`, `or` ja `not`.
+
+  ```python
+  if ika >= 18 and on_lippu:
+      print("Tervetuloa")
+  if not sataa:
+      print("Lähdetään ulos")
+  ```
+
+  ### Totuudellisuus
+
+  Tyhjät ja nolla-arvot tulkitaan epätosiksi: `0`, `""`, `[]`, `{}` ja `None`. Kaikki muut arvot ovat tosia.
+
+  ```python
+  nimi = ""
+  if nimi:
+      print(f"Hei {nimi}")
+  else:
+      print("Nimi puuttuu")
+  ```
+
+  ### Ehtolauseke
+
+  Kahdesta arvosta valitseminen yhdellä rivillä: `tila = "aikuinen" if ika >= 18 else "alaikäinen"`.
+exercises:
+  - type: choice
+    question: Miten Pythonissa kirjoitetaan "muuten jos"?
+    options: ['`elif`', '`else if`', '`elseif`', '`elsif`']
+    answer: 0
+    explanation: Python käyttää lyhennettä `elif`.
+  - type: blank
+    question: Täydennä ehto, joka on tosi, kun molemmat ehdot ovat tosia.
+    code: |
+      if ika >= 18 ___ on_lippu:
+          print("Tervetuloa")
+    blanks:
+      - [and]
+    explanation: Pythonin looginen JA kirjoitetaan sanana `and`.
+  - type: bug
+    question: Ohjelma kaatuu virheeseen `SyntaxError`.
+    code: |
+      ika = 20
+      if ika >= 18
+          print("Täysi-ikäinen")
+    bugLine: 2
+    explanation: 'Ehdon perästä puuttuu kaksoispiste: `if ika >= 18:`'
+cards:
+  - id: py-if-simple
+    prompt: Tulosta `Pakkasta`, jos `lampotila` on alle nollan.
+    check: test
+    setup: |
+      lampotila = -5
+    tests:
+      - '__logs == ["Pakkasta"]'
+    solution: |
+      if lampotila < 0:
+          print("Pakkasta")
+  - id: py-if-else
+    prompt: Tulosta `Parillinen` tai `Pariton` sen mukaan, onko `luku` parillinen.
+    check: test
+    setup: |
+      luku = 7
+    tests:
+      - '__logs == ["Pariton"]'
+    solution: |
+      if luku % 2 == 0:
+          print("Parillinen")
+      else:
+          print("Pariton")
+  - id: py-elif
+    prompt: 'Aseta muuttujaan `arvosana` arvo `"A"`, jos `pisteet` ≥ 90, `"B"`, jos `pisteet` ≥ 70, ja muuten `"C"`.'
+    check: test
+    setup: |
+      pisteet = 75
+    tests:
+      - 'arvosana == "B"'
+    solution: |
+      if pisteet >= 90:
+          arvosana = "A"
+      elif pisteet >= 70:
+          arvosana = "B"
+      else:
+          arvosana = "C"
+  - id: py-and
+    prompt: Luo muuttuja `paasee_sisaan`, joka on tosi, kun `ika` on vähintään 18 ja `on_lippu` on tosi.
+    check: test
+    setup: |
+      ika = 20
+      on_lippu = True
+    tests:
+      - 'paasee_sisaan is True'
+    solution: |
+      paasee_sisaan = ika >= 18 and on_lippu
+  - id: py-or
+    prompt: Luo muuttuja `vapaapaiva`, joka on tosi, kun `on_lauantai` tai `on_sunnuntai` on tosi.
+    check: test
+    setup: |
+      on_lauantai = False
+      on_sunnuntai = True
+    tests:
+      - 'vapaapaiva is True'
+    solution: |
+      vapaapaiva = on_lauantai or on_sunnuntai
+  - id: py-not
+    prompt: Luo muuttuja `ei_sada`, jonka arvo on muuttujan `sataa` vastakohta.
+    check: test
+    setup: |
+      sataa = False
+    tests:
+      - 'ei_sada is True'
+    solution: |
+      ei_sada = not sataa
+  - id: py-chained-comparison
+    prompt: Luo muuttuja `on_valilla`, joka on tosi, kun `luku` on välillä 1–10. Käytä ketjutettua vertailua.
+    check: test
+    setup: |
+      luku = 10
+    tests:
+      - 'on_valilla is True'
+    solution: |
+      on_valilla = 1 <= luku <= 10
+  - id: py-conditional-expression
+    prompt: 'Luo muuttuja `tila` ehtolausekkeella: `"auki"`, jos `on_auki` on tosi, muuten `"kiinni"`.'
+    check: test
+    setup: |
+      on_auki = False
+    tests:
+      - 'tila == "kiinni"'
+    solution: |
+      tila = "auki" if on_auki else "kiinni"
+  - id: py-truthy
+    prompt: Tulosta `Tervetuloa`, jos `kayttaja` ei ole tyhjä merkkijono, ja muuten `Kirjaudu sisään`.
+    check: test
+    setup: |
+      kayttaja = ""
+    tests:
+      - '__logs == ["Kirjaudu sisään"]'
+    solution: |
+      if kayttaja:
+          print("Tervetuloa")
+      else:
+          print("Kirjaudu sisään")
+  - id: py-sign
+    prompt: 'Aseta muuttujaan `merkki` arvo `"positiivinen"`, `"negatiivinen"` tai `"nolla"` luvun `luku` mukaan.'
+    check: test
+    setup: |
+      luku = 0
+    tests:
+      - 'merkki == "nolla"'
+    solution: |
+      if luku > 0:
+          merkki = "positiivinen"
+      elif luku < 0:
+          merkki = "negatiivinen"
+      else:
+          merkki = "nolla"

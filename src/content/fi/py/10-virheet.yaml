@@ -1,0 +1,186 @@
+id: py-virheet
+title: Virheenkäsittely
+summary: try, except, raise ja finally.
+theory: |
+  Virheet eli **poikkeukset** kaatavat ohjelman, ellei niitä oteta kiinni. `try`/`except` ottaa virheen kiinni, jotta siihen voi reagoida.
+
+  ```python
+  try:
+      luku = int("kissa")
+  except ValueError:
+      print("Ei luku")
+  ```
+
+  Ota kiinni vain ne virhetyypit, joita odotat, kuten `ValueError`, `ZeroDivisionError` tai `KeyError`. Pelkkä `except:` nappaisi kaikki virheet ja piilottaisi oikeat bugit.
+
+  ### Virheen tiedot, else ja finally
+
+  ```python
+  try:
+      tulos = 10 / jakaja
+  except ZeroDivisionError as virhe:
+      print("Virhe:", virhe)
+  else:
+      print("Onnistui:", tulos)       # vain jos virhettä ei tullut
+  finally:
+      print("Tämä ajetaan aina")
+  ```
+
+  ### Virheen heittäminen
+
+  Omassa koodissa virhe heitetään `raise`-lauseella:
+
+  ```python
+  def aseta_ika(ika):
+      if ika < 0:
+          raise ValueError("Ikä ei voi olla negatiivinen")
+      return ika
+  ```
+
+  Virheen viestin saa merkkijonona: `str(virhe)`.
+exercises:
+  - type: choice
+    question: Mikä virhe syntyy kutsusta `int("kissa")`?
+    options: ['`ValueError`', '`TypeError`', '`KeyError`', '`ZeroDivisionError`']
+    answer: 0
+    explanation: Arvo on oikeaa tyyppiä (merkkijono), mutta sitä ei voi tulkita luvuksi, joten syntyy `ValueError`.
+  - type: blank
+    question: Täydennä niin, että funktio heittää virheen.
+    code: |
+      ___ ValueError("Virheellinen syöte")
+    blanks:
+      - [raise]
+    explanation: Pythonissa virhe heitetään `raise`-lauseella.
+  - type: bug
+    question: Ohjelma kaatuu, vaikka virhe piti ottaa kiinni.
+    code: |
+      try:
+          tulos = 10 / 0
+      except ValueError:
+          print("Ei voi jakaa nollalla")
+    bugLine: 3
+    explanation: 'Nollalla jakaminen aiheuttaa virheen `ZeroDivisionError`, ei `ValueError`. Kirjoita `except ZeroDivisionError:`.'
+cards:
+  - id: py-try-except
+    prompt: Muunna `syote` kokonaisluvuksi muuttujaan `luku`. Jos muunnos epäonnistuu (`ValueError`), aseta `luku`-muuttujan arvoksi `0`.
+    check: test
+    setup: |
+      syote = "kissa"
+    tests:
+      - 'luku == 0'
+    solution: |
+      try:
+          luku = int(syote)
+      except ValueError:
+          luku = 0
+  - id: py-zero-division
+    prompt: Kirjoita funktio `jaa(a, b)`, joka palauttaa `a / b`, tai `None`, jos jakaminen aiheuttaa virheen `ZeroDivisionError`.
+    check: test
+    tests:
+      - 'jaa(6, 3) == 2'
+      - 'jaa(1, 0) is None'
+    solution: |
+      def jaa(a, b):
+          try:
+              return a / b
+          except ZeroDivisionError:
+              return None
+  - id: py-raise
+    prompt: 'Kirjoita funktio `aseta_ika(ika)`, joka heittää virheen `ValueError("Ikä ei voi olla negatiivinen")`, jos ikä on alle nollan, ja muuten palauttaa iän.'
+    check: test
+    tests:
+      - 'aseta_ika(30) == 30'
+      - '__raises(lambda: aseta_ika(-1), ValueError, "Ikä ei voi olla negatiivinen")'
+    solution: |
+      def aseta_ika(ika):
+          if ika < 0:
+              raise ValueError("Ikä ei voi olla negatiivinen")
+          return ika
+  - id: py-except-as
+    prompt: Kutsu funktiota `lataa()` try-rakenteessa ja tulosta virheen viesti, jos se heittää virheen `FileNotFoundError`.
+    check: test
+    setup: |
+      def lataa():
+          raise FileNotFoundError("Tiedostoa ei löytynyt")
+    tests:
+      - '__logs == ["Tiedostoa ei löytynyt"]'
+    solution: |
+      try:
+          lataa()
+      except FileNotFoundError as virhe:
+          print(virhe)
+  - id: py-finally
+    prompt: Kutsu funktiota `riskialtis()` niin, että sen virhe `RuntimeError` otetaan kiinni, ja tulosta `Valmis` finally-lohkossa.
+    check: test
+    setup: |
+      def riskialtis():
+          raise RuntimeError("pum")
+    tests:
+      - '"Valmis" in __logs'
+    solution: |
+      try:
+          riskialtis()
+      except RuntimeError as virhe:
+          print(virhe)
+      finally:
+          print("Valmis")
+  - id: py-try-else
+    prompt: Muunna `syote` luvuksi. Tulosta `Ei luku`, jos tulee `ValueError`, ja `else`-lohkossa luvun kaksinkertainen arvo.
+    check: test
+    setup: |
+      syote = "21"
+    tests:
+      - '__logs == ["42"]'
+    solution: |
+      try:
+          luku = int(syote)
+      except ValueError:
+          print("Ei luku")
+      else:
+          print(luku * 2)
+  - id: py-key-error
+    prompt: 'Hae sanakirjasta `asetukset` avaimen `"kieli"` arvo muuttujaan `kieli` hakasulkeilla. Jos tulee `KeyError`, aseta arvoksi `"fi"`.'
+    check: test
+    setup: |
+      asetukset = {}
+    tests:
+      - 'kieli == "fi"'
+    solution: |
+      try:
+          kieli = asetukset["kieli"]
+      except KeyError:
+          kieli = "fi"
+  - id: py-parse-or-raise
+    prompt: 'Kirjoita funktio `lue_luku(teksti)`, joka palauttaa `int(teksti)`, mutta heittää virheen `ValueError("Ei luku")`, jos muunnos epäonnistuu.'
+    check: test
+    tests:
+      - 'lue_luku("5") == 5'
+      - '__raises(lambda: lue_luku("kissa"), ValueError, "Ei luku")'
+    solution: |
+      def lue_luku(teksti):
+          try:
+              return int(teksti)
+          except ValueError:
+              raise ValueError("Ei luku")
+  - id: py-error-message
+    prompt: 'Luo muuttuja `virhe`, joka on `ValueError`-virhe viestillä `"Hups"`, ja tulosta sen viesti.'
+    check: test
+    tests:
+      - 'isinstance(virhe, ValueError) and str(virhe) == "Hups"'
+      - '__logs == ["Hups"]'
+    solution: |
+      virhe = ValueError("Hups")
+      print(virhe)
+  - id: py-try-flag
+    prompt: Aseta muuttujan `onnistui` arvoksi `True`, jos `int(syote)` onnistuu, ja `False`, jos se heittää virheen `ValueError`.
+    check: test
+    setup: |
+      syote = "12"
+    tests:
+      - 'onnistui is True'
+    solution: |
+      try:
+          int(syote)
+          onnistui = True
+      except ValueError:
+          onnistui = False

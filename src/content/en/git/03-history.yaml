@@ -1,0 +1,115 @@
+id: git-historia
+title: History and differences
+summary: git log, git diff and git show.
+theory: |
+  ### History
+
+  ```bash
+  git log            # all commits with authors and dates
+  git log --oneline  # compact: short ID and message
+  git log -3         # only the three latest
+  git log app.js     # only commits that touch the file
+  ```
+
+  Every commit has a unique ID (hash), for example `a1b2c3d`. Its first few characters are usually enough to refer to it.
+
+  ### Differences
+
+  `git diff` shows changes line by line:
+
+  ```bash
+  git diff           # changes NOT yet staged
+  git diff --staged  # staged changes (what the commit will contain)
+  git diff app.js    # changes to one file only
+  ```
+
+  If `git diff` shows nothing even though you changed a file, you've probably already staged it with `git add`. Try `git diff --staged`.
+
+  ### A single commit
+
+  ```bash
+  git show a1b2c3d   # the commit's details and its changes
+  git show           # the latest commit (same as git show HEAD)
+  ```
+
+  You can combine options: `git log --oneline -5` shows the five latest commits compactly.
+
+  `HEAD` means the current commit. `HEAD~1` is the one before it and `HEAD~2` the one before that.
+exercises:
+  - type: choice
+    question: Which command shows changes that are staged but not yet committed?
+    options: ['`git diff`', '`git diff --staged`', '`git log`', '`git status --diff`']
+    answer: 1
+    explanation: '`git diff --staged` (or `--cached`) compares the staging area with the latest commit. Plain `git diff` shows only unstaged changes.'
+  - type: blank
+    question: Complete the command that shows the history compactly, one commit per line.
+    code: |
+      git log ___
+    blanks:
+      - ['--oneline']
+    explanation: '`--oneline` shows each commit''s short ID and message on one line.'
+  - type: bug
+    question: A developer wants to check what the upcoming commit contains, but sees nothing.
+    code: |
+      git add app.js
+      git diff
+      git commit -m "Update app"
+    bugLine: 2
+    explanation: 'The changes are already staged, so `git diff` doesn''t show them. Use `git diff --staged`.'
+cards:
+  - id: git-log
+    prompt: Show the repository's commit history.
+    check: match
+    solution: git log
+  - id: git-log-oneline
+    prompt: Show the history compactly, one commit per line.
+    check: match
+    solution: git log --oneline
+  - id: git-log-limit
+    prompt: Show only the three latest commits.
+    check: match
+    solution: git log -3
+    accepted:
+      - git log -n 3
+      - git log -n3
+      - git log --max-count=3
+  - id: git-diff
+    prompt: Show the changes that haven't been staged yet.
+    check: match
+    solution: git diff
+  - id: git-diff-staged
+    prompt: Show the staged changes.
+    check: match
+    solution: git diff --staged
+    accepted:
+      - git diff --cached
+  - id: git-show
+    prompt: Show the details and changes of the commit `a1b2c3d`.
+    check: match
+    solution: git show a1b2c3d
+  - id: git-log-file
+    prompt: Show only the commits that touch the file `app.js`.
+    check: match
+    solution: git log app.js
+    accepted:
+      - git log -- app.js
+  - id: git-show-latest
+    prompt: Show the details and changes of the latest commit.
+    check: match
+    solution: git show
+    accepted:
+      - git show HEAD
+  - id: git-diff-file
+    prompt: Show the unstaged changes of the file `app.js`.
+    check: match
+    solution: git diff app.js
+    accepted:
+      - git diff -- app.js
+  - id: git-log-oneline-limit
+    prompt: Show the five latest commits compactly, one commit per line.
+    check: match
+    solution: git log --oneline -5
+    accepted:
+      - git log -5 --oneline
+      - git log --oneline -n 5
+      - git log -n 5 --oneline

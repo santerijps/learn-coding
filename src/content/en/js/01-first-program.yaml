@@ -1,0 +1,139 @@
+id: js-ensimmainen-ohjelma
+title: Your first program
+summary: Printing, statements and comments.
+theory: |
+  JavaScript is the programming language of the web. It runs in the browser, and on servers and the command line with tools like Node.js or Bun.
+
+  ### Printing
+
+  `console.log()` prints a value to the console. You'll use it constantly to check what your program is doing and to debug it.
+
+  ```js
+  console.log("Hello world");
+  console.log(42);
+  console.log(7 * 6);
+  ```
+
+  Text, called a **string**, goes in quotes. Numbers are written without quotes, and you can calculate with them.
+
+  `console.log` can also take several values separated by commas. They're printed on one line with spaces in between: `console.log("Answer:", 42)` prints `Answer: 42`.
+
+  ### Statements
+
+  A program is made of **statements** that run from top to bottom. A statement usually ends with a semicolon `;`. It isn't always required, but using it is a good habit.
+
+  ### Comments
+
+  Comments are notes for people. JavaScript doesn't run them.
+
+  ```js
+  // A one-line comment
+
+  /*
+    A multi-line
+    comment
+  */
+  console.log("This runs"); // a comment at the end of a line
+  ```
+exercises:
+  - type: choice
+    question: Which command prints text to the console in JavaScript?
+    options:
+      - '`print("Hi")`'
+      - '`console.log("Hi")`'
+      - '`echo "Hi"`'
+      - '`System.out.println("Hi")`'
+    answer: 1
+    explanation: '`console.log()` prints to the console. The other options are how other languages do it (Python, the shell, Java).'
+  - type: blank
+    question: Fill in the blank so that the program prints the text.
+    code: |
+      console.___("Hello world");
+    blanks:
+      - [log]
+    explanation: Printing is done with the `log` method of the `console` object, so `console.log(...)`.
+  - type: bug
+    question: The program should print two lines of text.
+    code: |
+      // Greeting
+      console.log("Hello world);
+      console.log("How are you?");
+    bugLine: 2
+    explanation: 'Line 2 is missing the closing quote: `console.log("Hello world");`'
+cards:
+  - id: js-log-text
+    prompt: Print the text `Hello world` to the console.
+    check: test
+    tests:
+      - '__logs[0] === "Hello world"'
+    solution: |
+      console.log("Hello world");
+  - id: js-log-number
+    prompt: Print the number `42` to the console (as a number, not as text).
+    check: test
+    tests:
+      - '__raw[0][0] === 42'
+    solution: |
+      console.log(42);
+  - id: js-log-calc
+    prompt: Print the result of `7 * 6`.
+    check: test
+    tests:
+      - '__raw[0][0] === 42'
+    solution: |
+      console.log(7 * 6);
+  - id: js-comment-line
+    prompt: Write a one-line comment that says `TODO`.
+    check: match
+    solution: |
+      // TODO
+  - id: js-log-two-lines
+    prompt: Print two lines, first `Hi` and then `Bye`.
+    check: test
+    tests:
+      - '__logs.length === 2'
+      - '__logs[0] === "Hi" && __logs[1] === "Bye"'
+    solution: |
+      console.log("Hi");
+      console.log("Bye");
+  - id: js-log-sentence
+    prompt: Print the text `I am learning JavaScript` to the console.
+    check: test
+    tests:
+      - '__logs.length === 1 && __logs[0] === "I am learning JavaScript"'
+    solution: |
+      console.log("I am learning JavaScript");
+  - id: js-log-sum
+    prompt: Print the result of `15 + 27`.
+    check: test
+    tests:
+      - '__raw[0][0] === 42'
+    solution: |
+      console.log(15 + 27);
+  - id: js-log-multi-args
+    prompt: With a single `console.log` call, print the text `Answer:` and the number `42` as two separate arguments.
+    check: test
+    tests:
+      - '__raw.length === 1'
+      - '__raw[0][0] === "Answer:" && __raw[0][1] === 42'
+    solution: |
+      console.log("Answer:", 42);
+  - id: js-comment-block
+    prompt: Write a multi-line comment (`/* … */`) that contains the word `Note`.
+    check: match
+    solution: |
+      /* Note */
+    accepted:
+      - |
+        /*
+          Note
+        */
+  - id: js-log-three-lines
+    prompt: Print the numbers `1`, `2` and `3`, each on its own line.
+    check: test
+    tests:
+      - '__logs.join(",") === "1,2,3"'
+    solution: |
+      console.log(1);
+      console.log(2);
+      console.log(3);

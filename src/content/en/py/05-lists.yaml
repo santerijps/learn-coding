@@ -1,0 +1,157 @@
+id: py-listat
+title: Lists and tuples
+summary: Ordered collections, indexes and the most common changes.
+theory: |
+  A list is an ordered collection of values in square brackets. Lists can be changed.
+
+  ```python
+  fruits = ["apple", "banana", "kiwi"]
+
+  fruits[0]      # "apple", indexes start at zero
+  fruits[-1]     # "kiwi", the last element
+  len(fruits)    # 3
+  fruits[1] = "pear"
+  ```
+
+  ### Adding and removing
+
+  ```python
+  numbers = [1, 2, 3]
+  numbers.append(4)     # add to the end → [1, 2, 3, 4]
+  numbers.insert(0, 0)  # insert at index 0 → [0, 1, 2, 3, 4]
+  numbers.pop()         # remove the last one and return it → 4
+  numbers.remove(0)     # remove the first element with the value 0
+  ```
+
+  ### Searching, slicing and sorting
+
+  ```python
+  "kiwi" in fruits          # True
+  fruits.index("kiwi")      # 2
+  numbers[1:3]              # the elements at indexes 1 and 2
+  sorted([3, 1, 2])         # [1, 2, 3], a new list
+  numbers.sort()            # sorts the list in place
+  sum([1, 2, 3])            # 6
+  min(numbers), max(numbers)
+  ```
+
+  ### Tuples
+
+  A tuple is like a list that can't be changed. It's written in parentheses:
+
+  ```python
+  point = (3, 7)
+  x, y = point     # unpacking into variables
+  ```
+exercises:
+  - type: choice
+    question: What is the value of `["a", "b", "c"][1]`?
+    options: ['`"b"`', '`"a"`', '`"c"`', An error]
+    answer: 0
+    explanation: Indexes start at zero, so index 1 is the second element.
+  - type: blank
+    question: Fill in the blank so that `"banana"` is added to the end of the list.
+    code: |
+      fruits = ["apple"]
+      fruits.___("banana")
+    blanks:
+      - [append]
+    explanation: '`append` adds an element to the end of a list. (In JavaScript it''s `push`.)'
+  - type: bug
+    question: The program crashes with an `IndexError`.
+    code: |
+      numbers = [10, 20, 30]
+      last = numbers[len(numbers)]
+      print(last)
+    bugLine: 2
+    explanation: 'The last index is `len(numbers) - 1`. In Python the easiest way is `numbers[-1]`.'
+cards:
+  - id: py-list-create
+    prompt: 'Create a list `colors` containing the strings `"red"`, `"green"` and `"blue"` in that order.'
+    check: test
+    tests:
+      - 'colors == ["red", "green", "blue"]'
+    solution: |
+      colors = ["red", "green", "blue"]
+  - id: py-list-index
+    prompt: Store the first element of the list `names` in a variable `first`.
+    check: test
+    setup: |
+      names = ["Ada", "Linus", "Grace"]
+    tests:
+      - 'first == "Ada"'
+    solution: |
+      first = names[0]
+  - id: py-list-last
+    prompt: Store the last element of the list `queue` in a variable `last`.
+    check: test
+    setup: |
+      queue = ["a", "b", "c", "d"]
+    tests:
+      - 'last == "d"'
+    solution: |
+      last = queue[-1]
+  - id: py-append
+    prompt: Add the number `4` to the end of the list `numbers`.
+    check: test
+    setup: |
+      numbers = [1, 2, 3]
+    tests:
+      - 'numbers == [1, 2, 3, 4]'
+    solution: |
+      numbers.append(4)
+  - id: py-pop
+    prompt: Remove the last element of the list `stack` and store it in a variable `removed`.
+    check: test
+    setup: |
+      stack = [1, 2, 3]
+    tests:
+      - 'removed == 3 and stack == [1, 2]'
+    solution: |
+      removed = stack.pop()
+  - id: py-in-list
+    prompt: Check whether the list `animals` contains `"cat"` and store the result in a variable `found`.
+    check: test
+    setup: |
+      animals = ["dog", "cat"]
+    tests:
+      - 'found is True'
+    solution: |
+      found = "cat" in animals
+  - id: py-list-len
+    prompt: Store the number of elements in the list `tasks` in a variable `count`.
+    check: test
+    setup: |
+      tasks = ["clean", "code", "sleep"]
+    tests:
+      - 'count == 3'
+    solution: |
+      count = len(tasks)
+  - id: py-sorted
+    prompt: Create a list `ordered` with the elements of `numbers` in ascending order. The original list must not change.
+    check: test
+    setup: |
+      numbers = [10, 1, 5, 100]
+    tests:
+      - 'ordered == [1, 5, 10, 100]'
+      - 'numbers == [10, 1, 5, 100]'
+    solution: |
+      ordered = sorted(numbers)
+  - id: py-sum
+    prompt: Add up the elements of the list `numbers` into a variable `total`.
+    check: test
+    setup: |
+      numbers = [4, 8, 15, 16]
+    tests:
+      - 'total == 43'
+    solution: |
+      total = sum(numbers)
+  - id: py-tuple-unpack
+    prompt: Unpack the tuple `point` into the variables `x` and `y`.
+    check: test
+    setup: |
+      point = (3, 7)
+    tests:
+      - 'x == 3 and y == 7'
+    solution: |
+      x, y = point

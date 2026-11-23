@@ -14,7 +14,7 @@ export function HomePage() {
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
     const a = document.createElement('a')
     a.href = url
-    a.download = `koodikoulu-vastaukset-${localDay(new Date())}.json`
+    a.download = `learn-coding-attempts-${localDay(new Date())}.json`
     a.click()
     URL.revokeObjectURL(url)
   }

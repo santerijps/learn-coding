@@ -1,0 +1,153 @@
+id: js-taulukot
+title: Arrays
+summary: Lists of values, indexes and the most common changes.
+theory: |
+  An array is an ordered list of values, written in square brackets.
+
+  ```js
+  const fruits = ["apple", "banana", "kiwi"];
+
+  fruits[0];      // "apple", indexes start at zero
+  fruits.length;  // 3
+  fruits.at(-1);  // "kiwi", the last element
+  fruits[1] = "pear"; // replace an element
+  ```
+
+  `const` only prevents assigning a new array to the variable. You can still change the array's contents.
+
+  ### Adding and removing
+
+  ```js
+  const numbers = [1, 2, 3];
+  numbers.push(4);     // add to the end → [1, 2, 3, 4]
+  numbers.pop();       // remove the last one and return it → 4
+  numbers.unshift(0);  // add to the start → [0, 1, 2, 3]
+  numbers.shift();     // remove the first one → 0
+  ```
+
+  ### Searching
+
+  ```js
+  const animals = ["dog", "cat", "horse"];
+  animals.includes("cat");    // true
+  animals.indexOf("horse");   // 2 (-1 if the element isn't found)
+  ```
+
+  ### Strings and arrays
+
+  ```js
+  "learn code fast".split(" "); // ["learn", "code", "fast"]
+  ["a", "b", "c"].join("-");    // "a-b-c"
+  ```
+exercises:
+  - type: choice
+    question: What is the value of `["a", "b", "c"][1]`?
+    options: ['`"a"`', '`"b"`', '`"c"`', '`undefined`']
+    answer: 1
+    explanation: Indexes start at zero, so index 1 is the second element, `"b"`.
+  - type: blank
+    question: Fill in the blank so that `"banana"` is added to the end of the array.
+    code: |
+      const fruits = ["apple"];
+      fruits.___("banana");
+    blanks:
+      - [push]
+    explanation: '`push` adds an element to the end of an array.'
+  - type: bug
+    question: The program should print `30`, but it prints `undefined`.
+    code: |
+      const numbers = [10, 20, 30];
+      const last = numbers[numbers.length];
+      console.log(last);
+    bugLine: 2
+    explanation: 'The array has three elements, so the last index is 2, i.e. `length - 1`. Write `numbers[numbers.length - 1]` or `numbers.at(-1)`.'
+cards:
+  - id: js-array-create
+    prompt: Create an array `colors` containing the strings `"red"`, `"green"` and `"blue"` in that order.
+    check: test
+    tests:
+      - 'Array.isArray(colors) && colors.length === 3'
+      - 'colors[0] === "red" && colors[1] === "green" && colors[2] === "blue"'
+    solution: |
+      const colors = ["red", "green", "blue"];
+  - id: js-array-index
+    prompt: Store the first element of the array `names` in a constant `first`.
+    check: test
+    setup: |
+      const names = ["Ada", "Linus", "Grace"];
+    tests:
+      - 'first === "Ada"'
+    solution: |
+      const first = names[0];
+  - id: js-array-push
+    prompt: Add the number `4` to the end of the array `numbers`.
+    check: test
+    setup: |
+      const numbers = [1, 2, 3];
+    tests:
+      - 'numbers.length === 4 && numbers[3] === 4'
+    solution: |
+      numbers.push(4);
+  - id: js-array-last
+    prompt: Store the last element of the array `queue` in a constant `last`.
+    check: test
+    setup: |
+      const queue = ["a", "b", "c", "d"];
+    tests:
+      - 'last === "d"'
+    solution: |
+      const last = queue.at(-1);
+  - id: js-array-includes
+    prompt: Check whether the array `animals` contains `"cat"` and store the result in a constant `found`.
+    check: test
+    setup: |
+      const animals = ["dog", "cat"];
+    tests:
+      - 'found === true'
+    solution: |
+      const found = animals.includes("cat");
+  - id: js-string-split
+    prompt: Split the string `sentence` into an array of words called `words`.
+    check: test
+    setup: |
+      const sentence = "learn code fast";
+    tests:
+      - 'Array.isArray(words) && words.length === 3 && words[2] === "fast"'
+    solution: |
+      const words = sentence.split(" ");
+  - id: js-array-pop
+    prompt: Remove the last element of the array `stack` and store the removed element in a constant `removed`.
+    check: test
+    setup: |
+      const stack = [1, 2, 3];
+    tests:
+      - 'removed === 3 && stack.length === 2'
+    solution: |
+      const removed = stack.pop();
+  - id: js-array-unshift
+    prompt: 'Add the string `"start"` to the beginning of the array `queue`.'
+    check: test
+    setup: |
+      const queue = ["middle", "end"];
+    tests:
+      - 'queue.length === 3 && queue[0] === "start"'
+    solution: |
+      queue.unshift("start");
+  - id: js-array-index-of
+    prompt: 'Store the index of `"kiwi"` in the array `fruits` in a constant `position`.'
+    check: test
+    setup: |
+      const fruits = ["apple", "banana", "kiwi"];
+    tests:
+      - 'position === 2'
+    solution: |
+      const position = fruits.indexOf("kiwi");
+  - id: js-array-join
+    prompt: 'Join the elements of the array `parts` into a string `path` with `"/"` as the separator.'
+    check: test
+    setup: |
+      const parts = ["home", "ada", "code"];
+    tests:
+      - 'path === "home/ada/code"'
+    solution: |
+      const path = parts.join("/");

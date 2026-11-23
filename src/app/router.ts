@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import type { TrackId } from '../content/schema'
+import { TRACK_IDS, type TrackId } from '../content/schema'
 
 /** Hash-based routes, so the static GitHub Pages site needs no server-side routing. Route names are the URL segments. */
 type TrackPage = 'track' | 'practice' | 'practice-weak' | 'challenge' | 'stats' | 'cheatsheet'
@@ -14,7 +14,7 @@ export type Route =
 const TRACK_PAGES: TrackPage[] = ['track', 'practice', 'practice-weak', 'challenge', 'stats', 'cheatsheet']
 const LESSON_PAGES: LessonPage[] = ['lesson', 'practice-lesson']
 
-const isTrack = (s: string | undefined): s is TrackId => s === 'js' || s === 'git'
+const isTrack = (s: string | undefined): s is TrackId => TRACK_IDS.some((t) => t === s)
 
 export function parseRoute(hash: string): Route {
   const [page, arg] = hash.replace(/^#\/?/, '').split('/')

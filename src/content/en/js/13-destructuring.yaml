@@ -1,0 +1,179 @@
+id: js-destrukturointi
+title: Destructuring and spread
+summary: Unpacking and copying values concisely.
+theory: |
+  ### Object destructuring
+
+  Unpack properties into their own variables in one line:
+
+  ```js
+  const user = { name: "Ada", age: 36, country: "UK" };
+  const { name, age } = user;
+
+  // Renaming and a default value
+  const { country: homeCountry, language = "en" } = user;
+  ```
+
+  ### Array destructuring
+
+  Elements are unpacked by **position**:
+
+  ```js
+  const [x, y] = [3, 7];
+  const [first, ...rest] = [1, 2, 3, 4]; // first = 1, rest = [2, 3, 4]
+
+  // Swapping two variables
+  let a = 1;
+  let b = 2;
+  [a, b] = [b, a];
+  ```
+
+  ### Destructuring parameters
+
+  A very common pattern, for example in React:
+
+  ```js
+  function introduce({ name, job }) {
+    return `${name} is a ${job}`;
+  }
+  introduce({ name: "Ada", job: "programmer" });
+  ```
+
+  ### Spread `...`
+
+  Spread spreads an array's or object's contents into a new array or object. This is how you make **copies** without changing the original:
+
+  ```js
+  const a = [1, 2];
+  const b = [3, 4];
+  const all = [...a, ...b]; // [1, 2, 3, 4]
+
+  const user = { name: "Ada", age: 36 };
+  const updated = { ...user, age: 37 }; // the original doesn't change
+  ```
+
+  `const copy = obj;` does not copy the object. Both names then point to the same object.
+
+  ### Rest parameters
+
+  A parameter `...name` collects all remaining arguments into an array:
+
+  ```js
+  const sumAll = (...numbers) => numbers.reduce((s, x) => s + x, 0);
+  sumAll(1, 2, 3); // 6
+  ```
+exercises:
+  - type: choice
+    question: What is `b` after `const [a, b] = [1, 2, 3];`?
+    options: ['`1`', '`2`', '`3`', '`[2, 3]`']
+    answer: 1
+    explanation: Array destructuring picks elements in order. `a` gets 1 and `b` gets 2. The extra element is ignored.
+  - type: blank
+    question: Fill in the blank so that `combined` contains the elements of both arrays.
+    code: |
+      const combined = [___list1, ...list2];
+    blanks:
+      - ['...']
+    explanation: Spread `...` spreads an array's elements inside a new array.
+  - type: bug
+    question: '`settings.theme` changes even though only the copy was modified.'
+    code: |
+      const settings = { theme: "light" };
+      const copy = settings;
+      copy.theme = "dark";
+      console.log(settings.theme);
+    bugLine: 2
+    explanation: 'Assignment doesn''t copy an object; both variables point to the same one. Make a copy with spread: `const copy = { ...settings };`'
+cards:
+  - id: js-destructure-object
+    prompt: Unpack the constants `name` and `age` from the object `user` with destructuring.
+    check: test
+    setup: |
+      const user = { name: "Ada", age: 36, country: "UK" };
+    tests:
+      - 'name === "Ada" && age === 36'
+    solution: |
+      const { name, age } = user;
+  - id: js-destructure-array
+    prompt: Unpack the constants `x` and `y` from the array `point` with destructuring.
+    check: test
+    setup: |
+      const point = [3, 7];
+    tests:
+      - 'x === 3 && y === 7'
+    solution: |
+      const [x, y] = point;
+  - id: js-spread-array
+    prompt: Create an array `all` that combines the arrays `a` and `b` using spread.
+    check: test
+    setup: |
+      const a = [1, 2];
+      const b = [3, 4];
+    tests:
+      - 'JSON.stringify(all) === "[1,2,3,4]"'
+    solution: |
+      const all = [...a, ...b];
+  - id: js-spread-object
+    prompt: 'Create an object `updated` that is a copy of `user` but with `age` set to `37`. The original object must not change.'
+    check: test
+    setup: |
+      const user = { name: "Ada", age: 36 };
+    tests:
+      - 'updated.age === 37 && updated.name === "Ada"'
+      - 'user.age === 36 && updated !== user'
+    solution: |
+      const updated = { ...user, age: 37 };
+  - id: js-rest-params
+    prompt: Write a function `sumAll(...numbers)` that returns the sum of all its arguments.
+    check: test
+    tests:
+      - 'sumAll(1, 2, 3) === 6'
+      - 'sumAll() === 0'
+    solution: |
+      const sumAll = (...numbers) => numbers.reduce((s, x) => s + x, 0);
+  - id: js-destructure-params
+    prompt: 'Write a function `introduce` that destructures the fields `name` and `job` from its parameter object and returns the string `"<name> is a <job>"`.'
+    check: test
+    tests:
+      - 'introduce({ name: "Ada", job: "programmer" }) === "Ada is a programmer"'
+    solution: |
+      function introduce({ name, job }) {
+        return `${name} is a ${job}`;
+      }
+  - id: js-swap-destructure
+    prompt: Swap the values of `a` and `b` with destructuring in one line.
+    check: test
+    setup: |
+      let a = 1;
+      let b = 2;
+    tests:
+      - 'a === 2 && b === 1'
+    solution: |
+      [a, b] = [b, a];
+  - id: js-destructure-default
+    prompt: 'Unpack a constant `theme` from the object `settings` with the default value `"light"`.'
+    check: test
+    setup: |
+      const settings = { language: "en" };
+    tests:
+      - 'theme === "light"'
+    solution: |
+      const { theme = "light" } = settings;
+  - id: js-destructure-rename
+    prompt: Unpack the property `name` from the object `user` into a constant called `userName`.
+    check: test
+    setup: |
+      const user = { name: "Ada" };
+    tests:
+      - 'userName === "Ada"'
+    solution: |
+      const { name: userName } = user;
+  - id: js-spread-copy-array
+    prompt: Make a copy of the array `original` called `copy` using spread.
+    check: test
+    setup: |
+      const original = [1, 2, 3];
+    tests:
+      - 'JSON.stringify(copy) === "[1,2,3]" && copy !== original'
+    solution: |
+      const copy = [...original];

@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { href, useRoute, type Route } from './app/router'
 import { ProgressProvider } from './app/progress'
 import { ThemeToggle } from './app/theme'
-import { m } from './i18n'
+import { LanguageSwitch } from './app/locale'
+import { locale as initialLocale, m } from './i18n'
 import { HomePage } from './pages/HomePage'
 import { TrackPage } from './pages/TrackPage'
 import { LessonPage } from './pages/LessonPage'
@@ -38,6 +40,8 @@ function Page({ route }: { route: Route }) {
 
 export function App() {
   const route = useRoute()
+  // The active language lives in module-level bindings (m, course); this state re-renders on change.
+  const [locale, setLocale] = useState(initialLocale)
   return (
     <ProgressProvider>
       <header className="topbar">
@@ -45,13 +49,16 @@ export function App() {
           <span className="brand-mark" aria-hidden="true">
             {'{ }'}
           </span>
-          {m.appName}
+          <span className="brand-name">{m.appName}</span>
         </a>
-        <ThemeToggle />
+        <div className="topbar-controls">
+          <LanguageSwitch value={locale} onChange={setLocale} />
+          <ThemeToggle key={locale} />
+        </div>
       </header>
       <main>
-        {/* Keying by route remounts the page, so e.g. switching tracks starts a fresh round. */}
-        <Page key={href(route)} route={route} />
+        {/* Keying by route (and language) remounts the page, so e.g. switching tracks starts a fresh round. */}
+        <Page key={`${locale}:${href(route)}`} route={route} />
       </main>
     </ProgressProvider>
   )

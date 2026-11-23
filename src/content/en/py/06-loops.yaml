@@ -1,0 +1,183 @@
+id: py-silmukat
+title: Loops
+summary: for, range, while, break and enumerate.
+theory: |
+  ### for
+
+  Python's `for` goes straight through the elements of a collection:
+
+  ```python
+  names = ["Ada", "Linus", "Grace"]
+  for name in names:
+      print(name)
+  ```
+
+  ### range
+
+  `range` produces a sequence of numbers. The end value is not included.
+
+  ```python
+  for i in range(3):          # 0, 1, 2
+      print(i)
+  for i in range(1, 6):       # 1, 2, 3, 4, 5
+      print(i)
+  for i in range(10, 0, -2):  # 10, 8, 6, 4, 2
+      print(i)
+  ```
+
+  ### enumerate
+
+  When you need both the index and the element:
+
+  ```python
+  for i, name in enumerate(names):
+      print(i, name)   # 0 Ada, 1 Linus, ...
+  ```
+
+  ### while, break and continue
+
+  ```python
+  i = 3
+  while i > 0:
+      print(i)
+      i -= 1
+  ```
+
+  `break` stops the loop, and `continue` skips to the next round.
+
+  ### Accumulating
+
+  ```python
+  total = 0
+  for number in [4, 8, 15]:
+      total += number
+  ```
+exercises:
+  - type: choice
+    question: Which numbers does `range(1, 4)` produce?
+    options: ['1, 2, 3', '1, 2, 3, 4', '0, 1, 2, 3', '1, 4']
+    answer: 0
+    explanation: The end value isn't included, so `range(1, 4)` produces 1, 2 and 3.
+  - type: blank
+    question: Complete the loop that goes through the list `names`.
+    code: |
+      for name ___ names:
+          print(name)
+    blanks:
+      - [in]
+    explanation: '`for item in collection:` goes through the elements of a collection.'
+  - type: bug
+    question: The program never stops.
+    code: |
+      i = 0
+      while i < 5:
+          print(i)
+      i += 1
+    bugLine: 4
+    explanation: 'Line 4 isn''t indented, so it''s not part of the loop and `i` never grows. Indent it to the same level as `print(i)`.'
+cards:
+  - id: py-for-range
+    prompt: Print the numbers 1–5 with a for loop and range, each on its own line.
+    check: test
+    tests:
+      - '__logs == ["1", "2", "3", "4", "5"]'
+    solution: |
+      for i in range(1, 6):
+          print(i)
+  - id: py-for-list
+    prompt: Print each name in the list `names` on its own line.
+    check: test
+    setup: |
+      names = ["Ada", "Linus"]
+    tests:
+      - '__logs == ["Ada", "Linus"]'
+    solution: |
+      for name in names:
+          print(name)
+  - id: py-loop-sum
+    prompt: Add up the list `numbers` with a loop into a variable `total` (don't use `sum`).
+    check: test
+    setup: |
+      numbers = [4, 8, 15, 16]
+    tests:
+      - 'total == 43'
+    solution: |
+      total = 0
+      for number in numbers:
+          total += number
+  - id: py-range-step
+    prompt: Print the numbers 10, 8, 6, 4 and 2 with a loop.
+    check: test
+    tests:
+      - '__logs == ["10", "8", "6", "4", "2"]'
+    solution: |
+      for i in range(10, 0, -2):
+          print(i)
+  - id: py-while
+    prompt: Print the numbers 3, 2 and 1 with a while loop.
+    check: test
+    tests:
+      - '__logs == ["3", "2", "1"]'
+    solution: |
+      i = 3
+      while i > 0:
+          print(i)
+          i -= 1
+  - id: py-enumerate
+    prompt: 'Print the index and name of each element in `names` in the form `0 Ada`. Use `enumerate`.'
+    check: test
+    setup: |
+      names = ["Ada", "Linus"]
+    tests:
+      - '__logs == ["0 Ada", "1 Linus"]'
+    solution: |
+      for i, name in enumerate(names):
+          print(i, name)
+  - id: py-break
+    prompt: Print the elements of `numbers` in order, but stop with `break` as soon as you hit a negative number.
+    check: test
+    setup: |
+      numbers = [4, 7, -1, 9]
+    tests:
+      - '__logs == ["4", "7"]'
+    solution: |
+      for number in numbers:
+          if number < 0:
+              break
+          print(number)
+  - id: py-continue
+    prompt: Print the elements of `numbers`, but skip the zeros with `continue`.
+    check: test
+    setup: |
+      numbers = [1, 0, 2, 0, 3]
+    tests:
+      - '__logs == ["1", "2", "3"]'
+    solution: |
+      for number in numbers:
+          if number == 0:
+              continue
+          print(number)
+  - id: py-count-even
+    prompt: Count how many even numbers the list `numbers` contains, in a variable `evens`.
+    check: test
+    setup: |
+      numbers = [1, 2, 3, 4, 6]
+    tests:
+      - 'evens == 3'
+    solution: |
+      evens = 0
+      for number in numbers:
+          if number % 2 == 0:
+              evens += 1
+  - id: py-loop-max
+    prompt: Find the largest number in `numbers` with a loop and store it in a variable `largest` (don't use `max`).
+    check: test
+    setup: |
+      numbers = [3, 17, 8, 12]
+    tests:
+      - 'largest == 17'
+    solution: |
+      largest = numbers[0]
+      for number in numbers:
+          if number > largest:
+              largest = number

@@ -29,8 +29,9 @@ export function normalizeShell(command: string): string {
     .replace(/\s+/g, ' ')
 }
 
+/** Python uses the same code normalization: its match cards are short one-liners like imports. */
 export function normalize(answer: string, language: AnswerLanguage): string {
-  return language === 'js' ? normalizeJs(answer) : normalizeShell(answer)
+  return language === 'shell' ? normalizeShell(answer) : normalizeJs(answer)
 }
 
 export function matches(answer: string, expected: string[], language: AnswerLanguage): boolean {

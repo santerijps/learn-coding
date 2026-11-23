@@ -1,0 +1,186 @@
+id: py-virheet
+title: Error handling
+summary: try, except, raise and finally.
+theory: |
+  Errors, called **exceptions**, crash the program unless you catch them. `try`/`except` catches an error so you can respond to it.
+
+  ```python
+  try:
+      number = int("cat")
+  except ValueError:
+      print("Not a number")
+  ```
+
+  Catch only the error types you expect, like `ValueError`, `ZeroDivisionError` or `KeyError`. A bare `except:` would catch everything and hide real bugs.
+
+  ### Error details, else and finally
+
+  ```python
+  try:
+      result = 10 / divisor
+  except ZeroDivisionError as error:
+      print("Error:", error)
+  else:
+      print("Worked:", result)      # only if there was no error
+  finally:
+      print("This always runs")
+  ```
+
+  ### Raising errors
+
+  In your own code, raise an error with `raise`:
+
+  ```python
+  def set_age(age):
+      if age < 0:
+          raise ValueError("Age cannot be negative")
+      return age
+  ```
+
+  You get the error's message as a string with `str(error)`.
+exercises:
+  - type: choice
+    question: Which error does `int("cat")` raise?
+    options: ['`ValueError`', '`TypeError`', '`KeyError`', '`ZeroDivisionError`']
+    answer: 0
+    explanation: The value has the right type (a string), but it can't be read as a number, so you get a `ValueError`.
+  - type: blank
+    question: Fill in the blank so the function raises an error.
+    code: |
+      ___ ValueError("Invalid input")
+    blanks:
+      - [raise]
+    explanation: In Python, an error is raised with `raise`.
+  - type: bug
+    question: The program crashes even though the error was supposed to be caught.
+    code: |
+      try:
+          result = 10 / 0
+      except ValueError:
+          print("Cannot divide by zero")
+    bugLine: 3
+    explanation: 'Dividing by zero raises `ZeroDivisionError`, not `ValueError`. Write `except ZeroDivisionError:`.'
+cards:
+  - id: py-try-except
+    prompt: Convert `user_input` to an integer in a variable `number`. If the conversion fails (`ValueError`), set `number` to `0`.
+    check: test
+    setup: |
+      user_input = "cat"
+    tests:
+      - 'number == 0'
+    solution: |
+      try:
+          number = int(user_input)
+      except ValueError:
+          number = 0
+  - id: py-zero-division
+    prompt: Write a function `divide(a, b)` that returns `a / b`, or `None` if the division raises `ZeroDivisionError`.
+    check: test
+    tests:
+      - 'divide(6, 3) == 2'
+      - 'divide(1, 0) is None'
+    solution: |
+      def divide(a, b):
+          try:
+              return a / b
+          except ZeroDivisionError:
+              return None
+  - id: py-raise
+    prompt: 'Write a function `set_age(age)` that raises `ValueError("Age cannot be negative")` if the age is below zero, and otherwise returns the age.'
+    check: test
+    tests:
+      - 'set_age(30) == 30'
+      - '__raises(lambda: set_age(-1), ValueError, "Age cannot be negative")'
+    solution: |
+      def set_age(age):
+          if age < 0:
+              raise ValueError("Age cannot be negative")
+          return age
+  - id: py-except-as
+    prompt: Call `load()` inside a try block and print the error's message if it raises `FileNotFoundError`.
+    check: test
+    setup: |
+      def load():
+          raise FileNotFoundError("File not found")
+    tests:
+      - '__logs == ["File not found"]'
+    solution: |
+      try:
+          load()
+      except FileNotFoundError as error:
+          print(error)
+  - id: py-finally
+    prompt: Call `risky()` so that its `RuntimeError` is caught, and print `Done` in a finally block.
+    check: test
+    setup: |
+      def risky():
+          raise RuntimeError("boom")
+    tests:
+      - '"Done" in __logs'
+    solution: |
+      try:
+          risky()
+      except RuntimeError as error:
+          print(error)
+      finally:
+          print("Done")
+  - id: py-try-else
+    prompt: Convert `user_input` to a number. Print `Not a number` on a `ValueError`, and in the `else` block print the number doubled.
+    check: test
+    setup: |
+      user_input = "21"
+    tests:
+      - '__logs == ["42"]'
+    solution: |
+      try:
+          number = int(user_input)
+      except ValueError:
+          print("Not a number")
+      else:
+          print(number * 2)
+  - id: py-key-error
+    prompt: 'Get the value of the key `"language"` from the dictionary `settings` with square brackets into a variable `language`. On a `KeyError`, use `"en"`.'
+    check: test
+    setup: |
+      settings = {}
+    tests:
+      - 'language == "en"'
+    solution: |
+      try:
+          language = settings["language"]
+      except KeyError:
+          language = "en"
+  - id: py-parse-or-raise
+    prompt: 'Write a function `read_number(text)` that returns `int(text)`, but raises `ValueError("Not a number")` if the conversion fails.'
+    check: test
+    tests:
+      - 'read_number("5") == 5'
+      - '__raises(lambda: read_number("cat"), ValueError, "Not a number")'
+    solution: |
+      def read_number(text):
+          try:
+              return int(text)
+          except ValueError:
+              raise ValueError("Not a number")
+  - id: py-error-message
+    prompt: 'Create a variable `error` that is a `ValueError` with the message `"Oops"`, and print its message.'
+    check: test
+    tests:
+      - 'isinstance(error, ValueError) and str(error) == "Oops"'
+      - '__logs == ["Oops"]'
+    solution: |
+      error = ValueError("Oops")
+      print(error)
+  - id: py-try-flag
+    prompt: Set the variable `succeeded` to `True` if `int(user_input)` works, and to `False` if it raises `ValueError`.
+    check: test
+    setup: |
+      user_input = "12"
+    tests:
+      - 'succeeded is True'
+    solution: |
+      try:
+          int(user_input)
+          succeeded = True
+      except ValueError:
+          succeeded = False

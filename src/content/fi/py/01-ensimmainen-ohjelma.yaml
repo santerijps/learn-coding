@@ -1,0 +1,128 @@
+id: py-ensimmainen-ohjelma
+title: Ensimmäinen ohjelma
+summary: Tulostaminen, laskeminen ja kommentit.
+theory: |
+  Python on helppolukuinen kieli, jota käytetään esimerkiksi data-analyysissä, automaatiossa, verkkopalveluissa ja koneoppimisessa. Ohjelmat ajetaan komennolla `python3 ohjelma.py`.
+
+  ### Tulostaminen
+
+  `print()` tulostaa arvon. Teksti eli **merkkijono** kirjoitetaan lainausmerkkeihin, luvut ilman.
+
+  ```python
+  print("Hei maailma")
+  print(42)
+  print(7 * 6)
+  ```
+
+  `print` voi saada useita arvoja pilkulla erotettuina, ja ne tulostetaan samalle riville välilyönnein erotettuina:
+
+  ```python
+  print("Vastaus:", 42)   # Vastaus: 42
+  ```
+
+  ### Laskutoimitukset
+
+  ```python
+  10 + 3    # 13
+  10 - 3    # 7
+  10 * 3    # 30
+  10 / 3    # 3.333..., eli jakolasku antaa aina desimaaliluvun
+  10 // 3   # 3, eli kokonaislukujako
+  10 % 3    # 1, eli jakojäännös
+  2 ** 3    # 8, eli potenssi
+  ```
+
+  ### Kommentit ja sisennys
+
+  `#`-merkin jälkeinen teksti on kommentti, eikä Python suorita sitä. Pythonissa ei kirjoiteta puolipisteitä rivien loppuun. Rivin alun **sisennyksellä** on merkitystä, joten älä sisennä rivejä ilman syytä.
+exercises:
+  - type: choice
+    question: Millä funktiolla Python tulostaa tekstiä?
+    options: ['`print("Hei")`', '`console.log("Hei")`', '`echo "Hei"`', '`printf("Hei")`']
+    answer: 0
+    explanation: Pythonissa tulostetaan funktiolla `print()`. `console.log` on JavaScriptiä ja `echo` komentotulkkia.
+  - type: blank
+    question: Täydennä niin, että ohjelma tulostaa kokonaislukujaon `17 // 5` tuloksen.
+    code: |
+      ___(17 // 5)
+    blanks:
+      - [print]
+    explanation: '`print()` tulostaa sille annetun arvon, tässä `3`.'
+  - type: bug
+    question: Ohjelma kaatuu virheeseen `IndentationError`.
+    code: |
+      # Tervehdys
+      print("Hei")
+        print("Mitä kuuluu?")
+    bugLine: 3
+    explanation: 'Pythonissa sisennyksellä on merkitystä. Rivi 3 on sisennetty ilman syytä, joten poista välilyönnit sen alusta.'
+cards:
+  - id: py-print-text
+    prompt: Tulosta teksti `Hei maailma`.
+    check: test
+    tests:
+      - '__logs == ["Hei maailma"]'
+    solution: |
+      print("Hei maailma")
+  - id: py-print-number
+    prompt: Tulosta luku `42`.
+    check: test
+    tests:
+      - '__logs == ["42"]'
+    solution: |
+      print(42)
+  - id: py-print-calc
+    prompt: Tulosta laskutoimituksen `7 * 6` tulos.
+    check: test
+    tests:
+      - '__logs == ["42"]'
+    solution: |
+      print(7 * 6)
+  - id: py-comment
+    prompt: Kirjoita kommentti, jossa lukee `TODO`.
+    check: match
+    solution: |
+      # TODO
+  - id: py-print-two-lines
+    prompt: Tulosta kaksi riviä, ensin `Hei` ja sitten `Moi`.
+    check: test
+    tests:
+      - '__logs == ["Hei", "Moi"]'
+    solution: |
+      print("Hei")
+      print("Moi")
+  - id: py-print-multi-args
+    prompt: Tulosta yhdellä `print`-kutsulla teksti `Vastaus:` ja luku `42` kahtena argumenttina.
+    check: test
+    tests:
+      - '__logs == ["Vastaus: 42"]'
+    solution: |
+      print("Vastaus:", 42)
+  - id: py-floor-division
+    prompt: Tulosta kokonaislukujaon `17 // 5` tulos.
+    check: test
+    tests:
+      - '__logs == ["3"]'
+    solution: |
+      print(17 // 5)
+  - id: py-modulo
+    prompt: Tulosta jakojäännös, kun `17` jaetaan viidellä.
+    check: test
+    tests:
+      - '__logs == ["2"]'
+    solution: |
+      print(17 % 5)
+  - id: py-power
+    prompt: Tulosta `2` potenssiin `10`.
+    check: test
+    tests:
+      - '__logs == ["1024"]'
+    solution: |
+      print(2 ** 10)
+  - id: py-print-division
+    prompt: Tulosta jakolaskun `7 / 2` tulos.
+    check: test
+    tests:
+      - '__logs == ["3.5"]'
+    solution: |
+      print(7 / 2)

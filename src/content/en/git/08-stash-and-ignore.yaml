@@ -1,0 +1,122 @@
+id: git-stash-ignore
+title: Stash and .gitignore
+summary: Setting unfinished changes aside and keeping files out of tracking.
+theory: |
+  ### git stash
+
+  Sometimes you need to switch branches mid-task, for example for an urgent fix, without committing unfinished work. `git stash` sets the changes aside and leaves the working directory clean.
+
+  ```bash
+  git stash              # set the changes aside
+  git switch main        # ... do something else ...
+  git switch feature
+  git stash pop          # bring the changes back and remove them from the stash list
+  ```
+
+  ```bash
+  git stash push -m "Unfinished form"   # stash with a message
+  git stash list         # show stashed changes
+  git stash -u           # include untracked (new) files too
+  git stash apply        # bring back, but also keep it in the list
+  git stash drop         # delete the latest stash (its contents are lost!)
+  ```
+
+  ### .gitignore
+
+  The `.gitignore` file tells Git which files not to track. It's for things like dependencies, build output, logs and secrets.
+
+  ```gitignore
+  node_modules/
+  dist/
+  *.log
+  .env
+  ```
+
+  - `folder/` ignores a whole folder.
+  - `*.log` ignores every file ending in `.log`.
+  - `!important.log` makes an exception to an earlier rule.
+
+  `.gitignore` only affects files Git isn't tracking yet. If a file has already been committed, you have to stop tracking it:
+
+  ```bash
+  git rm --cached .env   # stop tracking, but keep the file on disk
+  ```
+exercises:
+  - type: choice
+    question: What does `git stash pop` do?
+    options:
+      - Brings back the latest stash and removes it from the list
+      - Deletes the latest stash without bringing it back
+      - Sets changes aside
+      - Sends the stash to the remote
+    answer: 0
+    explanation: '`pop` = `apply` + `drop`: the changes come back and the stash is removed from the list.'
+  - type: blank
+    question: Complete `.gitignore` so that every file ending in `.log` is ignored.
+    code: |
+      node_modules/
+      *.___
+    blanks:
+      - [log]
+    explanation: '`*` matches any characters, so `*.log` matches every `.log` file.'
+  - type: bug
+    question: The unfinished changes were supposed to come back, but they disappeared.
+    code: |
+      git stash
+      git switch main
+      git switch feature
+      git stash drop
+    bugLine: 4
+    explanation: '`git stash drop` deletes the stash without bringing it back. Changes come back with `git stash pop`.'
+cards:
+  - id: git-stash
+    prompt: Set your unfinished changes aside temporarily.
+    check: match
+    solution: git stash
+    accepted:
+      - git stash push
+  - id: git-stash-pop
+    prompt: Bring back the latest stash and remove it from the list.
+    check: match
+    solution: git stash pop
+  - id: git-stash-list
+    prompt: List the stashed changes.
+    check: match
+    solution: git stash list
+  - id: git-stash-untracked
+    prompt: Set changes aside so that untracked (new) files are included too.
+    check: match
+    solution: git stash -u
+    accepted:
+      - git stash --include-untracked
+      - git stash push -u
+  - id: git-rm-cached
+    prompt: Stop tracking the file `.env` without deleting it from disk.
+    check: match
+    solution: git rm --cached .env
+  - id: git-ignore-folder
+    prompt: Write a `.gitignore` line that ignores the folder `node_modules`.
+    check: match
+    solution: node_modules/
+    accepted:
+      - node_modules
+      - /node_modules/
+      - /node_modules
+  - id: git-stash-message
+    prompt: 'Set changes aside with the message `"Unfinished form"`.'
+    check: match
+    solution: git stash push -m "Unfinished form"
+    accepted:
+      - git stash -m "Unfinished form"
+  - id: git-stash-apply
+    prompt: Bring back the latest stash but also keep it in the stash list.
+    check: match
+    solution: git stash apply
+  - id: git-stash-drop
+    prompt: Delete the latest stash without bringing it back.
+    check: match
+    solution: git stash drop
+  - id: git-ignore-extension
+    prompt: Write a `.gitignore` line that ignores every file ending in `.log`.
+    check: match
+    solution: '*.log'

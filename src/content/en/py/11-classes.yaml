@@ -1,0 +1,211 @@
+id: py-luokat
+title: Classes
+summary: Blueprints for objects, __init__, self and inheritance.
+theory: |
+  A class is a blueprint for creating objects. You create an object by calling the class like a function.
+
+  ```python
+  class Person:
+      def __init__(self, name, age):
+          self.name = name
+          self.age = age
+
+      def greet(self):
+          return f"Hi, I'm {self.name}"
+
+  ada = Person("Ada", 36)
+  ada.greet()    # "Hi, I'm Ada"
+  ada.age += 1
+  ```
+
+  - `__init__` runs when an object is created and sets up its attributes.
+  - `self` refers to the object itself. It's the first parameter of every method, but you don't pass it when calling.
+
+  ### Inheritance
+
+  ```python
+  class Animal:
+      def __init__(self, name):
+          self.name = name
+
+      def speak(self):
+          return "..."
+
+  class Dog(Animal):
+      def speak(self):
+          return "Woof!"
+
+  class Student(Person):
+      def __init__(self, name, age, school):
+          super().__init__(name, age)
+          self.school = school
+  ```
+
+  `super()` calls the parent class's method. `isinstance(obj, Class)` tells whether an object is an instance of a class (or one of its subclasses).
+
+  ### __str__
+
+  The `__str__` method decides what an object looks like when printed:
+
+  ```python
+  class Point:
+      def __init__(self, x, y):
+          self.x, self.y = x, y
+
+      def __str__(self):
+          return f"({self.x}, {self.y})"
+
+  print(Point(1, 2))   # (1, 2)
+  ```
+exercises:
+  - type: choice
+    question: Which method runs when a new object is created from a class?
+    options: ['`__init__`', '`__str__`', '`constructor`', '`new`']
+    answer: 0
+    explanation: '`__init__` sets up the new object. (In JavaScript it''s `constructor`.)'
+  - type: blank
+    question: Fill in the method's first parameter.
+    code: |
+      class Dog:
+          def __init__(___, name):
+              self.name = name
+    blanks:
+      - [self]
+    explanation: The first parameter of every method is the object itself, and by convention it's called `self`.
+  - type: bug
+    question: '`increment()` crashes with `NameError: name ''value'' is not defined`.'
+    code: |
+      class Counter:
+          def __init__(self):
+              self.value = 0
+
+          def increment(self):
+              value += 1
+    bugLine: 6
+    explanation: 'Refer to the object''s attributes through `self`: `self.value += 1`.'
+cards:
+  - id: py-class-init
+    prompt: Create a class `Person` whose `__init__` stores the parameter `name` in the attribute `name`.
+    check: test
+    tests:
+      - 'Person("Ada").name == "Ada"'
+    solution: |
+      class Person:
+          def __init__(self, name):
+              self.name = name
+  - id: py-class-method
+    prompt: 'Create a class `Person` that takes a `name` and whose method `greet()` returns the string `"Hi, I''m <name>"`.'
+    check: test
+    tests:
+      - 'Person("Ada").greet() == "Hi, I''m Ada"'
+    solution: |
+      class Person:
+          def __init__(self, name):
+              self.name = name
+
+          def greet(self):
+              return f"Hi, I'm {self.name}"
+  - id: py-class-new
+    prompt: Create an object `car` from the existing class `Car` with the make `"Volvo"`.
+    check: test
+    setup: |
+      class Car:
+          def __init__(self, make):
+              self.make = make
+    tests:
+      - 'isinstance(car, Car) and car.make == "Volvo"'
+    solution: |
+      car = Car("Volvo")
+  - id: py-class-state
+    prompt: Create a class `Counter` whose attribute `value` starts at zero and whose method `increment()` increases it by one.
+    check: test
+    tests:
+      - 'Counter().value == 0'
+      - '(lambda c: (c.increment(), c.increment(), c.value)[-1])(Counter()) == 2'
+    solution: |
+      class Counter:
+          def __init__(self):
+              self.value = 0
+
+          def increment(self):
+              self.value += 1
+  - id: py-class-default
+    prompt: Create a class `Account` whose `__init__` takes a parameter `balance` (default `0`) and stores it in the attribute `balance`.
+    check: test
+    tests:
+      - 'Account().balance == 0 and Account(50).balance == 50'
+    solution: |
+      class Account:
+          def __init__(self, balance=0):
+              self.balance = balance
+  - id: py-class-method-param
+    prompt: Create a class `Account` whose `balance` starts at zero and whose method `deposit(amount)` increases the balance.
+    check: test
+    tests:
+      - '(lambda a: (a.deposit(20), a.deposit(5), a.balance)[-1])(Account()) == 25'
+    solution: |
+      class Account:
+          def __init__(self):
+              self.balance = 0
+
+          def deposit(self, amount):
+              self.balance += amount
+  - id: py-inherit
+    prompt: 'Create a class `Cat` that inherits from the existing class `Animal` and whose method `speak()` returns `"Meow"`.'
+    check: test
+    setup: |
+      class Animal:
+          def __init__(self, name):
+              self.name = name
+
+          def speak(self):
+              return "..."
+    tests:
+      - 'isinstance(Cat("Tom"), Animal)'
+      - 'Cat("Tom").speak() == "Meow" and Cat("Tom").name == "Tom"'
+    solution: |
+      class Cat(Animal):
+          def speak(self):
+              return "Meow"
+  - id: py-super
+    prompt: Create a class `Student` that inherits from the existing class `Person`. Its `__init__` takes `name` and `school`, passes the name to the parent class with `super()` and stores the school.
+    check: test
+    setup: |
+      class Person:
+          def __init__(self, name):
+              self.name = name
+    tests:
+      - '(lambda s: isinstance(s, Person) and s.name == "Ada" and s.school == "MIT")(Student("Ada", "MIT"))'
+    solution: |
+      class Student(Person):
+          def __init__(self, name, school):
+              super().__init__(name)
+              self.school = school
+  - id: py-str-method
+    prompt: Write a class `Point` whose `__init__` takes `x` and `y`, with a `__str__` method that returns a string like `(1, 2)`.
+    check: test
+    tests:
+      - 'str(Point(1, 2)) == "(1, 2)"'
+    solution: |
+      class Point:
+          def __init__(self, x, y):
+              self.x = x
+              self.y = y
+
+          def __str__(self):
+              return f"({self.x}, {self.y})"
+  - id: py-isinstance
+    prompt: Store in a variable `is_animal` whether `pet` is an instance of the class `Animal`. Use `isinstance`.
+    check: test
+    setup: |
+      class Animal:
+          pass
+
+      class Dog(Animal):
+          pass
+
+      pet = Dog()
+    tests:
+      - 'is_animal is True'
+    solution: |
+      is_animal = isinstance(pet, Animal)

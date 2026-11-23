@@ -1,0 +1,151 @@
+id: py-listakoosteet
+title: Comprehensions and lambdas
+summary: Transforming and filtering lists in one line.
+theory: |
+  A **list comprehension** builds a new list from another collection. It's Python's way of doing what JavaScript does with `map` and `filter`.
+
+  ```python
+  numbers = [1, 2, 3, 4, 5]
+
+  doubled = [x * 2 for x in numbers]               # [2, 4, 6, 8, 10]
+  evens = [x for x in numbers if x % 2 == 0]       # [2, 4]
+  odd_squares = [x * x for x in numbers if x % 2 == 1]  # [1, 9, 25]
+  ```
+
+  The form is `[expression for item in collection if condition]`, where the `if` part is optional.
+
+  ### Dictionary comprehensions
+
+  ```python
+  names = ["Ada", "Linus"]
+  lengths = {name: len(name) for name in names}   # {"Ada": 3, "Linus": 5}
+  ```
+
+  ### Handy functions
+
+  ```python
+  sum(numbers), min(numbers), max(numbers)
+  any(x < 0 for x in numbers)    # is any of them negative?
+  all(x > 0 for x in numbers)    # are all of them positive?
+  ```
+
+  ### lambda
+
+  `lambda` is a short anonymous function. It's often used as the `key` argument of `sorted`:
+
+  ```python
+  users = [{"name": "Grace", "age": 45}, {"name": "Ada", "age": 36}]
+  sorted(users, key=lambda u: u["age"])       # youngest first
+  sorted(names, key=len, reverse=True)        # longest name first
+  ```
+exercises:
+  - type: choice
+    question: What does `[x * 2 for x in [1, 2, 3]]` produce?
+    options: ['`[2, 4, 6]`', '`[1, 2, 3, 1, 2, 3]`', '`12`', '`[2]`']
+    answer: 0
+    explanation: The comprehension evaluates `x * 2` for every element.
+  - type: blank
+    question: Complete the comprehension so it keeps only the even numbers.
+    code: |
+      evens = [x for x in numbers ___ x % 2 == 0]
+    blanks:
+      - [if]
+    explanation: A comprehension's filter condition goes after `if`.
+  - type: bug
+    question: The list should be sorted by the users' age.
+    code: |
+      users = [{"name": "Grace", "age": 45}, {"name": "Ada", "age": 36}]
+      ordered = sorted(users, key="age")
+      print(ordered)
+    bugLine: 2
+    explanation: 'The `key` argument must be a function, not a string: `key=lambda u: u["age"]`.'
+cards:
+  - id: py-comprehension-map
+    prompt: Use a list comprehension to create a list `doubled` where every element of `numbers` is multiplied by two.
+    check: test
+    setup: |
+      numbers = [1, 2, 3]
+    tests:
+      - 'doubled == [2, 4, 6]'
+    solution: |
+      doubled = [x * 2 for x in numbers]
+  - id: py-comprehension-filter
+    prompt: Use a list comprehension to create a list `evens` containing only the even numbers of `numbers`.
+    check: test
+    setup: |
+      numbers = [1, 2, 3, 4, 5, 6]
+    tests:
+      - 'evens == [2, 4, 6]'
+    solution: |
+      evens = [x for x in numbers if x % 2 == 0]
+  - id: py-comprehension-both
+    prompt: Create a list `result` containing the odd numbers of `numbers` squared.
+    check: test
+    setup: |
+      numbers = [1, 2, 3, 4, 5]
+    tests:
+      - 'result == [1, 9, 25]'
+    solution: |
+      result = [x * x for x in numbers if x % 2 == 1]
+  - id: py-comprehension-strings
+    prompt: Create a list `upper` containing the names of `names` in upper case.
+    check: test
+    setup: |
+      names = ["ada", "linus"]
+    tests:
+      - 'upper == ["ADA", "LINUS"]'
+    solution: |
+      upper = [name.upper() for name in names]
+  - id: py-dict-comprehension
+    prompt: Use a dictionary comprehension to create a dictionary `lengths` that maps each name in `names` to its length.
+    check: test
+    setup: |
+      names = ["Ada", "Linus"]
+    tests:
+      - 'lengths == {"Ada": 3, "Linus": 5}'
+    solution: |
+      lengths = {name: len(name) for name in names}
+  - id: py-any
+    prompt: Use `any` to check whether `numbers` contains a negative number, and store the result in a variable `has_negatives`.
+    check: test
+    setup: |
+      numbers = [3, -1, 4]
+    tests:
+      - 'has_negatives is True'
+    solution: |
+      has_negatives = any(x < 0 for x in numbers)
+  - id: py-all
+    prompt: Use `all` to check whether every number in `scores` is at least 50, and store the result in a variable `all_passed`.
+    check: test
+    setup: |
+      scores = [55, 70, 49]
+    tests:
+      - 'all_passed is False'
+    solution: |
+      all_passed = all(s >= 50 for s in scores)
+  - id: py-sorted-key
+    prompt: 'Sort the list `users` by age (`"age"`) from youngest to oldest into a new list `ordered`.'
+    check: test
+    setup: |
+      users = [{"name": "Grace", "age": 45}, {"name": "Ada", "age": 36}]
+    tests:
+      - '[u["name"] for u in ordered] == ["Ada", "Grace"]'
+    solution: |
+      ordered = sorted(users, key=lambda u: u["age"])
+  - id: py-sorted-reverse
+    prompt: Sort the list `names` by length from longest to shortest into a new list `ordered`.
+    check: test
+    setup: |
+      names = ["Ada", "Grace", "Linus", "Al"]
+    tests:
+      - '[len(n) for n in ordered] == [5, 5, 3, 2]'
+    solution: |
+      ordered = sorted(names, key=len, reverse=True)
+  - id: py-lambda
+    prompt: Create a lambda function `double` that returns a number doubled.
+    check: test
+    tests:
+      - 'double(4) == 8'
+      - 'double.__name__ == "<lambda>"'
+    solution: |
+      double = lambda x: x * 2

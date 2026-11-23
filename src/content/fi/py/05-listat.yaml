@@ -1,0 +1,157 @@
+id: py-listat
+title: Listat ja monikot
+summary: Järjestetyt kokoelmat, indeksit ja yleisimmät muokkaukset.
+theory: |
+  Lista on järjestetty kokoelma arvoja hakasulkeissa. Listaa voi muokata.
+
+  ```python
+  hedelmat = ["omena", "banaani", "kiivi"]
+
+  hedelmat[0]      # "omena", eli indeksit alkavat nollasta
+  hedelmat[-1]     # "kiivi", eli viimeinen alkio
+  len(hedelmat)    # 3
+  hedelmat[1] = "päärynä"
+  ```
+
+  ### Lisääminen ja poistaminen
+
+  ```python
+  luvut = [1, 2, 3]
+  luvut.append(4)       # lisää loppuun → [1, 2, 3, 4]
+  luvut.insert(0, 0)    # lisää indeksiin 0 → [0, 1, 2, 3, 4]
+  luvut.pop()           # poistaa viimeisen ja palauttaa sen → 4
+  luvut.remove(0)       # poistaa ensimmäisen alkion, jonka arvo on 0
+  ```
+
+  ### Etsiminen, viipaleet ja järjestäminen
+
+  ```python
+  "kiivi" in hedelmat        # True
+  hedelmat.index("kiivi")    # 2
+  luvut[1:3]                 # alkiot indekseistä 1 ja 2
+  sorted([3, 1, 2])          # [1, 2, 3], eli uusi lista
+  luvut.sort()               # järjestää listan paikallaan
+  sum([1, 2, 3])             # 6
+  min(luvut), max(luvut)     # pienin ja suurin
+  ```
+
+  ### Monikko (tuple)
+
+  Monikko on kuin lista, mutta sitä ei voi muuttaa. Se kirjoitetaan sulkeisiin:
+
+  ```python
+  piste = (3, 7)
+  x, y = piste     # purkaminen muuttujiin
+  ```
+exercises:
+  - type: choice
+    question: Mikä on lausekkeen `["a", "b", "c"][1]` arvo?
+    options: ['`"b"`', '`"a"`', '`"c"`', Virhe]
+    answer: 0
+    explanation: Indeksit alkavat nollasta, joten indeksi 1 on toinen alkio.
+  - type: blank
+    question: Täydennä niin, että `"banaani"` lisätään listan loppuun.
+    code: |
+      hedelmat = ["omena"]
+      hedelmat.___("banaani")
+    blanks:
+      - [append]
+    explanation: '`append` lisää alkion listan loppuun. (JavaScriptissä vastaava on `push`.)'
+  - type: bug
+    question: Ohjelma kaatuu virheeseen `IndexError`.
+    code: |
+      luvut = [10, 20, 30]
+      viimeinen = luvut[len(luvut)]
+      print(viimeinen)
+    bugLine: 2
+    explanation: 'Viimeisen alkion indeksi on `len(luvut) - 1`. Pythonissa helpoin tapa on `luvut[-1]`.'
+cards:
+  - id: py-list-create
+    prompt: 'Luo lista `varit`, jossa ovat merkkijonot `"punainen"`, `"vihreä"` ja `"sininen"` tässä järjestyksessä.'
+    check: test
+    tests:
+      - 'varit == ["punainen", "vihreä", "sininen"]'
+    solution: |
+      varit = ["punainen", "vihreä", "sininen"]
+  - id: py-list-index
+    prompt: Tallenna listan `nimet` ensimmäinen alkio muuttujaan `eka`.
+    check: test
+    setup: |
+      nimet = ["Ada", "Linus", "Grace"]
+    tests:
+      - 'eka == "Ada"'
+    solution: |
+      eka = nimet[0]
+  - id: py-list-last
+    prompt: Tallenna listan `jono` viimeinen alkio muuttujaan `viimeinen`.
+    check: test
+    setup: |
+      jono = ["a", "b", "c", "d"]
+    tests:
+      - 'viimeinen == "d"'
+    solution: |
+      viimeinen = jono[-1]
+  - id: py-append
+    prompt: Lisää luku `4` listan `luvut` loppuun.
+    check: test
+    setup: |
+      luvut = [1, 2, 3]
+    tests:
+      - 'luvut == [1, 2, 3, 4]'
+    solution: |
+      luvut.append(4)
+  - id: py-pop
+    prompt: Poista listan `pino` viimeinen alkio ja tallenna se muuttujaan `poistettu`.
+    check: test
+    setup: |
+      pino = [1, 2, 3]
+    tests:
+      - 'poistettu == 3 and pino == [1, 2]'
+    solution: |
+      poistettu = pino.pop()
+  - id: py-in-list
+    prompt: Tarkista, onko listassa `elaimet` alkio `"kissa"`, ja tallenna tulos muuttujaan `loytyi`.
+    check: test
+    setup: |
+      elaimet = ["koira", "kissa"]
+    tests:
+      - 'loytyi is True'
+    solution: |
+      loytyi = "kissa" in elaimet
+  - id: py-list-len
+    prompt: Tallenna listan `tehtavat` alkioiden määrä muuttujaan `maara`.
+    check: test
+    setup: |
+      tehtavat = ["siivoa", "koodaa", "nuku"]
+    tests:
+      - 'maara == 3'
+    solution: |
+      maara = len(tehtavat)
+  - id: py-sorted
+    prompt: Luo lista `jarjestetty`, jossa listan `luvut` alkiot ovat kasvavassa järjestyksessä. Alkuperäinen lista ei saa muuttua.
+    check: test
+    setup: |
+      luvut = [10, 1, 5, 100]
+    tests:
+      - 'jarjestetty == [1, 5, 10, 100]'
+      - 'luvut == [10, 1, 5, 100]'
+    solution: |
+      jarjestetty = sorted(luvut)
+  - id: py-sum
+    prompt: Laske listan `luvut` alkioiden summa muuttujaan `summa`.
+    check: test
+    setup: |
+      luvut = [4, 8, 15, 16]
+    tests:
+      - 'summa == 43'
+    solution: |
+      summa = sum(luvut)
+  - id: py-tuple-unpack
+    prompt: Pura monikko `piste` muuttujiin `x` ja `y`.
+    check: test
+    setup: |
+      piste = (3, 7)
+    tests:
+      - 'x == 3 and y == 7'
+    solution: |
+      x, y = piste

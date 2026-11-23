@@ -4,6 +4,7 @@ import { drawSelection, EditorView, keymap, placeholder as placeholderExt } from
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands'
 import { indentUnit, syntaxHighlighting } from '@codemirror/language'
 import { javascript } from '@codemirror/lang-javascript'
+import { python } from '@codemirror/lang-python'
 import { classHighlighter } from '@lezer/highlight'
 import type { AnswerLanguage } from '../content/schema'
 
@@ -18,8 +19,8 @@ type Props = {
 
 /**
  * The answer editor. Autocomplete and auto-closing brackets are left out on purpose: the learner
- * must recall every character. JavaScript is multi-line (Ctrl/Cmd+Enter submits); shell commands
- * are single-line (Enter submits). Remount with a new `key` to clear it.
+ * must recall every character. JavaScript and Python are multi-line (Ctrl/Cmd+Enter submits); shell
+ * commands are single-line (Enter submits). Remount with a new `key` to clear it.
  */
 export function Editor({ language, onChange, onSubmit, placeholder, ariaLabel, autoFocus = true }: Props) {
   const host = useRef<HTMLDivElement>(null)
@@ -38,8 +39,9 @@ export function Editor({ language, onChange, onSubmit, placeholder, ariaLabel, a
       Prec.highest(
         keymap.of(language === 'shell' ? [{ key: 'Enter', run: submit }, { key: 'Mod-Enter', run: submit }] : [{ key: 'Mod-Enter', run: submit }]),
       ),
-      keymap.of([...defaultKeymap, ...historyKeymap, ...(language === 'js' ? [indentWithTab] : [])]),
-      indentUnit.of('  '),
+      keymap.of([...defaultKeymap, ...historyKeymap, ...(language === 'shell' ? [] : [indentWithTab])]),
+      // Python convention is four spaces; JavaScript uses two.
+      indentUnit.of(language === 'python' ? '    ' : '  '),
       EditorView.lineWrapping,
       placeholderExt(placeholder),
       syntaxHighlighting(classHighlighter),
@@ -54,6 +56,7 @@ export function Editor({ language, onChange, onSubmit, placeholder, ariaLabel, a
       }),
     ]
     if (language === 'js') extensions.push(javascript())
+    if (language === 'python') extensions.push(python())
     if (language === 'shell') {
       // Commands are one line: drop any line breaks (e.g. from a paste).
       extensions.push(EditorState.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)))

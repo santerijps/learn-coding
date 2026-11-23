@@ -1,0 +1,114 @@
+id: git-yhdistaminen
+title: Merging branches
+summary: git merge and resolving conflicts.
+theory: |
+  `git merge <branch>` brings another branch's changes into the **current** branch. So switch to the target branch first:
+
+  ```bash
+  git switch main
+  git merge login
+  ```
+
+  ### Fast-forward and merge commits
+
+  If `main` hasn't changed since the branch was created, Git simply moves the `main` pointer forward. This is called a **fast-forward**. If both branches have changed, Git makes a **merge commit** that joins them.
+
+  The `--no-ff` option always makes a merge commit, so the history shows that the feature was built in its own branch.
+
+  ### Conflicts
+
+  If the same spot was changed in both branches, Git can't decide which change wins. Conflict markers appear in the file:
+
+  ```text
+  <<<<<<< HEAD
+  const title = "Welcome";
+  =======
+  const title = "Hello!";
+  >>>>>>> login
+  ```
+
+  To resolve a conflict:
+
+  - Edit the file the way you want it and remove the `<<<<<<<`, `=======` and `>>>>>>>` markers.
+  - Mark the file as resolved: `git add file.js`.
+  - Finish the merge: `git commit`.
+
+  `git status` shows a merge in progress and lists the conflicted files. To cancel the whole merge, run `git merge --abort`. You can also finish with `git merge --continue`.
+
+  ```bash
+  git merge feature -m "Merge feature"   # the merge commit's message directly
+  git branch --merged                    # branches already merged into the current one (safe to delete)
+  git branch --no-merged                 # branches not merged yet
+  git log --oneline --graph --all        # history of all branches as a graph
+  ```
+exercises:
+  - type: choice
+    question: You want to bring the changes of the branch `feature` into `main`. Which branch must you be on when you run `git merge feature`?
+    options: ['`main`', '`feature`', It doesn't matter, Neither]
+    answer: 0
+    explanation: '`git merge` brings the named branch''s changes into the current branch. So switch to `main` first.'
+  - type: blank
+    question: Complete the command that cancels a merge in progress.
+    code: |
+      git ___ --abort
+    blanks:
+      - [merge]
+    explanation: '`git merge --abort` restores things to how they were before the merge started.'
+  - type: bug
+    question: The goal is to bring the finished `feature` branch into `main`.
+    code: |
+      git switch feature
+      git merge main
+    bugLine: 1
+    explanation: 'This merges `main` into `feature`, not the other way round. Switch to the target branch first (`git switch main`) and then run `git merge feature`.'
+cards:
+  - id: git-merge
+    prompt: Merge the branch `feature` into the current branch.
+    check: match
+    solution: git merge feature
+  - id: git-merge-abort
+    prompt: Cancel a merge in progress and go back to the state before it.
+    check: match
+    solution: git merge --abort
+  - id: git-resolve-add
+    prompt: You have resolved a conflict in the file `app.js`. Mark it as resolved.
+    check: match
+    solution: git add app.js
+  - id: git-merge-no-ff
+    prompt: Merge the branch `feature` so that a merge commit is always created.
+    check: match
+    solution: git merge --no-ff feature
+  - id: git-branch-merged
+    prompt: List the branches that have already been merged into the current branch.
+    check: match
+    solution: git branch --merged
+  - id: git-merge-status
+    prompt: A merge stopped because of a conflict. Check which files are in conflict.
+    check: match
+    solution: git status
+  - id: git-merge-continue
+    prompt: You've resolved the conflicts and staged the files. Finish the merge.
+    check: match
+    solution: git commit
+    accepted:
+      - git merge --continue
+  - id: git-branch-no-merged
+    prompt: List the branches that haven't been merged into the current branch yet.
+    check: match
+    solution: git branch --no-merged
+  - id: git-merge-message
+    prompt: 'Merge the branch `feature` and give the merge commit the message `"Merge feature"`.'
+    check: match
+    solution: git merge feature -m "Merge feature"
+    accepted:
+      - git merge -m "Merge feature" feature
+  - id: git-log-graph
+    prompt: Show the history of all branches as a compact graph where branching and merging are visible.
+    check: match
+    solution: git log --oneline --graph --all
+    accepted:
+      - git log --graph --oneline --all
+      - git log --all --oneline --graph
+      - git log --oneline --all --graph
+      - git log --graph --all --oneline
+      - git log --all --graph --oneline

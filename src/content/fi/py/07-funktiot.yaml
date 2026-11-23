@@ -1,0 +1,158 @@
+id: py-funktiot
+title: Funktiot ja moduulit
+summary: def, return, oletusarvot, nimetyt argumentit ja import.
+theory: |
+  Funktio määritellään avainsanalla `def`. Runko sisennetään, ja arvo palautetaan `return`-lauseella.
+
+  ```python
+  def summa(a, b):
+      return a + b
+
+  tulos = summa(2, 3)   # 5
+  ```
+
+  Funktio, jossa ei ole `return`-lausetta, palauttaa arvon `None`.
+
+  ### Oletusarvot ja nimetyt argumentit
+
+  ```python
+  def tervehdi(nimi, tervehdys="Hei"):
+      return f"{tervehdys} {nimi}!"
+
+  tervehdi("Ada")                     # "Hei Ada!"
+  tervehdi("Ada", tervehdys="Moi")    # "Moi Ada!"
+  ```
+
+  ### Useampi paluuarvo
+
+  Funktio voi palauttaa monikon, jonka kutsuja purkaa muuttujiin:
+
+  ```python
+  def min_max(luvut):
+      return min(luvut), max(luvut)
+
+  pienin, suurin = min_max([3, 9, 1])
+  ```
+
+  ### Moduulit
+
+  Pythonin vakiokirjasto sisältää paljon valmiita moduuleja. Ne otetaan käyttöön `import`-lauseella:
+
+  ```python
+  import math
+  math.sqrt(16)            # 4.0
+
+  from math import pi      # tuo yksittäisen nimen
+  from random import randint
+  randint(1, 6)            # satunnainen kokonaisluku 1–6
+  ```
+exercises:
+  - type: choice
+    question: Mitä funktio palauttaa, jos siinä ei ole `return`-lausetta?
+    options: ['`None`', '`0`', '`""`', Virheen]
+    answer: 0
+    explanation: Pythonissa funktio, joka ei palauta mitään, palauttaa arvon `None`.
+  - type: blank
+    question: Täydennä funktion määrittely.
+    code: |
+      ___ tuplaa(x):
+          return x * 2
+    blanks:
+      - [def]
+    explanation: Funktio määritellään avainsanalla `def`.
+  - type: bug
+    question: '`summa(2, 3)` palauttaa `None`, vaikka sen pitäisi palauttaa `5`.'
+    code: |
+      def summa(a, b):
+          tulos = a + b
+
+      print(summa(2, 3))
+    bugLine: 2
+    explanation: 'Tulos lasketaan, mutta sitä ei palauteta. Kirjoita `return a + b`.'
+cards:
+  - id: py-def-return
+    prompt: 'Kirjoita funktio `tervehdi()`, joka palauttaa merkkijonon `"Hei!"`.'
+    check: test
+    tests:
+      - 'tervehdi() == "Hei!"'
+    solution: |
+      def tervehdi():
+          return "Hei!"
+  - id: py-def-param
+    prompt: Kirjoita funktio `nelio(x)`, joka palauttaa luvun neliön.
+    check: test
+    tests:
+      - 'nelio(3) == 9'
+      - 'nelio(-2) == 4'
+    solution: |
+      def nelio(x):
+          return x * x
+  - id: py-def-two-params
+    prompt: Kirjoita funktio `summa(a, b)`, joka palauttaa kahden luvun summan.
+    check: test
+    tests:
+      - 'summa(2, 3) == 5'
+    solution: |
+      def summa(a, b):
+          return a + b
+  - id: py-def-bool
+    prompt: Kirjoita funktio `on_aikuinen(ika)`, joka palauttaa `True`, jos ikä on vähintään 18, ja muuten `False`.
+    check: test
+    tests:
+      - 'on_aikuinen(18) is True'
+      - 'on_aikuinen(17) is False'
+    solution: |
+      def on_aikuinen(ika):
+          return ika >= 18
+  - id: py-default-param
+    prompt: 'Kirjoita funktio `tervehdi(nimi="vieras")`, joka palauttaa merkkijonon `f"Hei {nimi}!"`.'
+    check: test
+    tests:
+      - 'tervehdi("Ada") == "Hei Ada!"'
+      - 'tervehdi() == "Hei vieras!"'
+    solution: |
+      def tervehdi(nimi="vieras"):
+          return f"Hei {nimi}!"
+  - id: py-keyword-arg
+    prompt: Kutsu valmista funktiota `luo_kayttaja` niin, että `nimi` on `"Ada"` ja `admin` on `True` nimettyinä argumentteina. Tallenna tulos muuttujaan `kayttaja`.
+    check: test
+    setup: |
+      def luo_kayttaja(nimi, ika=None, admin=False):
+          return {"nimi": nimi, "ika": ika, "admin": admin}
+    tests:
+      - 'kayttaja == {"nimi": "Ada", "ika": None, "admin": True}'
+    solution: |
+      kayttaja = luo_kayttaja(nimi="Ada", admin=True)
+  - id: py-return-tuple
+    prompt: Kirjoita funktio `min_max(luvut)`, joka palauttaa listan pienimmän ja suurimman luvun monikkona.
+    check: test
+    tests:
+      - 'min_max([3, 9, 1]) == (1, 9)'
+    solution: |
+      def min_max(luvut):
+          return min(luvut), max(luvut)
+  - id: py-early-return
+    prompt: Kirjoita funktio `jaa(a, b)`, joka palauttaa `None`, jos `b` on nolla, ja muuten osamäärän `a / b`.
+    check: test
+    tests:
+      - 'jaa(6, 2) == 3'
+      - 'jaa(1, 0) is None'
+    solution: |
+      def jaa(a, b):
+          if b == 0:
+              return None
+          return a / b
+  - id: py-import-math
+    prompt: Tuo moduuli `math` ja laske luvun `16` neliöjuuri muuttujaan `juuri` funktiolla `math.sqrt`.
+    check: test
+    tests:
+      - 'juuri == 4.0'
+      - 'math.sqrt(4) == 2'
+    solution: |
+      import math
+      juuri = math.sqrt(16)
+  - id: py-from-import
+    prompt: Tuo moduulista `random` pelkkä funktio `randint`.
+    check: match
+    solution: |
+      from random import randint

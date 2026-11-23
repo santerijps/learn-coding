@@ -1,0 +1,116 @@
+id: git-etarepot
+title: Remote repositories
+summary: clone, push, pull and fetch, i.e. working together through services like GitHub.
+theory: |
+  A **remote** is a copy of the repository somewhere else, usually on GitHub or GitLab. The default name for a remote is `origin`.
+
+  ### Copying an existing repository
+
+  ```bash
+  git clone https://github.com/example/project.git
+  ```
+
+  `clone` downloads the whole history and sets up the remote as `origin` automatically. You can give a target folder name at the end: `git clone <url> my-copy`.
+
+  ### Connecting your own repository to a remote
+
+  ```bash
+  git remote add origin https://github.com/example/project.git
+  git remote -v               # show remotes with their URLs
+  git push -u origin main     # first push, and set the upstream branch
+  ```
+
+  The `-u` option (or `--set-upstream`) remembers that your local `main` matches `origin/main`. After that, plain `git push` or `git pull` is enough.
+
+  ### Everyday workflow
+
+  ```bash
+  git pull        # fetch and merge others' changes
+  # ... make changes, add, commit ...
+  git push        # send your commits
+  ```
+
+  A new branch is pushed the first time just like `main`: `git push -u origin feature`. You can also name the remote and branch explicitly: `git pull origin main`.
+
+  ### fetch or pull?
+
+  - `git fetch` downloads the remote's new commits but **doesn't change** your branches. Use it to see what's coming.
+  - `git pull` is essentially `fetch` + `merge`: it fetches the changes and merges them into the current branch.
+
+  If `push` is rejected because the remote has commits you don't have, run `git pull` first and then `git push` again.
+exercises:
+  - type: choice
+    question: What's the difference between `git fetch` and `git pull`?
+    options:
+      - '`fetch` downloads changes without merging; `pull` downloads and merges'
+      - '`fetch` sends and `pull` receives'
+      - They're the same command
+      - '`pull` only works on GitHub'
+    answer: 0
+    explanation: '`git pull` is `git fetch` followed by `git merge`. Plain `fetch` doesn''t touch your branches.'
+  - type: blank
+    question: Complete the first push so that `main` tracks the remote branch.
+    code: |
+      git push ___ origin main
+    blanks:
+      - ['-u', '--set-upstream']
+    explanation: The `-u` option sets the upstream branch, after which plain `git push` is enough.
+  - type: bug
+    question: The changes were supposed to end up on GitHub, but they're not there.
+    code: |
+      git clone https://github.com/example/project.git
+      cd project
+      git add .
+      git commit -m "Update README"
+      git pull
+    bugLine: 5
+    explanation: '`git pull` only fetches changes and sends nothing. Your own commits are sent with `git push`.'
+cards:
+  - id: git-clone
+    prompt: 'Clone the repository at `https://github.com/example/project.git`.'
+    check: match
+    solution: git clone https://github.com/example/project.git
+  - id: git-remote-list
+    prompt: Show the remotes with their URLs.
+    check: match
+    solution: git remote -v
+    accepted:
+      - git remote --verbose
+  - id: git-remote-add
+    prompt: 'Add a remote named `origin` with the URL `https://github.com/example/project.git`.'
+    check: match
+    solution: git remote add origin https://github.com/example/project.git
+  - id: git-push-upstream
+    prompt: Push the branch `main` to the remote `origin` for the first time and set it as the upstream branch.
+    check: match
+    solution: git push -u origin main
+    accepted:
+      - git push --set-upstream origin main
+  - id: git-pull
+    prompt: Fetch the remote's changes and merge them into the current branch.
+    check: match
+    solution: git pull
+  - id: git-fetch
+    prompt: Fetch the remote's changes without merging them into your branches.
+    check: match
+    solution: git fetch
+    accepted:
+      - git fetch origin
+  - id: git-push
+    prompt: Send your new commits to the remote. The upstream branch is already set.
+    check: match
+    solution: git push
+  - id: git-clone-into-dir
+    prompt: 'Clone the repository at `https://github.com/example/project.git` into the folder `my-copy`.'
+    check: match
+    solution: git clone https://github.com/example/project.git my-copy
+  - id: git-push-new-branch
+    prompt: Push the new branch `feature` to the remote `origin` for the first time and set it as the upstream branch.
+    check: match
+    solution: git push -u origin feature
+    accepted:
+      - git push --set-upstream origin feature
+  - id: git-pull-explicit
+    prompt: Fetch and merge the branch `main` of the remote `origin` into the current branch, naming both in the command.
+    check: match
+    solution: git pull origin main

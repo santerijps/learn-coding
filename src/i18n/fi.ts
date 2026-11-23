@@ -1,6 +1,6 @@
 /**
- * Finnish UI strings. To add a language, create a file with the same shape (`const en: Messages = …`)
- * and pick it in ./index.ts.
+ * Finnish UI strings. Every language file has this shape (`Messages`); register new ones in ./index.ts.
+ * Keep values plain strings (no `as const`) so other languages can use different text.
  */
 const plural = (n: number, one: string, many: string) => (n === 1 ? one : many)
 
@@ -43,7 +43,7 @@ export const fi = {
   toExercises: 'Siirry tehtäviin',
   skipLesson: 'Osaan jo tämän, ohita',
   exerciseCounter: (i: number, n: number) => `Tehtävä ${i}/${n}`,
-  exerciseKind: { choice: 'Monivalinta', blank: 'Täydennä', bug: 'Etsi virhe' } as const,
+  exerciseKind: { choice: 'Monivalinta', blank: 'Täydennä', bug: 'Etsi virhe' },
   bugInstruction: 'Valitse rivi, jolla virhe on.',
   blankInstruction: 'Täydennä puuttuvat kohdat.',
   blankLabel: (i: number) => `Aukko ${i}`,
@@ -59,10 +59,10 @@ export const fi = {
 
   // Practice
   cardCounter: (i: number, n: number) => `Kortti ${i}/${n}`,
-  submitHintJs: (mod: string) => `${mod}+Enter tarkistaa · Enter vaihtaa riviä`,
+  submitHintCode: (mod: string) => `${mod}+Enter tarkistaa · Enter vaihtaa riviä`,
   givenCode: 'Valmiina annettu koodi',
   submitHintShell: 'Enter tarkistaa',
-  answerPlaceholderJs: 'Kirjoita koodi tähän…',
+  answerPlaceholderCode: 'Kirjoita koodi tähän…',
   answerPlaceholderShell: 'Kirjoita komento tähän…',
   answerLabel: 'Vastauksesi',
   hint: 'Vihje',
@@ -77,6 +77,8 @@ export const fi = {
   overrideRight: 'Vastaukseni oli oikein',
   errorPrefix: 'Virhe',
   timeout: 'Koodin suoritus kesti liian kauan (ikuinen silmukka?)',
+  pythonLoading: 'Ladataan Pythonia… (vain ensimmäisellä kerralla)',
+  pythonLoadFailed: 'Python-ympäristön lataus epäonnistui. Tarkista verkkoyhteys ja lataa sivu uudelleen.',
   continue: 'Jatka',
   newCard: 'Uusi',
   noLessonsDone: 'Suorita ensin oppitunti, niin sen kortit tulevat kerrattaviksi.',
@@ -129,8 +131,11 @@ export const fi = {
   notFound: 'Sivua ei löytynyt.',
 
   // Theme
-  themeName: { auto: 'Automaattinen', light: 'Vaalea', dark: 'Tumma' } as const,
+  themeName: { auto: 'Automaattinen', light: 'Vaalea', dark: 'Tumma' },
   themeSwitch: (current: string, next: string) => `Teema: ${current}. Vaihda teemaan ${next}.`,
+
+  // Language
+  languageLabel: 'Kieli',
 }
 
 export type Messages = typeof fi

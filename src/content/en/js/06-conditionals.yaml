@@ -1,0 +1,200 @@
+id: js-ehtolauseet
+title: Conditionals
+summary: Making decisions with if, else and the ternary operator.
+theory: |
+  A conditional runs code only when a condition is true.
+
+  ```js
+  const temperature = 28;
+
+  if (temperature > 25) {
+    console.log("Hot");
+  } else if (temperature > 15) {
+    console.log("Warm");
+  } else {
+    console.log("Cool");
+  }
+  ```
+
+  Conditions are checked from top to bottom, and only the **first** true branch runs. `else` is optional; it runs when none of the conditions were true.
+
+  ### The ternary operator
+
+  When choosing between two values, `condition ? valueIfTrue : valueIfFalse` fits on one line:
+
+  ```js
+  const age = 20;
+  const status = age >= 18 ? "adult" : "minor";
+  ```
+
+  ### Truthy and falsy
+
+  Any value can be used as a condition. These values count as false (**falsy**): `false`, `0`, `""` (empty string), `null`, `undefined` and `NaN`. Everything else is true (**truthy**).
+
+  ```js
+  const name = "";
+  if (name) {
+    console.log(`Hi ${name}`);
+  } else {
+    console.log("Name missing");
+  }
+  ```
+
+  ### Defaults with ||
+
+  `a || b` returns `a` if it is truthy, and `b` otherwise. It's often used for default values:
+
+  ```js
+  const input = "";
+  const name = input || "Anonymous"; // "Anonymous"
+  ```
+exercises:
+  - type: choice
+    question: Which of these values is falsy?
+    options: ['`"0"`', '`0`', '`"false"`', '`[]`']
+    answer: 1
+    explanation: The number `0` is falsy. The strings `"0"` and `"false"` are not empty, so they're truthy. An empty array `[]` is truthy too.
+  - type: blank
+    question: Complete the structure so it prints `Not hot` when the condition isn't true.
+    code: |
+      if (temperature > 25) {
+        console.log("Hot");
+      } ___ {
+        console.log("Not hot");
+      }
+    blanks:
+      - [else]
+    explanation: The `else` branch runs when none of the previous conditions were true.
+  - type: bug
+    question: The program prints `Adult` even though `age` is 16.
+    code: |
+      const age = 16;
+      if (age >= 18); {
+        console.log("Adult");
+      }
+    bugLine: 2
+    explanation: 'The semicolon after the condition ends the if statement immediately, so the block always runs. Remove it: `if (age >= 18) {`'
+cards:
+  - id: js-if-simple
+    prompt: Print `Freezing` if `temperature` is below zero.
+    check: test
+    setup: |
+      const temperature = -5;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Freezing"'
+    solution: |
+      if (temperature < 0) {
+        console.log("Freezing");
+      }
+  - id: js-if-else
+    prompt: Print `Even` or `Odd` depending on whether `number` is even.
+    check: test
+    setup: |
+      const number = 7;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Odd"'
+    solution: |
+      if (number % 2 === 0) {
+        console.log("Even");
+      } else {
+        console.log("Odd");
+      }
+  - id: js-else-if
+    prompt: 'Set the variable `grade` to `"A"` if `points` ≥ 90, `"B"` if `points` ≥ 70, and `"C"` otherwise.'
+    check: test
+    setup: |
+      const points = 75;
+    tests:
+      - 'grade === "B"'
+    hint: Declare `let grade;` first, then set the value in an if / else if / else structure.
+    solution: |
+      let grade;
+      if (points >= 90) {
+        grade = "A";
+      } else if (points >= 70) {
+        grade = "B";
+      } else {
+        grade = "C";
+      }
+  - id: js-ternary
+    prompt: 'Create a constant `state` with the ternary operator: `"open"` if `isOpen` is true, otherwise `"closed"`.'
+    check: test
+    setup: |
+      const isOpen = false;
+    tests:
+      - 'state === "closed"'
+    solution: |
+      const state = isOpen ? "open" : "closed";
+  - id: js-truthy-check
+    prompt: Print `Welcome` if `user` is not an empty string, and `Please log in` otherwise.
+    check: test
+    setup: |
+      const user = "";
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Please log in"'
+    solution: |
+      if (user) {
+        console.log("Welcome");
+      } else {
+        console.log("Please log in");
+      }
+  - id: js-if-equals
+    prompt: Print `Correct!` if `answer` is exactly `42`.
+    check: test
+    setup: |
+      const answer = 42;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Correct!"'
+    solution: |
+      if (answer === 42) {
+        console.log("Correct!");
+      }
+  - id: js-sign
+    prompt: 'Set the variable `sign` to `"positive"`, `"negative"` or `"zero"` depending on `number`.'
+    check: test
+    setup: |
+      const number = 0;
+    tests:
+      - 'sign === "zero"'
+    solution: |
+      let sign;
+      if (number > 0) {
+        sign = "positive";
+      } else if (number < 0) {
+        sign = "negative";
+      } else {
+        sign = "zero";
+      }
+  - id: js-ternary-plural
+    prompt: 'Create a constant `text` with the ternary operator: `"1 message"` if `count` is 1, otherwise for example `"3 messages"`.'
+    check: test
+    setup: |
+      const count = 3;
+    tests:
+      - 'text === "3 messages"'
+    solution: |
+      const text = count === 1 ? "1 message" : `${count} messages`;
+  - id: js-if-and-else
+    prompt: Print `Welcome` if both `loggedIn` and `isAdmin` are true, and `Access denied` otherwise.
+    check: test
+    setup: |
+      const loggedIn = true;
+      const isAdmin = false;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Access denied"'
+    solution: |
+      if (loggedIn && isAdmin) {
+        console.log("Welcome");
+      } else {
+        console.log("Access denied");
+      }
+  - id: js-or-default
+    prompt: 'Create a constant `name` whose value is `input` if it is truthy, and `"Anonymous"` otherwise.'
+    check: test
+    setup: |
+      const input = "";
+    tests:
+      - 'name === "Anonymous"'
+    hint: '`||` returns the right side when the left side is falsy.'
+    solution: |
+      const name = input || "Anonymous";

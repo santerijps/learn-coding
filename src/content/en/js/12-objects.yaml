@@ -1,0 +1,185 @@
+id: js-oliot
+title: Objects
+summary: Key–value pairs, properties and methods.
+theory: |
+  An object groups related values together. Each value is stored under a **key**, the property name.
+
+  ```js
+  const user = {
+    name: "Ada",
+    age: 36,
+    languages: ["fi", "en"],
+  };
+
+  user.name;          // "Ada"
+  user["age"];        // 36
+  user.age = 37;      // change
+  user.country = "UK"; // add a new property
+  delete user.country; // remove
+  ```
+
+  ### Dot or brackets?
+
+  Dot notation `object.key` is the usual way. Brackets are needed when the key is stored in a variable:
+
+  ```js
+  const field = "name";
+  user[field]; // "Ada"
+  ```
+
+  ### Shorthand
+
+  If a variable has the same name as the key, you only need to write it once:
+
+  ```js
+  const name = "Linus";
+  const age = 54;
+  const person = { name, age }; // { name: "Linus", age: 54 }
+  ```
+
+  ### Methods
+
+  A property can be a function. Inside a method, `this` refers to the object itself:
+
+  ```js
+  const counter = {
+    value: 0,
+    increment() {
+      this.value++;
+    },
+  };
+  counter.increment();
+  ```
+
+  ### Going through an object
+
+  ```js
+  const settings = { theme: "dark", language: "en" };
+  Object.keys(settings);    // ["theme", "language"]
+  Object.values(settings);  // ["dark", "en"]
+  Object.entries(settings); // [["theme", "dark"], ["language", "en"]]
+  ```
+
+  ### Optional chaining
+
+  `?.` returns `undefined` instead of crashing if a value in between is missing: `user.address?.street`.
+exercises:
+  - type: choice
+    question: The key's name is stored in the variable `key`. How do you get its value from `obj`?
+    options: ['`obj.key`', '`obj[key]`', '`obj."key"`', '`obj->key`']
+    answer: 1
+    explanation: '`obj.key` would look for a property literally named "key". Brackets use the variable''s value.'
+  - type: blank
+    question: Fill in the blank so the program prints `1960`.
+    code: |
+      const book = { title: "To Kill a Mockingbird", year: 1960 };
+      console.log(book.___);
+    blanks:
+      - [year]
+    explanation: Read a property's value with dot notation and the key's name.
+  - type: bug
+    question: The program won't run. Which line has the syntax error?
+    code: |
+      const user = {
+        name: "Ada",
+        age = 36,
+      };
+    bugLine: 3
+    explanation: 'Inside an object, a key and its value are separated by a colon, not an equals sign: `age: 36,`'
+cards:
+  - id: js-object-create
+    prompt: 'Create an object `user` with the properties `name` (value `"Ada"`) and `age` (value `36`).'
+    check: test
+    tests:
+      - 'user.name === "Ada" && user.age === 36'
+    solution: |
+      const user = { name: "Ada", age: 36 };
+  - id: js-object-read
+    prompt: Store the price of the object `product` in a constant `price`.
+    check: test
+    setup: |
+      const product = { name: "Coffee", price: 4.5 };
+    tests:
+      - 'price === 4.5'
+    solution: |
+      const price = product.price;
+  - id: js-object-add
+    prompt: Add a property `color` with the value `"red"` to the object `car`.
+    check: test
+    setup: |
+      const car = { make: "Volvo" };
+    tests:
+      - 'car.color === "red" && car.make === "Volvo"'
+    solution: |
+      car.color = "red";
+  - id: js-object-bracket
+    prompt: Get the property of `person` whose name is stored in the variable `field`, and store its value in a constant `value`.
+    check: test
+    setup: |
+      const person = { name: "Linus", city: "Helsinki" };
+      const field = "city";
+    tests:
+      - 'value === "Helsinki"'
+    solution: |
+      const value = person[field];
+  - id: js-object-keys
+    prompt: Create an array `keys` containing the keys of the object `settings`.
+    check: test
+    setup: |
+      const settings = { theme: "dark", language: "en" };
+    tests:
+      - 'JSON.stringify(keys) === JSON.stringify(["theme", "language"])'
+    solution: |
+      const keys = Object.keys(settings);
+  - id: js-find-object
+    prompt: Find the user whose name is `"Grace"` in the array `users` and store it in a constant `grace`.
+    check: test
+    setup: |
+      const users = [
+        { name: "Ada", age: 36 },
+        { name: "Grace", age: 45 },
+      ];
+    tests:
+      - 'grace === users[1]'
+    solution: |
+      const grace = users.find((u) => u.name === "Grace");
+  - id: js-object-method
+    prompt: Create an object `counter` with a property `value` (starting at `0`) and a method `increment()` that increases the value by one.
+    check: test
+    tests:
+      - '(counter.increment(), counter.increment(), counter.value === 2)'
+    solution: |
+      const counter = {
+        value: 0,
+        increment() {
+          this.value++;
+        },
+      };
+  - id: js-object-shorthand
+    prompt: The variables `name` and `age` are given. Create an object `person` from them using the shorthand syntax.
+    check: test
+    setup: |
+      const name = "Linus";
+      const age = 54;
+    tests:
+      - 'person.name === "Linus" && person.age === 54'
+    solution: |
+      const person = { name, age };
+  - id: js-object-delete
+    prompt: Remove the property `password` from the object `user`.
+    check: test
+    setup: |
+      const user = { name: "Ada", password: "1234" };
+    tests:
+      - '!("password" in user) && user.name === "Ada"'
+    solution: |
+      delete user.password;
+  - id: js-optional-chaining
+    prompt: Get the street of the address of `user` (`address.street`) into a constant `street` so the code doesn't crash even when the address is missing.
+    check: test
+    setup: |
+      const user = { name: "Ada" };
+    tests:
+      - 'street === undefined'
+    solution: |
+      const street = user.address?.street;

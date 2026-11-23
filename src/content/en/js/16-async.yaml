@@ -1,0 +1,204 @@
+id: js-async
+title: Asynchronous code
+summary: Promises, async/await and fetching data with fetch.
+theory: |
+  Some operations take time: a network request, reading a file or a timer. JavaScript doesn't wait for them; it keeps running other code. These operations return a **promise** that later resolves with a value or rejects with an error.
+
+  ### async and await
+
+  `await` waits for a promise to resolve and gives you its value. You can use it inside an `async` function and at the top level of a module.
+
+  ```js
+  async function getUser() {
+    const response = await fetch("/api/user");
+    const data = await response.json();
+    return data.name;
+  }
+  ```
+
+  An `async` function **always** returns a promise, so the caller has to wait for it too: `const name = await getUser();`.
+
+  ### fetch
+
+  `fetch(url)` makes an HTTP request and returns a promise of the response. The body is read separately, for example with `await response.json()`. `response.ok` tells whether the request succeeded (status 200–299).
+
+  ### Errors
+
+  A rejected promise throws at the `await`, so you handle it with the familiar `try/catch`:
+
+  ```js
+  try {
+    const data = await getUser();
+  } catch (error) {
+    console.log("Request failed");
+  }
+  ```
+
+  ### then
+
+  Older code handles promises with the `then` method:
+
+  ```js
+  getUser().then((name) => console.log(name));
+  ```
+
+  ### Your own promise
+
+  You can create a promise with `new Promise`. The most common use is a sleep function:
+
+  ```js
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  await sleep(1000); // continues after a second
+  ```
+
+  ### In parallel
+
+  `Promise.all` waits for several promises at once and returns the results as an array, in the same order:
+
+  ```js
+  const [users, products] = await Promise.all([getUsers(), getProducts()]);
+  ```
+exercises:
+  - type: choice
+    question: What does an `async` function return?
+    options: [Always a promise, Its return value directly, '`undefined`', A callback function]
+    answer: 0
+    explanation: An `async` function's return value is always wrapped in a promise, so you get it with `await` or `then`.
+  - type: blank
+    question: Fill in the blank so that `response` is the server's response, not a promise.
+    code: |
+      const response = ___ fetch("/api/users");
+    blanks:
+      - [await]
+    explanation: '`await` waits for the promise to resolve and gives you its value.'
+  - type: bug
+    question: The function returns `undefined` instead of the user's name.
+    code: |
+      async function getUser() {
+        const response = await fetch("/api/user");
+        const data = response.json();
+        return data.name;
+      }
+    bugLine: 3
+    explanation: '`response.json()` also returns a promise, so it has to be awaited too: `const data = await response.json();`'
+cards:
+  - id: js-async-function
+    prompt: Write an async function `getNumber()` that returns the number `42`.
+    check: test
+    tests:
+      - 'getNumber() instanceof Promise'
+      - '(await getNumber()) === 42'
+    solution: |
+      async function getNumber() {
+        return 42;
+      }
+  - id: js-await-value
+    prompt: Wait for the value of the promise returned by the existing function `load()` and store it in a constant `result`.
+    check: test
+    setup: |
+      const load = () => Promise.resolve("done");
+    tests:
+      - 'result === "done"'
+    solution: |
+      const result = await load();
+  - id: js-fetch-json
+    prompt: 'Write an async function `getName()` that fetches `"/api/user"` with fetch, parses the response as JSON and returns its `name` field.'
+    check: test
+    setup: |
+      // For this exercise, fetch returns a ready-made response.
+      const fetch = async (url) => ({
+        ok: true,
+        json: async () => (url === "/api/user" ? { name: "Ada" } : {}),
+      });
+    tests:
+      - '(await getName()) === "Ada"'
+    solution: |
+      async function getName() {
+        const response = await fetch("/api/user");
+        const data = await response.json();
+        return data.name;
+      }
+  - id: js-then
+    prompt: Print the value of the promise returned by `load()` using the `then` method, without `await`.
+    check: test
+    setup: |
+      const load = () => Promise.resolve("done");
+    tests:
+      - '__logs[0] === "done"'
+    solution: |
+      load().then((value) => console.log(value));
+  - id: js-promise-all
+    prompt: Run `getA()` and `getB()` in parallel with `Promise.all` and store the results in a constant `results`.
+    check: test
+    setup: |
+      const getA = async () => "A";
+      const getB = async () => "B";
+    tests:
+      - 'JSON.stringify(results) === JSON.stringify(["A", "B"])'
+    solution: |
+      const results = await Promise.all([getA(), getB()]);
+  - id: js-await-try-catch
+    prompt: 'Write an async function `safeFetch()` that returns the value of `await get()`, or the string `"error"` if the promise rejects.'
+    check: test
+    setup: |
+      const get = async () => {
+        throw new Error("network");
+      };
+    tests:
+      - '(await safeFetch()) === "error"'
+    solution: |
+      async function safeFetch() {
+        try {
+          return await get();
+        } catch {
+          return "error";
+        }
+      }
+  - id: js-async-arrow
+    prompt: 'Write an async arrow function `getData` that returns the string `"data"`.'
+    check: test
+    tests:
+      - 'getData() instanceof Promise'
+      - '(await getData()) === "data"'
+      - '!Object.hasOwn(getData, "prototype")'
+    solution: |
+      const getData = async () => "data";
+  - id: js-await-sequential
+    prompt: First await `getUser()`, then fetch the user's orders with `getOrders(user.id)`. Store the orders in a constant `orders`.
+    check: test
+    setup: |
+      const getUser = async () => ({ id: 7 });
+      const getOrders = async (id) => (id === 7 ? ["book"] : []);
+    tests:
+      - 'JSON.stringify(orders) === JSON.stringify(["book"])'
+    solution: |
+      const user = await getUser();
+      const orders = await getOrders(user.id);
+  - id: js-fetch-ok
+    prompt: 'Write an async function `get(url)` that fetches the URL with fetch. If `response.ok` is false, throw `new Error("Request failed")`; otherwise return `await response.json()`.'
+    check: test
+    setup: |
+      // For this exercise, fetch returns a ready-made response.
+      const fetch = async (url) => ({
+        ok: url === "/ok",
+        json: async () => ({ a: 1 }),
+      });
+    tests:
+      - '(await get("/ok")).a === 1'
+      - 'await (async () => { try { await get("/missing"); return false; } catch (e) { return e.message === "Request failed"; } })()'
+    solution: |
+      async function get(url) {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
+        return await response.json();
+      }
+  - id: js-sleep-promise
+    prompt: Write a function `sleep(ms)` that returns a promise which resolves after `ms` milliseconds, using `setTimeout`.
+    check: test
+    tests:
+      - 'sleep(1) instanceof Promise'
+      - 'await (async () => { const start = Date.now(); await sleep(30); return Date.now() - start >= 25; })()'
+    solution: |
+      const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

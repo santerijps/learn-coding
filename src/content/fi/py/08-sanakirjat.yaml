@@ -1,0 +1,169 @@
+id: py-sanakirjat
+title: Sanakirjat ja joukot
+summary: Avain–arvo-parit, läpikäynti ja joukot.
+theory: |
+  Sanakirja (dict) tallentaa arvoja **avainten** alle. Se kirjoitetaan aaltosulkeisiin.
+
+  ```python
+  kayttaja = {"nimi": "Ada", "ika": 36}
+
+  kayttaja["nimi"]          # "Ada"
+  kayttaja["ika"] = 37      # muokkaa
+  kayttaja["maa"] = "UK"    # lisää uusi avain
+  del kayttaja["maa"]       # poista
+  "nimi" in kayttaja        # True, eli tarkistaa avaimen
+  ```
+
+  ### get
+
+  Puuttuva avain hakasulkeilla aiheuttaa virheen `KeyError`. `get` palauttaa sen sijaan arvon `None` tai annetun oletusarvon:
+
+  ```python
+  kayttaja.get("puhelin")         # None
+  kayttaja.get("kieli", "fi")     # "fi"
+  ```
+
+  ### Läpikäynti
+
+  ```python
+  for avain in kayttaja:                # avaimet
+      print(avain)
+  for avain, arvo in kayttaja.items():  # avain–arvo-parit
+      print(avain, arvo)
+  list(kayttaja.keys())                 # ["nimi", "ika"]
+  list(kayttaja.values())               # ["Ada", 37]
+  ```
+
+  ### Laskeminen sanakirjaan
+
+  Yleinen kaava on laskea esiintymiä:
+
+  ```python
+  maarat = {}
+  for sana in ["a", "b", "a"]:
+      maarat[sana] = maarat.get(sana, 0) + 1
+  # {"a": 2, "b": 1}
+  ```
+
+  ### Joukko (set)
+
+  Joukko sisältää jokaisen arvon vain kerran, ja sen jäsenyyden tarkistaminen on nopeaa:
+
+  ```python
+  uniikit = set([1, 2, 2, 3])   # {1, 2, 3}
+  uniikit.add(4)
+  ```
+exercises:
+  - type: choice
+    question: Mitä `kayttaja.get("puhelin")` palauttaa, jos avainta ei ole?
+    options: ['`None`', '`KeyError`-virheen', '`""`', '`False`']
+    answer: 0
+    explanation: '`get` palauttaa arvon `None` (tai annetun oletusarvon), kun taas `kayttaja["puhelin"]` aiheuttaisi virheen `KeyError`.'
+  - type: blank
+    question: Täydennä silmukka, joka käy läpi sekä avaimet että arvot.
+    code: |
+      for avain, arvo in kayttaja.___():
+          print(avain, arvo)
+    blanks:
+      - [items]
+    explanation: '`items()` palauttaa avain–arvo-parit.'
+  - type: bug
+    question: Ohjelma kaatuu virheeseen `KeyError`, kun avainta ei vielä ole.
+    code: |
+      maarat = {}
+      for sana in ["a", "b", "a"]:
+          maarat[sana] = maarat[sana] + 1
+    bugLine: 3
+    explanation: 'Ensimmäisellä kerralla avainta ei ole. Käytä oletusarvoa: `maarat[sana] = maarat.get(sana, 0) + 1`.'
+cards:
+  - id: py-dict-create
+    prompt: 'Luo sanakirja `kayttaja`, jossa avaimen `"nimi"` arvo on `"Ada"` ja avaimen `"ika"` arvo on `36`.'
+    check: test
+    tests:
+      - 'kayttaja == {"nimi": "Ada", "ika": 36}'
+    solution: |
+      kayttaja = {"nimi": "Ada", "ika": 36}
+  - id: py-dict-read
+    prompt: 'Tallenna sanakirjan `tuote` avaimen `"hinta"` arvo muuttujaan `hinta`.'
+    check: test
+    setup: |
+      tuote = {"nimi": "Kahvi", "hinta": 4.5}
+    tests:
+      - 'hinta == 4.5'
+    solution: |
+      hinta = tuote["hinta"]
+  - id: py-dict-add
+    prompt: 'Lisää sanakirjaan `auto` avain `"vari"` arvolla `"punainen"`.'
+    check: test
+    setup: |
+      auto = {"merkki": "Volvo"}
+    tests:
+      - 'auto == {"merkki": "Volvo", "vari": "punainen"}'
+    solution: |
+      auto["vari"] = "punainen"
+  - id: py-dict-get-default
+    prompt: 'Hae sanakirjasta `asetukset` avaimen `"kieli"` arvo muuttujaan `kieli` niin, että oletusarvo on `"fi"`.'
+    check: test
+    setup: |
+      asetukset = {"teema": "tumma"}
+    tests:
+      - 'kieli == "fi"'
+    solution: |
+      kieli = asetukset.get("kieli", "fi")
+  - id: py-dict-del
+    prompt: 'Poista sanakirjasta `kayttaja` avain `"salasana"`.'
+    check: test
+    setup: |
+      kayttaja = {"nimi": "Ada", "salasana": "1234"}
+    tests:
+      - 'kayttaja == {"nimi": "Ada"}'
+    solution: |
+      del kayttaja["salasana"]
+  - id: py-dict-in
+    prompt: 'Tarkista, onko sanakirjassa `kayttaja` avain `"email"`, ja tallenna tulos muuttujaan `on_email`.'
+    check: test
+    setup: |
+      kayttaja = {"nimi": "Ada", "email": "ada@example.com"}
+    tests:
+      - 'on_email is True'
+    solution: |
+      on_email = "email" in kayttaja
+  - id: py-dict-items
+    prompt: 'Tulosta jokainen sanakirjan `hinnat` avain ja arvo muodossa `kahvi 4.5`.'
+    check: test
+    setup: |
+      hinnat = {"kahvi": 4.5, "tee": 3.0}
+    tests:
+      - '__logs == ["kahvi 4.5", "tee 3.0"]'
+    solution: |
+      for tuote, hinta in hinnat.items():
+          print(tuote, hinta)
+  - id: py-dict-keys
+    prompt: Luo lista `avaimet`, jossa ovat sanakirjan `asetukset` avaimet.
+    check: test
+    setup: |
+      asetukset = {"teema": "tumma", "kieli": "fi"}
+    tests:
+      - 'avaimet == ["teema", "kieli"]'
+    solution: |
+      avaimet = list(asetukset.keys())
+  - id: py-dict-count
+    prompt: Laske sanakirjaan `maarat`, montako kertaa kukin sana esiintyy listassa `sanat`.
+    check: test
+    setup: |
+      sanat = ["a", "b", "a"]
+    tests:
+      - 'maarat == {"a": 2, "b": 1}'
+    solution: |
+      maarat = {}
+      for sana in sanat:
+          maarat[sana] = maarat.get(sana, 0) + 1
+  - id: py-set-unique
+    prompt: Luo joukko `uniikit`, jossa on listan `luvut` jokainen arvo vain kerran.
+    check: test
+    setup: |
+      luvut = [1, 2, 2, 3, 3, 3]
+    tests:
+      - 'uniikit == {1, 2, 3}'
+    solution: |
+      uniikit = set(luvut)

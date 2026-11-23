@@ -1,0 +1,176 @@
+id: js-funktiot
+title: Functions
+summary: Reusable code with parameters and return values.
+theory: |
+  A function is a named piece of code you can call again and again. It takes **parameters** and gives back a **return value** with `return`.
+
+  ```js
+  function sum(a, b) {
+    return a + b;
+  }
+
+  const result = sum(2, 3);   // 5
+  console.log(sum(10, 20));   // 30
+  ```
+
+  ### return or console.log?
+
+  `return` gives a value back to the caller so other code can use it. `console.log` only shows it. A function without `return` returns `undefined`.
+
+  ```js
+  function doubleAndPrint(x) {
+    console.log(x * 2); // prints, but returns nothing
+  }
+  const value = doubleAndPrint(4); // prints 8, but value is undefined
+  ```
+
+  `return` ends the function immediately. It's often used to exit early:
+
+  ```js
+  function divide(a, b) {
+    if (b === 0) {
+      return null;
+    }
+    return a / b;
+  }
+  ```
+
+  ### Scope
+
+  Variables declared inside a function exist only inside it. A function can still see variables declared outside it.
+exercises:
+  - type: choice
+    question: What does a function return if it has no `return` statement?
+    options: ['`undefined`', '`null`', '`0`', It throws an error]
+    answer: 0
+    explanation: A function that returns nothing always returns `undefined`.
+  - type: blank
+    question: Complete the function so it returns the number doubled.
+    code: |
+      function double(x) {
+        ___ x * 2;
+      }
+    blanks:
+      - [return]
+    explanation: A function gives a value back to the caller with `return`.
+  - type: bug
+    question: '`sum(2, 3)` returns `undefined` even though it should return `5`.'
+    code: |
+      function sum(a, b) {
+        const result = a + b;
+      }
+      console.log(sum(2, 3));
+    bugLine: 2
+    explanation: 'The result is calculated but never returned. Write `return a + b;` or add `return result;`.'
+cards:
+  - id: js-function-return
+    prompt: 'Write a function `greet` that returns the string `"Hi!"`.'
+    check: test
+    tests:
+      - 'greet() === "Hi!"'
+    solution: |
+      function greet() {
+        return "Hi!";
+      }
+  - id: js-function-param
+    prompt: Write a function `square(x)` that returns the square of a number.
+    check: test
+    tests:
+      - 'square(3) === 9'
+      - 'square(-2) === 4'
+    solution: |
+      function square(x) {
+        return x * x;
+      }
+  - id: js-function-two-params
+    prompt: Write a function `sum(a, b)` that returns the sum of two numbers.
+    check: test
+    tests:
+      - 'sum(2, 3) === 5'
+      - 'sum(-1, 1) === 0'
+    solution: |
+      function sum(a, b) {
+        return a + b;
+      }
+  - id: js-function-boolean
+    prompt: Write a function `isAdult(age)` that returns `true` if the age is at least 18, and `false` otherwise.
+    check: test
+    tests:
+      - 'isAdult(18) === true'
+      - 'isAdult(17) === false'
+    solution: |
+      function isAdult(age) {
+        return age >= 18;
+      }
+  - id: js-function-max
+    prompt: Write a function `maximum(a, b)` that returns the larger number. Don't use `Math.max`.
+    check: test
+    tests:
+      - 'maximum(3, 7) === 7'
+      - 'maximum(9, 2) === 9'
+      - '!String(maximum).includes("Math.max")'
+    solution: |
+      function maximum(a, b) {
+        if (a > b) {
+          return a;
+        }
+        return b;
+      }
+  - id: js-function-call
+    prompt: Call the existing function `calculate` with the arguments `4` and `5`, and store the result in a constant `result`.
+    check: test
+    setup: |
+      function calculate(a, b) {
+        return a * b + 1;
+      }
+    tests:
+      - 'result === 21'
+    solution: |
+      const result = calculate(4, 5);
+  - id: js-function-template
+    prompt: 'Write a function `greet(name)` that returns the string `` `Hi ${name}!` ``.'
+    check: test
+    tests:
+      - 'greet("Ada") === "Hi Ada!"'
+      - 'greet("Linus") === "Hi Linus!"'
+    solution: |
+      function greet(name) {
+        return `Hi ${name}!`;
+      }
+  - id: js-function-is-even
+    prompt: Write a function `isEven(n)` that returns `true` for an even number and `false` otherwise.
+    check: test
+    tests:
+      - 'isEven(4) === true'
+      - 'isEven(7) === false'
+    solution: |
+      function isEven(n) {
+        return n % 2 === 0;
+      }
+  - id: js-function-early-return
+    prompt: Write a function `divide(a, b)` that returns `null` if `b` is zero, and the quotient `a / b` otherwise.
+    check: test
+    tests:
+      - 'divide(6, 2) === 3'
+      - 'divide(1, 0) === null'
+    solution: |
+      function divide(a, b) {
+        if (b === 0) {
+          return null;
+        }
+        return a / b;
+      }
+  - id: js-function-abs
+    prompt: Write a function `absolute(x)` that returns the absolute value of a number. Don't use `Math.abs`.
+    check: test
+    tests:
+      - 'absolute(-5) === 5'
+      - 'absolute(3) === 3'
+      - '!String(absolute).includes("Math.abs")'
+    solution: |
+      function absolute(x) {
+        if (x < 0) {
+          return -x;
+        }
+        return x;
+      }

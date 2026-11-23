@@ -1,0 +1,156 @@
+id: js-nuolifunktiot
+title: Arrow functions and defaults
+summary: Shorter function syntax and functions as values.
+theory: |
+  An arrow function is a shorter way to write a function. Modern JavaScript uses them everywhere.
+
+  ```js
+  // A regular function
+  function double(x) {
+    return x * 2;
+  }
+
+  // The same as an arrow function
+  const double2 = (x) => {
+    return x * 2;
+  };
+
+  // Shortest form: a single expression is returned automatically
+  const double3 = (x) => x * 2;
+  ```
+
+  If curly braces `{ }` follow the arrow, you must write `return` yourself. Without braces, the expression's value is returned automatically.
+
+  You can drop the parentheses around a single parameter (`x => x * 2`). With no parameters, write empty parentheses: `() => "hi"`.
+
+  ### Default values
+
+  A parameter can have a default value that's used when the argument is missing:
+
+  ```js
+  const greet = (name = "guest") => `Hi ${name}!`;
+  greet("Ada"); // "Hi Ada!"
+  greet();      // "Hi guest!"
+  ```
+
+  ### Functions are values
+
+  You can store a function in a variable and pass it to another function. A function passed as an argument is called a **callback**. You'll see this constantly, for example in array methods and event handlers.
+
+  ```js
+  const run = (f) => f();
+  run(() => console.log("Called!"));
+  ```
+exercises:
+  - type: choice
+    question: What does `f(2)` return when `const f = x => x + 1;`?
+    options: ['`3`', '`undefined`', '`"x + 1"`', An error]
+    answer: 0
+    explanation: Without curly braces an arrow function returns its expression automatically, so 2 + 1 = 3.
+  - type: blank
+    question: Complete the arrow function syntax.
+    code: |
+      const double = (x) ___ x * 2;
+    blanks:
+      - ['=>']
+    explanation: An arrow function's parameters and body are separated by the arrow `=>`.
+  - type: bug
+    question: '`multiply(2, 3)` returns `undefined` even though it should return `6`.'
+    code: |
+      const multiply = (a, b) => {
+        a * b;
+      };
+      console.log(multiply(2, 3));
+    bugLine: 2
+    explanation: 'With curly braces, an arrow function needs an explicit `return a * b;`. Alternatively drop the braces: `(a, b) => a * b`.'
+cards:
+  - id: js-arrow-basic
+    prompt: Write an arrow function `double` that returns a number doubled.
+    check: test
+    tests:
+      - 'double(4) === 8'
+      - '!Object.hasOwn(double, "prototype")'
+    solution: |
+      const double = (x) => x * 2;
+  - id: js-arrow-boolean
+    prompt: Write an arrow function `isEmpty(s)` that returns `true` if the string is empty.
+    check: test
+    tests:
+      - 'isEmpty("") === true'
+      - 'isEmpty("a") === false'
+      - '!Object.hasOwn(isEmpty, "prototype")'
+    solution: |
+      const isEmpty = (s) => s.length === 0;
+  - id: js-default-param
+    prompt: 'Write a function `greet(name)` that returns `` `Hi ${name}!` ``. If no name is given, use the default value `"guest"`.'
+    check: test
+    tests:
+      - 'greet("Ada") === "Hi Ada!"'
+      - 'greet() === "Hi guest!"'
+    solution: |
+      const greet = (name = "guest") => `Hi ${name}!`;
+  - id: js-callback
+    prompt: Write a function `run(f)` that calls the function it's given and returns its return value.
+    check: test
+    tests:
+      - 'run(() => 5) === 5'
+      - 'run(() => "ok") === "ok"'
+    solution: |
+      const run = (f) => f();
+  - id: js-arrow-two-params
+    prompt: Write an arrow function `average(a, b)` that returns the average of two numbers.
+    check: test
+    tests:
+      - 'average(2, 4) === 3'
+      - 'average(1, 2) === 1.5'
+      - '!Object.hasOwn(average, "prototype")'
+    solution: |
+      const average = (a, b) => (a + b) / 2;
+  - id: js-arrow-no-params
+    prompt: 'Write an arrow function `sayHi` with no parameters that returns the string `"Hi!"`.'
+    check: test
+    tests:
+      - 'sayHi() === "Hi!"'
+      - '!Object.hasOwn(sayHi, "prototype")'
+    solution: |
+      const sayHi = () => "Hi!";
+  - id: js-arrow-block-body
+    prompt: 'Write an arrow function with curly braces, `classify(x)`, that returns `"big"` if `x` is over 100, and `"small"` otherwise.'
+    check: test
+    tests:
+      - 'classify(150) === "big"'
+      - 'classify(100) === "small"'
+      - '!Object.hasOwn(classify, "prototype")'
+    solution: |
+      const classify = (x) => {
+        if (x > 100) {
+          return "big";
+        }
+        return "small";
+      };
+  - id: js-default-exponent
+    prompt: Write a function `power(base, exponent)` where the exponent defaults to `2`.
+    check: test
+    tests:
+      - 'power(3) === 9'
+      - 'power(2, 3) === 8'
+    solution: |
+      const power = (base, exponent = 2) => base ** exponent;
+  - id: js-callback-twice
+    prompt: Write a function `twice(f)` that calls the function it's given two times.
+    check: test
+    tests:
+      - '(() => { let n = 0; twice(() => n++); return n === 2; })()'
+    solution: |
+      const twice = (f) => {
+        f();
+        f();
+      };
+  - id: js-callback-apply
+    prompt: Write a function `apply(f, x)` that calls `f` with the argument `x` and returns the result.
+    check: test
+    tests:
+      - 'apply((n) => n + 1, 1) === 2'
+      - 'apply((s) => s.length, "abc") === 3'
+    solution: |
+      const apply = (f, x) => f(x);

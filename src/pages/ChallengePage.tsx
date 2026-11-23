@@ -5,7 +5,9 @@ import { href } from '../app/router'
 import { useProgress } from '../app/progress'
 import { unlockedCards } from '../session/buildRound'
 import { checkAnswer } from '../check/check'
+import { isPythonReady, preloadPython } from '../check/python'
 import { logAttempt } from '../storage/progress'
+import { answerPlaceholder, checkingLabel, checkMessages, submitHint } from '../practice/answerUi'
 import { m } from '../i18n'
 import { Editor } from '../ui/Editor'
 import { CodeBlock } from '../ui/CodeBlock'
@@ -52,6 +54,18 @@ export function ChallengePage({ trackId }: { trackId: TrackId }) {
   const [wrong, setWrong] = useState(false)
   const shownAt = useRef(0)
   const scoreRef = useRef(0)
+
+  // The Python runtime must be loaded before the clock starts, or the first answer would eat the time.
+  const needsPython = track.language === 'python'
+  const [runtimeReady, setRuntimeReady] = useState(!needsPython || isPythonReady())
+  const [runtimeFailed, setRuntimeFailed] = useState(false)
+  useEffect(() => {
+    if (!needsPython || runtimeReady) return
+    preloadPython().then(
+      () => setRuntimeReady(true),
+      () => setRuntimeFailed(true),
+    )
+  }, [needsPython, runtimeReady])
 
   const card = queue[index % Math.max(queue.length, 1)]
   const secondsLeft = Math.max(0, Math.ceil((deadline - now) / 1000))
@@ -104,7 +118,7 @@ export function ChallengePage({ trackId }: { trackId: TrackId }) {
     if (!card || checking || wrong || phase !== 'running') return
     if (!skip && !answer.trim()) return
     setChecking(true)
-    const res = skip ? { correct: false } : await checkAnswer(card, answer, m.timeout)
+    const res = skip ? { correct: false } : await checkAnswer(card, answer, checkMessages())
     setChecking(false)
     if (Date.now() >= deadline) return
     logAttempt({
@@ -157,9 +171,10 @@ export function ChallengePage({ trackId }: { trackId: TrackId }) {
         </h1>
         <p className="lead">{m.challengeIntro(CHALLENGE_SECONDS)}</p>
         {best !== undefined ? <p className="big-stat">{m.challengeBestWas(best)}</p> : null}
+        {runtimeFailed ? <p className="error">{m.pythonLoadFailed}</p> : null}
         <div className="actions">
-          <button className="btn btn-primary" onClick={start} autoFocus>
-            {m.challengeStart}
+          <button className="btn btn-primary" onClick={start} disabled={!runtimeReady} autoFocus>
+            {runtimeReady ? m.challengeStart : m.pythonLoading}
           </button>
         </div>
       </div>
@@ -212,7 +227,7 @@ export function ChallengePage({ trackId }: { trackId: TrackId }) {
   }
 
   if (!card) return null
-  const submitHint = card.language === 'js' ? m.submitHintJs(/Mac|iPhone|iPad/.test(navigator.platform) ? '⌘' : 'Ctrl') : m.submitHintShell
+  const hint = submitHint(card.language)
   return (
     <div className="page practice">
       {crumbs}
@@ -258,13 +273,13 @@ export function ChallengePage({ trackId }: { trackId: TrackId }) {
               language={card.language}
               onChange={setAnswer}
               onSubmit={() => void submit()}
-              placeholder={card.language === 'js' ? m.answerPlaceholderJs : m.answerPlaceholderShell}
+              placeholder={answerPlaceholder(card.language)}
               ariaLabel={m.answerLabel}
             />
-            <p className="muted small">{submitHint}</p>
+            <p className="muted small">{hint}</p>
             <div className="actions">
               <button className="btn btn-primary" onClick={() => void submit()} disabled={checking || !answer.trim()}>
-                {checking ? m.checking : m.check}
+                {checking ? checkingLabel(card.language) : m.check}
               </button>
               <button className="btn btn-ghost" onClick={() => void submit(true)} disabled={checking}>
                 {m.challengeSkip}

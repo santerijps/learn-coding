@@ -1,0 +1,175 @@
+id: js-taulukkometodit
+title: Array methods
+summary: map, filter, find, some, reduce and sort.
+theory: |
+  In modern JavaScript, arrays are usually processed with methods that take a **callback function**. They're shorter and clearer than loops.
+
+  ### map: transform every element
+
+  ```js
+  const numbers = [1, 2, 3];
+  const doubled = numbers.map((x) => x * 2); // [2, 4, 6]
+  ```
+
+  ### filter: keep the ones that match
+
+  ```js
+  const evens = [1, 2, 3, 4].filter((x) => x % 2 === 0); // [2, 4]
+  ```
+
+  ### forEach: do something with each
+
+  `forEach` calls a function for every element but returns nothing. It replaces a simple for...of loop:
+
+  ```js
+  ["Ada", "Linus"].forEach((name) => console.log(name));
+  ```
+
+  ### find, some and every
+
+  ```js
+  const numbers = [4, 11, 7, 20];
+  numbers.find((x) => x > 10);  // 11, the first match (or undefined)
+  numbers.some((x) => x > 15);  // true, at least one matches
+  numbers.every((x) => x > 0);  // true, all of them match
+  ```
+
+  ### reduce: boil down to one value
+
+  ```js
+  const sum = [5, 10, 15].reduce((total, x) => total + x, 0); // 30
+  ```
+
+  The second argument (`0`) is the starting value of the total.
+
+  ### sort: put in order
+
+  `sort` changes the original array. Without a compare function it sorts elements **as text**, so numbers need a compare function:
+
+  ```js
+  [10, 1, 5].sort();                // [1, 10, 5]  ← text order!
+  [10, 1, 5].sort((a, b) => a - b); // [1, 5, 10]
+  ```
+
+  ### Chaining
+
+  Because `map` and `filter` return new arrays, you can chain them:
+
+  ```js
+  const result = [1, 2, 3, 4, 5]
+    .filter((x) => x % 2 === 1)
+    .map((x) => x * x); // [1, 9, 25]
+  ```
+exercises:
+  - type: choice
+    question: Which method returns a new array containing only the elements that match a condition?
+    options: ['`map`', '`filter`', '`find`', '`forEach`']
+    answer: 1
+    explanation: '`filter` keeps the elements for which the callback returns true. `map` transforms every element, `find` returns only the first match, and `forEach` returns nothing.'
+  - type: blank
+    question: Fill in the blank so that `doubled` contains every number times two.
+    code: |
+      const doubled = numbers.___((x) => x * 2);
+    blanks:
+      - [map]
+    explanation: '`map` transforms every element and returns a new array of the same length.'
+  - type: bug
+    question: '`big` should be `[8, 12]`, but it''s empty.'
+    code: |
+      const numbers = [3, 8, 12, 5];
+      const big = numbers.filter((x) => { x > 6 });
+      console.log(big);
+    bugLine: 2
+    explanation: 'With curly braces the callback returns nothing, so every element is filtered out. Write `(x) => x > 6` or `(x) => { return x > 6; }`.'
+cards:
+  - id: js-map
+    prompt: Create an array `doubled` where every element of `numbers` is multiplied by two. Use `map`.
+    check: test
+    setup: |
+      const numbers = [1, 2, 3];
+    tests:
+      - 'JSON.stringify(doubled) === "[2,4,6]"'
+    solution: |
+      const doubled = numbers.map((x) => x * 2);
+  - id: js-filter
+    prompt: Create an array `evens` containing only the even numbers from `numbers`. Use `filter`.
+    check: test
+    setup: |
+      const numbers = [1, 2, 3, 4, 5, 6];
+    tests:
+      - 'JSON.stringify(evens) === "[2,4,6]"'
+    solution: |
+      const evens = numbers.filter((x) => x % 2 === 0);
+  - id: js-find
+    prompt: Find the first number greater than ten in `numbers` and store it in a constant `first`. Use `find`.
+    check: test
+    setup: |
+      const numbers = [4, 11, 7, 20];
+    tests:
+      - 'first === 11'
+    solution: |
+      const first = numbers.find((x) => x > 10);
+  - id: js-reduce-sum
+    prompt: Add up the array `numbers` with `reduce` into a constant `sum`.
+    check: test
+    setup: |
+      const numbers = [5, 10, 15];
+    tests:
+      - 'sum === 30'
+    solution: |
+      const sum = numbers.reduce((total, x) => total + x, 0);
+  - id: js-some
+    prompt: Use `some` to check whether `numbers` contains any negative number, and store the result in a constant `hasNegatives`.
+    check: test
+    setup: |
+      const numbers = [3, -1, 4];
+    tests:
+      - 'hasNegatives === true'
+    solution: |
+      const hasNegatives = numbers.some((x) => x < 0);
+  - id: js-sort-numbers
+    prompt: Sort the array `numbers` in ascending order.
+    check: test
+    setup: |
+      const numbers = [10, 1, 5, 100];
+    tests:
+      - 'JSON.stringify(numbers) === "[1,5,10,100]"'
+    hint: Plain `sort()` sorts elements as text. Give it a compare function `(a, b) => a - b`.
+    solution: |
+      numbers.sort((a, b) => a - b);
+  - id: js-chain
+    prompt: Create an array `result` containing the odd numbers of `numbers` squared. Chain `filter` and `map`.
+    check: test
+    setup: |
+      const numbers = [1, 2, 3, 4, 5];
+    tests:
+      - 'JSON.stringify(result) === "[1,9,25]"'
+    solution: |
+      const result = numbers.filter((x) => x % 2 === 1).map((x) => x * x);
+  - id: js-map-strings
+    prompt: Use `map` to create an array `upper` containing the names from `names` in upper case.
+    check: test
+    setup: |
+      const names = ["ada", "linus"];
+    tests:
+      - 'JSON.stringify(upper) === JSON.stringify(["ADA", "LINUS"])'
+    solution: |
+      const upper = names.map((name) => name.toUpperCase());
+  - id: js-every
+    prompt: Use `every` to check whether all the numbers in `scores` are at least `50`, and store the result in a constant `allPassed`.
+    check: test
+    setup: |
+      const scores = [55, 70, 49];
+    tests:
+      - 'allPassed === false'
+    solution: |
+      const allPassed = scores.every((s) => s >= 50);
+  - id: js-for-each
+    prompt: Use `forEach` to print each element of the array `colors` on its own line.
+    check: test
+    setup: |
+      const colors = ["red", "blue"];
+    tests:
+      - '__logs.join(",") === "red,blue"'
+    solution: |
+      colors.forEach((color) => console.log(color));

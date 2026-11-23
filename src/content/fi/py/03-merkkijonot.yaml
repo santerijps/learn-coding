@@ -1,0 +1,161 @@
+id: py-merkkijonot
+title: Merkkijonot
+summary: f-merkkijonot, pilkkominen ja tärkeimmät metodit.
+theory: |
+  Merkkijonon voi kirjoittaa lainausmerkkeihin `"..."` tai heittomerkkeihin `'...'`. Ne toimivat täsmälleen samoin.
+
+  ### f-merkkijono
+
+  Kun merkkijonon eteen kirjoitetaan `f`, aaltosulkeisiin voi upottaa arvoja ja lausekkeita. Tämä on yleisin tapa rakentaa tekstiä:
+
+  ```python
+  nimi = "Ada"
+  ika = 36
+  viesti = f"Hei {nimi}, olet {ika}-vuotias."
+  summa = f"Yhteensä {3 * 4} €"
+  ```
+
+  ### Pituus, indeksit ja viipaleet
+
+  ```python
+  sana = "Python"
+  len(sana)     # 6
+  sana[0]       # "P", eli indeksit alkavat nollasta
+  sana[-1]      # "n", eli viimeinen merkki
+  sana[0:3]     # "Pyt", eli merkit 0–2
+  sana[2:]      # "thon", eli indeksistä 2 loppuun
+  ```
+
+  ### Metodeja
+
+  Metodit palauttavat uuden merkkijonon, eivätkä ne muuta alkuperäistä.
+
+  ```python
+  "apua".upper()                # "APUA"
+  "HEI".lower()                 # "hei"
+  "  hei  ".strip()             # "hei"
+  "a-b-c".replace("-", "+")     # "a+b+c"
+  "Python".startswith("Py")     # True
+  "koodi" in "Rakastan koodia"  # True
+  ```
+
+  ### Pilkkominen ja yhdistäminen
+
+  ```python
+  "opi koodia nopeasti".split()   # ["opi", "koodia", "nopeasti"]
+  "a,b,c".split(",")              # ["a", "b", "c"]
+  "-".join(["a", "b", "c"])       # "a-b-c"
+  ```
+exercises:
+  - type: choice
+    question: Mitä `"Python"[-1]` palauttaa?
+    options: ['`"n"`', '`"P"`', '`"o"`', Virheen]
+    answer: 0
+    explanation: Negatiivinen indeksi lasketaan lopusta, joten `-1` on viimeinen merkki.
+  - type: blank
+    question: Täydennä niin, että `viesti` sisältää muuttujan `nimi` arvon.
+    code: |
+      viesti = ___"Hei {nimi}!"
+    blanks:
+      - [f]
+    explanation: 'Vain `f`-etuliitteellä aaltosulkeiden sisältö korvataan arvolla.'
+  - type: bug
+    question: Ohjelman pitäisi tulostaa `Hei Ada!`, mutta se tulostaa `Hei {nimi}!`.
+    code: |
+      nimi = "Ada"
+      tervehdys = "Hei {nimi}!"
+      print(tervehdys)
+    bugLine: 2
+    explanation: 'Merkkijonosta puuttuu `f`-etuliite: `tervehdys = f"Hei {nimi}!"`'
+cards:
+  - id: py-fstring
+    prompt: 'Luo muuttuja `tervehdys`, jonka arvo on `Hei Ada!`. Rakenna se f-merkkijonolla muuttujasta `nimi`.'
+    check: test
+    setup: |
+      nimi = "Ada"
+    tests:
+      - 'tervehdys == "Hei Ada!"'
+    solution: |
+      tervehdys = f"Hei {nimi}!"
+  - id: py-fstring-expression
+    prompt: 'Luo muuttuja `kuvaus`, jonka arvo on `Hinta: 12 €`. Laske summa f-merkkijonon sisällä lausekkeella `kpl * hinta`.'
+    check: test
+    setup: |
+      kpl = 3
+      hinta = 4
+    tests:
+      - 'kuvaus == "Hinta: 12 €"'
+    solution: |
+      kuvaus = f"Hinta: {kpl * hinta} €"
+  - id: py-len
+    prompt: Tallenna merkkijonon `sana` pituus muuttujaan `pituus`.
+    check: test
+    setup: |
+      sana = "ohjelmointi"
+    tests:
+      - 'pituus == 11'
+    solution: |
+      pituus = len(sana)
+  - id: py-upper
+    prompt: Muuta merkkijono `huuto` isoiksi kirjaimiksi muuttujaan `isona`.
+    check: test
+    setup: |
+      huuto = "apua"
+    tests:
+      - 'isona == "APUA"'
+    solution: |
+      isona = huuto.upper()
+  - id: py-strip
+    prompt: Poista välilyönnit merkkijonon `syote` alusta ja lopusta muuttujaan `siisti`.
+    check: test
+    setup: |
+      syote = "  hei  "
+    tests:
+      - 'siisti == "hei"'
+    solution: |
+      siisti = syote.strip()
+  - id: py-in-string
+    prompt: Tarkista, sisältääkö `lause` tekstin `"koodi"`, ja tallenna tulos muuttujaan `loytyi`.
+    check: test
+    setup: |
+      lause = "Rakastan koodia"
+    tests:
+      - 'loytyi is True'
+    solution: |
+      loytyi = "koodi" in lause
+  - id: py-slice
+    prompt: Ota merkkijonon `teksti` kolme ensimmäistä merkkiä muuttujaan `alku`.
+    check: test
+    setup: |
+      teksti = "Python"
+    tests:
+      - 'alku == "Pyt"'
+    solution: |
+      alku = teksti[:3]
+  - id: py-last-char
+    prompt: Tallenna merkkijonon `sana` viimeinen merkki muuttujaan `viimeinen`.
+    check: test
+    setup: |
+      sana = "koodi"
+    tests:
+      - 'viimeinen == "i"'
+    solution: |
+      viimeinen = sana[-1]
+  - id: py-split
+    prompt: Pilko merkkijono `lause` sanoiksi listaan `sanat`.
+    check: test
+    setup: |
+      lause = "opi koodia nopeasti"
+    tests:
+      - 'sanat == ["opi", "koodia", "nopeasti"]'
+    solution: |
+      sanat = lause.split()
+  - id: py-join
+    prompt: 'Yhdistä listan `osat` alkiot merkkijonoksi `polku` niin, että erottimena on `"/"`.'
+    check: test
+    setup: |
+      osat = ["home", "ada", "koodi"]
+    tests:
+      - 'polku == "home/ada/koodi"'
+    solution: |
+      polku = "/".join(osat)

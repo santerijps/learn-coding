@@ -1,0 +1,183 @@
+id: py-silmukat
+title: Silmukat
+summary: for, range, while, break ja enumerate.
+theory: |
+  ### for
+
+  Pythonin `for` käy läpi kokoelman alkiot suoraan:
+
+  ```python
+  nimet = ["Ada", "Linus", "Grace"]
+  for nimi in nimet:
+      print(nimi)
+  ```
+
+  ### range
+
+  `range` tuottaa lukujonon. Loppuarvo ei kuulu mukaan.
+
+  ```python
+  for i in range(3):          # 0, 1, 2
+      print(i)
+  for i in range(1, 6):       # 1, 2, 3, 4, 5
+      print(i)
+  for i in range(10, 0, -2):  # 10, 8, 6, 4, 2
+      print(i)
+  ```
+
+  ### enumerate
+
+  Kun tarvitset sekä indeksin että alkion:
+
+  ```python
+  for i, nimi in enumerate(nimet):
+      print(i, nimi)   # 0 Ada, 1 Linus, ...
+  ```
+
+  ### while, break ja continue
+
+  ```python
+  i = 3
+  while i > 0:
+      print(i)
+      i -= 1
+  ```
+
+  `break` lopettaa silmukan, ja `continue` hyppää seuraavaan kierrokseen.
+
+  ### Kerääjä
+
+  ```python
+  summa = 0
+  for luku in [4, 8, 15]:
+      summa += luku
+  ```
+exercises:
+  - type: choice
+    question: Mitä lukuja `range(1, 4)` tuottaa?
+    options: ['1, 2, 3', '1, 2, 3, 4', '0, 1, 2, 3', '1, 4']
+    answer: 0
+    explanation: Loppuarvo ei kuulu mukaan, joten `range(1, 4)` tuottaa luvut 1, 2 ja 3.
+  - type: blank
+    question: Täydennä silmukka, joka käy läpi listan `nimet`.
+    code: |
+      for nimi ___ nimet:
+          print(nimi)
+    blanks:
+      - [in]
+    explanation: '`for alkio in kokoelma:` käy läpi kokoelman alkiot.'
+  - type: bug
+    question: Ohjelma ei koskaan pysähdy.
+    code: |
+      i = 0
+      while i < 5:
+          print(i)
+      i += 1
+    bugLine: 4
+    explanation: 'Rivi 4 ei ole sisennetty, joten se ei kuulu silmukkaan, eikä `i` koskaan kasva. Sisennä se samalle tasolle kuin `print(i)`.'
+cards:
+  - id: py-for-range
+    prompt: Tulosta luvut 1–5 for-silmukalla ja range-funktiolla, kukin omalle rivilleen.
+    check: test
+    tests:
+      - '__logs == ["1", "2", "3", "4", "5"]'
+    solution: |
+      for i in range(1, 6):
+          print(i)
+  - id: py-for-list
+    prompt: Tulosta jokainen listan `nimet` nimi omalle rivilleen.
+    check: test
+    setup: |
+      nimet = ["Ada", "Linus"]
+    tests:
+      - '__logs == ["Ada", "Linus"]'
+    solution: |
+      for nimi in nimet:
+          print(nimi)
+  - id: py-loop-sum
+    prompt: Laske silmukalla listan `luvut` summa muuttujaan `summa` (älä käytä `sum`-funktiota).
+    check: test
+    setup: |
+      luvut = [4, 8, 15, 16]
+    tests:
+      - 'summa == 43'
+    solution: |
+      summa = 0
+      for luku in luvut:
+          summa += luku
+  - id: py-range-step
+    prompt: Tulosta silmukalla luvut 10, 8, 6, 4 ja 2.
+    check: test
+    tests:
+      - '__logs == ["10", "8", "6", "4", "2"]'
+    solution: |
+      for i in range(10, 0, -2):
+          print(i)
+  - id: py-while
+    prompt: Tulosta while-silmukalla luvut 3, 2 ja 1.
+    check: test
+    tests:
+      - '__logs == ["3", "2", "1"]'
+    solution: |
+      i = 3
+      while i > 0:
+          print(i)
+          i -= 1
+  - id: py-enumerate
+    prompt: 'Tulosta jokaisen listan `nimet` alkion indeksi ja nimi muodossa `0 Ada`. Käytä `enumerate`-funktiota.'
+    check: test
+    setup: |
+      nimet = ["Ada", "Linus"]
+    tests:
+      - '__logs == ["0 Ada", "1 Linus"]'
+    solution: |
+      for i, nimi in enumerate(nimet):
+          print(i, nimi)
+  - id: py-break
+    prompt: Tulosta listan `luvut` alkiot järjestyksessä, mutta lopeta `break`-lauseella heti, kun vastaan tulee negatiivinen luku.
+    check: test
+    setup: |
+      luvut = [4, 7, -1, 9]
+    tests:
+      - '__logs == ["4", "7"]'
+    solution: |
+      for luku in luvut:
+          if luku < 0:
+              break
+          print(luku)
+  - id: py-continue
+    prompt: Tulosta listan `luvut` alkiot, mutta ohita nollat `continue`-lauseella.
+    check: test
+    setup: |
+      luvut = [1, 0, 2, 0, 3]
+    tests:
+      - '__logs == ["1", "2", "3"]'
+    solution: |
+      for luku in luvut:
+          if luku == 0:
+              continue
+          print(luku)
+  - id: py-count-even
+    prompt: Laske muuttujaan `parilliset`, montako parillista lukua listassa `luvut` on.
+    check: test
+    setup: |
+      luvut = [1, 2, 3, 4, 6]
+    tests:
+      - 'parilliset == 3'
+    solution: |
+      parilliset = 0
+      for luku in luvut:
+          if luku % 2 == 0:
+              parilliset += 1
+  - id: py-loop-max
+    prompt: Etsi silmukalla listan `luvut` suurin luku muuttujaan `suurin` (älä käytä `max`-funktiota).
+    check: test
+    setup: |
+      luvut = [3, 17, 8, 12]
+    tests:
+      - 'suurin == 17'
+    solution: |
+      suurin = luvut[0]
+      for luku in luvut:
+          if luku > suurin:
+              suurin = luku

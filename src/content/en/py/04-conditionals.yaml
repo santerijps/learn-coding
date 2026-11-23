@@ -1,0 +1,184 @@
+id: py-ehtolauseet
+title: Conditionals
+summary: if, elif and else, comparisons and logical operators.
+theory: |
+  A conditional runs an indented block only when its condition is true. The condition ends with a colon, and the block is **indented** by four spaces.
+
+  ```python
+  temperature = 28
+
+  if temperature > 25:
+      print("Hot")
+  elif temperature > 15:
+      print("Warm")
+  else:
+      print("Cool")
+  ```
+
+  Conditions are checked from top to bottom, and only the first true branch runs.
+
+  ### Comparison and logic
+
+  ```python
+  5 == 5          # True: equal
+  5 != 3          # True: not equal
+  5 >= 5          # True
+  1 <= x <= 10    # True if x is between 1 and 10 (comparisons can be chained)
+  ```
+
+  The logical operators are words: `and`, `or` and `not`.
+
+  ```python
+  if age >= 18 and has_ticket:
+      print("Welcome")
+  if not raining:
+      print("Let's go outside")
+  ```
+
+  ### Truthiness
+
+  Empty and zero values count as false: `0`, `""`, `[]`, `{}` and `None`. Everything else is true.
+
+  ```python
+  name = ""
+  if name:
+      print(f"Hi {name}")
+  else:
+      print("Name missing")
+  ```
+
+  ### Conditional expression
+
+  Choosing between two values in one line: `status = "adult" if age >= 18 else "minor"`.
+exercises:
+  - type: choice
+    question: How do you write "else if" in Python?
+    options: ['`elif`', '`else if`', '`elseif`', '`elsif`']
+    answer: 0
+    explanation: Python uses the abbreviation `elif`.
+  - type: blank
+    question: Complete the condition that is true when both conditions are true.
+    code: |
+      if age >= 18 ___ has_ticket:
+          print("Welcome")
+    blanks:
+      - [and]
+    explanation: Python's logical AND is the word `and`.
+  - type: bug
+    question: The program crashes with a `SyntaxError`.
+    code: |
+      age = 20
+      if age >= 18
+          print("Adult")
+    bugLine: 2
+    explanation: 'The condition is missing its colon: `if age >= 18:`'
+cards:
+  - id: py-if-simple
+    prompt: Print `Freezing` if `temperature` is below zero.
+    check: test
+    setup: |
+      temperature = -5
+    tests:
+      - '__logs == ["Freezing"]'
+    solution: |
+      if temperature < 0:
+          print("Freezing")
+  - id: py-if-else
+    prompt: Print `Even` or `Odd` depending on whether `number` is even.
+    check: test
+    setup: |
+      number = 7
+    tests:
+      - '__logs == ["Odd"]'
+    solution: |
+      if number % 2 == 0:
+          print("Even")
+      else:
+          print("Odd")
+  - id: py-elif
+    prompt: 'Set the variable `grade` to `"A"` if `points` ≥ 90, `"B"` if `points` ≥ 70, and `"C"` otherwise.'
+    check: test
+    setup: |
+      points = 75
+    tests:
+      - 'grade == "B"'
+    solution: |
+      if points >= 90:
+          grade = "A"
+      elif points >= 70:
+          grade = "B"
+      else:
+          grade = "C"
+  - id: py-and
+    prompt: Create a variable `can_enter` that is true when `age` is at least 18 and `has_ticket` is true.
+    check: test
+    setup: |
+      age = 20
+      has_ticket = True
+    tests:
+      - 'can_enter is True'
+    solution: |
+      can_enter = age >= 18 and has_ticket
+  - id: py-or
+    prompt: Create a variable `day_off` that is true when `is_saturday` or `is_sunday` is true.
+    check: test
+    setup: |
+      is_saturday = False
+      is_sunday = True
+    tests:
+      - 'day_off is True'
+    solution: |
+      day_off = is_saturday or is_sunday
+  - id: py-not
+    prompt: Create a variable `not_raining` whose value is the opposite of `raining`.
+    check: test
+    setup: |
+      raining = False
+    tests:
+      - 'not_raining is True'
+    solution: |
+      not_raining = not raining
+  - id: py-chained-comparison
+    prompt: Create a variable `in_range` that is true when `number` is between 1 and 10. Use a chained comparison.
+    check: test
+    setup: |
+      number = 10
+    tests:
+      - 'in_range is True'
+    solution: |
+      in_range = 1 <= number <= 10
+  - id: py-conditional-expression
+    prompt: 'Create a variable `state` with a conditional expression: `"open"` if `is_open` is true, otherwise `"closed"`.'
+    check: test
+    setup: |
+      is_open = False
+    tests:
+      - 'state == "closed"'
+    solution: |
+      state = "open" if is_open else "closed"
+  - id: py-truthy
+    prompt: Print `Welcome` if `user` is not an empty string, and `Please log in` otherwise.
+    check: test
+    setup: |
+      user = ""
+    tests:
+      - '__logs == ["Please log in"]'
+    solution: |
+      if user:
+          print("Welcome")
+      else:
+          print("Please log in")
+  - id: py-sign
+    prompt: 'Set the variable `sign` to `"positive"`, `"negative"` or `"zero"` depending on `number`.'
+    check: test
+    setup: |
+      number = 0
+    tests:
+      - 'sign == "zero"'
+    solution: |
+      if number > 0:
+          sign = "positive"
+      elif number < 0:
+          sign = "negative"
+      else:
+          sign = "zero"

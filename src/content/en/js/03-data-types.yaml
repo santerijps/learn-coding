@@ -1,0 +1,158 @@
+id: js-tietotyypit
+title: Data types
+summary: Numbers, strings, booleans, null and undefined.
+theory: |
+  Every value has a **type**. These are the basic types:
+
+  ```js
+  const age = 36;           // number: whole and decimal numbers
+  const price = 4.5;        // number
+  const name = "Ada";       // string: text
+  const isDone = true;      // boolean: true or false
+  const empty = null;       // null: deliberately no value
+  let unknown;              // undefined: no value has been set
+  ```
+
+  ### typeof
+
+  The `typeof` operator tells you a value's type as a string:
+
+  ```js
+  typeof 42;        // "number"
+  typeof "42";      // "string"
+  typeof true;      // "boolean"
+  typeof undefined; // "undefined"
+  ```
+
+  ### Converting types
+
+  Values read from forms and files are often strings, even when they look like numbers. Convert them:
+
+  ```js
+  const input = "42";
+  const number = Number(input); // 42
+  const text = String(2026);    // "2026"
+  Number("cat");                // NaN ("Not a Number")
+  Number.isNaN(Number("cat"));  // true
+  ```
+
+  You can detect a failed conversion with `Number.isNaN()`.
+
+  Watch out for `+`: if either side is a string, `+` joins text instead of adding. `"5" + 3` is `"53"`.
+exercises:
+  - type: choice
+    question: What does `typeof "5"` return?
+    options:
+      - '`"number"`'
+      - '`"string"`'
+      - '`5`'
+      - '`"text"`'
+    answer: 1
+    explanation: A value in quotes is always a string, even if it contains a number.
+  - type: blank
+    question: Fill in the blank so that `isDone` is the boolean true.
+    code: |
+      const isDone = ___;
+    blanks:
+      - ['true']
+    explanation: The booleans are `true` and `false`, written without quotes.
+  - type: bug
+    question: The program should print `8`, but it prints `53`.
+    code: |
+      const a = "5";
+      const b = 3;
+      const sum = a + b;
+      console.log(sum);
+    bugLine: 3
+    explanation: '`a` is a string, so `+` joins text. Convert it to a number first: `const sum = Number(a) + b;`'
+cards:
+  - id: js-typeof-number
+    prompt: Create a constant `type` whose value is the result of `typeof 3.14`.
+    check: test
+    tests:
+      - 'type === "number"'
+    solution: |
+      const type = typeof 3.14;
+  - id: js-string-to-number
+    prompt: Convert the string `input` to a number and store it in a constant `number`.
+    check: test
+    setup: |
+      const input = "42";
+    tests:
+      - 'number === 42'
+    solution: |
+      const number = Number(input);
+  - id: js-number-to-string
+    prompt: Convert the number `year` to a string and store it in a constant `text`.
+    check: test
+    setup: |
+      const year = 2026;
+    tests:
+      - 'text === "2026"'
+    solution: |
+      const text = String(year);
+  - id: js-null-undefined
+    prompt: Create a constant `empty` whose value is `null`, and a variable `unknown` without giving it a value.
+    check: test
+    tests:
+      - 'empty === null'
+      - 'unknown === undefined'
+    solution: |
+      const empty = null;
+      let unknown;
+  - id: js-booleans
+    prompt: Create a constant `isTrue` whose value is true, and a constant `isFalse` whose value is false.
+    check: test
+    tests:
+      - 'isTrue === true'
+      - 'isFalse === false'
+    solution: |
+      const isTrue = true;
+      const isFalse = false;
+  - id: js-typeof-variable
+    prompt: Store the type of the variable `value` in a constant `type` using the `typeof` operator.
+    check: test
+    setup: |
+      const value = "hi";
+    tests:
+      - 'type === "string"'
+    solution: |
+      const type = typeof value;
+  - id: js-string-to-decimal
+    prompt: Convert the string `priceText` to a number and store it in a constant `price`.
+    check: test
+    setup: |
+      const priceText = "4.95";
+    tests:
+      - 'price === 4.95'
+    solution: |
+      const price = Number(priceText);
+  - id: js-sum-string-numbers
+    prompt: The strings `a` and `b` contain numbers. Store the sum of their numeric values in a constant `sum`.
+    check: test
+    setup: |
+      const a = "5";
+      const b = "3";
+    tests:
+      - 'sum === 8'
+    hint: Convert both to numbers with `Number` first, otherwise `+` joins the text.
+    solution: |
+      const sum = Number(a) + Number(b);
+  - id: js-is-nan
+    prompt: Store in a constant `notNumber` whether `Number(input)` is NaN. Use `Number.isNaN`.
+    check: test
+    setup: |
+      const input = "cat";
+    tests:
+      - 'notNumber === true'
+    solution: |
+      const notNumber = Number.isNaN(Number(input));
+  - id: js-concat-number
+    prompt: 'Create a constant `text` whose value is `"Year 2026"`. Append the number `year` to the string `"Year "` with the `+` operator.'
+    check: test
+    setup: |
+      const year = 2026;
+    tests:
+      - 'text === "Year 2026"'
+    solution: |
+      const text = "Year " + year;

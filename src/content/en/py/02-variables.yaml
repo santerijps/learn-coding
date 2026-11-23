@@ -1,0 +1,149 @@
+id: py-muuttujat
+title: Variables and data types
+summary: Storing values, the basic types and converting between them.
+theory: |
+  In Python a variable is created when you assign a value to it. There's no separate declaration keyword (like JavaScript's `let`).
+
+  ```python
+  name = "Ada"
+  age = 36
+  age = age + 1      # a new value in the same variable
+  age += 1           # a shorter way
+  print(name, age)   # Ada 38
+  ```
+
+  Names are written in **snake_case**: `user_name`, `max_score`. A name in all capitals (`MAX_SIZE = 100`) is a convention meaning the value shouldn't change.
+
+  ### Basic types
+
+  ```python
+  age = 36           # int: whole number
+  price = 4.5        # float: decimal number
+  name = "Ada"       # str: string
+  done = True        # bool: True or False (capitalised!)
+  empty = None       # None: no value
+  ```
+
+  `type()` tells you a value's type: `type(42)` is `<class 'int'>`.
+
+  ### Converting types
+
+  Input and files often give you strings that need converting:
+
+  ```python
+  number = int("42")       # 42
+  price = float("4.95")    # 4.95
+  text = str(2026)         # "2026"
+  ```
+
+  `"5" + 3` raises a `TypeError`, because Python won't join a string and a number automatically. Convert first: `int("5") + 3`.
+
+  You can assign several variables at once, and swap two variables in one line: `a, b = b, a`.
+exercises:
+  - type: choice
+    question: How do you write the true value in Python?
+    options: ['`True`', '`true`', '`TRUE`', '`"True"`']
+    answer: 0
+    explanation: 'Python''s booleans are `True` and `False` with a capital letter. `"True"` would be a string.'
+  - type: blank
+    question: Fill in the blank so the string is converted to an integer.
+    code: |
+      number = ___("42")
+    blanks:
+      - [int]
+    explanation: '`int()` converts a string to an integer. For decimal numbers, use `float()`.'
+  - type: bug
+    question: The program crashes with a `TypeError`.
+    code: |
+      age = 36
+      message = "Age: " + age
+      print(message)
+    bugLine: 2
+    explanation: 'You can''t join a string and a number with `+`. Convert the number first: `"Age: " + str(age)`, or use an f-string.'
+cards:
+  - id: py-assign-string
+    prompt: 'Create a variable `name` with the value `"Ada"`.'
+    check: test
+    tests:
+      - 'name == "Ada"'
+    solution: |
+      name = "Ada"
+  - id: py-assign-update
+    prompt: Create a variable `score` with the value `10`, then increase it by five with `+=`.
+    check: test
+    tests:
+      - 'score == 15'
+    solution: |
+      score = 10
+      score += 5
+  - id: py-assign-calc
+    prompt: Create variables `width` (4) and `height` (3), and a variable `area` that is their product.
+    check: test
+    tests:
+      - 'width == 4 and height == 3'
+      - 'area == 12'
+    solution: |
+      width = 4
+      height = 3
+      area = width * height
+  - id: py-bool
+    prompt: Create a variable `done` whose value is true, and a variable `pending` whose value is false.
+    check: test
+    tests:
+      - 'done is True and pending is False'
+    solution: |
+      done = True
+      pending = False
+  - id: py-none
+    prompt: Create a variable `result` that has no value (`None`).
+    check: test
+    tests:
+      - '"result" in dir() and result is None'
+    solution: |
+      result = None
+  - id: py-str-to-int
+    prompt: Convert the string `user_input` to an integer in a variable `number`.
+    check: test
+    setup: |
+      user_input = "42"
+    tests:
+      - 'number == 42 and type(number) is int'
+    solution: |
+      number = int(user_input)
+  - id: py-str-to-float
+    prompt: Convert the string `price_text` to a decimal number in a variable `price`.
+    check: test
+    setup: |
+      price_text = "4.95"
+    tests:
+      - 'price == 4.95'
+    solution: |
+      price = float(price_text)
+  - id: py-int-to-str
+    prompt: Convert the number `year` to a string in a variable `text`.
+    check: test
+    setup: |
+      year = 2026
+    tests:
+      - 'text == "2026"'
+    solution: |
+      text = str(year)
+  - id: py-type
+    prompt: Store the type of the variable `value` in a variable `kind` using `type`.
+    check: test
+    setup: |
+      value = 3.14
+    tests:
+      - 'kind is float'
+    solution: |
+      kind = type(value)
+  - id: py-swap
+    prompt: Swap the values of `a` and `b` in one line.
+    check: test
+    setup: |
+      a = 1
+      b = 2
+    tests:
+      - 'a == 2 and b == 1'
+    solution: |
+      a, b = b, a
