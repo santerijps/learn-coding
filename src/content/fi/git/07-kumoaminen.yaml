@@ -8,12 +8,14 @@ theory: |
 
   ```bash
   git restore app.js           # hylkää tallentamattomat muutokset (ei voi perua!)
+  git restore .                # sama kaikille tiedostoille nykyisessä kansiossa
   ```
 
   ### Muutos valmistelualueella
 
   ```bash
   git restore --staged app.js  # poista valmistelualueelta, muutokset säilyvät tiedostossa
+  git restore --staged .       # tyhjennä koko valmistelualue
   ```
 
   ### Viimeisin commit, jota ei ole vielä pushattu
@@ -31,6 +33,7 @@ theory: |
 
   ```bash
   git revert a1b2c3d
+  git revert HEAD     # kumoa viimeisin commit
   ```
 
   ### Varo: reset --hard
@@ -99,3 +102,23 @@ cards:
     solution: git reset --soft HEAD~1
     accepted:
       - git reset --soft HEAD^
+  - id: git-restore-all
+    prompt: Hylkää kaikkien nykyisen kansion tiedostojen tallentamattomat muutokset.
+    check: match
+    solution: git restore .
+  - id: git-unstage-all
+    prompt: Tyhjennä koko valmistelualue menettämättä tiedostojen muutoksia.
+    check: match
+    solution: git restore --staged .
+    accepted:
+      - git reset
+  - id: git-revert-head
+    prompt: Kumoa viimeisin (jo pushattu) commit tekemällä uusi, sen kumoava commit.
+    check: match
+    solution: git revert HEAD
+  - id: git-reset-hard
+    prompt: Poista viimeisin pushaamaton commit ja kaikki sen muutokset kokonaan. Tätä ei voi perua!
+    check: match
+    solution: git reset --hard HEAD~1
+    accepted:
+      - git reset --hard HEAD^

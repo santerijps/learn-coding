@@ -103,3 +103,46 @@ cards:
       const apu = a;
       a = b;
       b = apu;
+  - id: js-const-number
+    prompt: Luo vakio `vuosi`, jonka arvo on luku `2026`.
+    check: test
+    tests:
+      - 'vuosi === 2026'
+      - '__isConst(() => { vuosi = 1; })'
+    solution: |
+      const vuosi = 2026;
+  - id: js-let-decrease
+    prompt: Luo muuttuja `elamat` arvolla `3` ja vähennä sen arvoa sitten yhdellä.
+    check: test
+    tests:
+      - 'elamat === 2'
+    solution: |
+      let elamat = 3;
+      elamat = elamat - 1;
+  - id: js-const-from-variable
+    prompt: Luo vakio `tupla`, jonka arvo on muuttujan `luku` arvo kerrottuna kahdella.
+    check: test
+    setup: |
+      const luku = 21;
+    tests:
+      - 'tupla === 42'
+    solution: |
+      const tupla = luku * 2;
+  - id: js-let-reassign-string
+    prompt: 'Luo muuttuja `tila`, jonka arvo on `"ladataan"`, ja vaihda sen arvoksi sitten `"valmis"`.'
+    check: test
+    tests:
+      - 'tila === "valmis"'
+      - '!__isConst(() => { tila = tila; })'
+    solution: |
+      let tila = "ladataan";
+      tila = "valmis";
+  - id: js-log-variable
+    prompt: 'Luo vakio `viesti`, jonka arvo on `"Moi"`, ja tulosta se konsoliin.'
+    check: test
+    tests:
+      - 'viesti === "Moi"'
+      - '__logs[0] === "Moi"'
+    solution: |
+      const viesti = "Moi";
+      console.log(viesti);

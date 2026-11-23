@@ -155,3 +155,31 @@ cards:
           this.arvo++;
         },
       };
+  - id: js-object-shorthand
+    prompt: Muuttujat `nimi` ja `ika` on annettu. Luo niistä olio `henkilo` käyttäen lyhyttä merkintää.
+    check: test
+    setup: |
+      const nimi = "Linus";
+      const ika = 54;
+    tests:
+      - 'henkilo.nimi === "Linus" && henkilo.ika === 54'
+    solution: |
+      const henkilo = { nimi, ika };
+  - id: js-object-delete
+    prompt: Poista oliosta `kayttaja` ominaisuus `salasana`.
+    check: test
+    setup: |
+      const kayttaja = { nimi: "Ada", salasana: "1234" };
+    tests:
+      - '!("salasana" in kayttaja) && kayttaja.nimi === "Ada"'
+    solution: |
+      delete kayttaja.salasana;
+  - id: js-optional-chaining
+    prompt: Hae olion `kayttaja` osoitteen katu (`osoite.katu`) vakioon `katu` niin, ettei koodi kaadu, vaikka osoite puuttuu.
+    check: test
+    setup: |
+      const kayttaja = { nimi: "Ada" };
+    tests:
+      - 'katu === undefined'
+    solution: |
+      const katu = kayttaja.osoite?.katu;

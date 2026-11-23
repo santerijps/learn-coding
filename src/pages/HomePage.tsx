@@ -55,13 +55,13 @@ export function HomePage() {
                 {fresh ? ` · ${m.newCount(fresh)}` : ''}
               </p>
               <div className="actions">
-                {due + fresh > 0 ? (
+                {unlocked.length > 0 ? (
                   <a className="btn btn-primary" href={href({ name: 'practice', track: track.id })}>
                     {m.startPractice}
                   </a>
                 ) : null}
                 {next ? (
-                  <a className={`btn ${due + fresh > 0 ? 'btn-ghost' : 'btn-primary'}`} href={href({ name: 'lesson', lessonId: next.id })}>
+                  <a className={`btn ${unlocked.length > 0 ? 'btn-ghost' : 'btn-primary'}`} href={href({ name: 'lesson', lessonId: next.id })}>
                     {m.continueWith(next.title)}
                   </a>
                 ) : (

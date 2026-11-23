@@ -42,6 +42,15 @@ theory: |
   haeKayttaja().then((nimi) => console.log(nimi));
   ```
 
+  ### Oma lupaus
+
+  Lupauksen voi luoda itse `new Promise`-konstruktorilla. Yleisin käyttö on odotusfunktio:
+
+  ```js
+  const odota = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  await odota(1000); // jatkuu sekunnin kuluttua
+  ```
+
   ### Rinnakkain
 
   `Promise.all` odottaa useaa lupausta yhtä aikaa ja palauttaa tulokset taulukkona samassa järjestyksessä:
@@ -145,3 +154,51 @@ cards:
           return "virhe";
         }
       }
+  - id: js-async-arrow
+    prompt: 'Kirjoita async-nuolifunktio `hae`, joka palauttaa merkkijonon `"data"`.'
+    check: test
+    tests:
+      - 'hae() instanceof Promise'
+      - '(await hae()) === "data"'
+      - '!Object.hasOwn(hae, "prototype")'
+    solution: |
+      const hae = async () => "data";
+  - id: js-await-sequential
+    prompt: Odota ensin funktion `haeKayttaja()` tulosta ja hae sitten käyttäjän tilaukset kutsulla `haeTilaukset(kayttaja.id)`. Tallenna tilaukset vakioon `tilaukset`.
+    check: test
+    setup: |
+      const haeKayttaja = async () => ({ id: 7 });
+      const haeTilaukset = async (id) => (id === 7 ? ["kirja"] : []);
+    tests:
+      - 'JSON.stringify(tilaukset) === JSON.stringify(["kirja"])'
+    solution: |
+      const kayttaja = await haeKayttaja();
+      const tilaukset = await haeTilaukset(kayttaja.id);
+  - id: js-fetch-ok
+    prompt: 'Kirjoita async-funktio `hae(url)`, joka hakee osoitteen fetch-funktiolla. Jos `vastaus.ok` on epätosi, heitä virhe `new Error("Haku epäonnistui")`, ja muuten palauta `await vastaus.json()`.'
+    check: test
+    setup: |
+      // Harjoitusta varten fetch palauttaa valmiin vastauksen.
+      const fetch = async (url) => ({
+        ok: url === "/ok",
+        json: async () => ({ a: 1 }),
+      });
+    tests:
+      - '(await hae("/ok")).a === 1'
+      - 'await (async () => { try { await hae("/puuttuu"); return false; } catch (e) { return e.message === "Haku epäonnistui"; } })()'
+    solution: |
+      async function hae(url) {
+        const vastaus = await fetch(url);
+        if (!vastaus.ok) {
+          throw new Error("Haku epäonnistui");
+        }
+        return await vastaus.json();
+      }
+  - id: js-sleep-promise
+    prompt: Kirjoita funktio `odota(ms)`, joka palauttaa lupauksen, joka täyttyy `setTimeout`-funktion avulla `ms` millisekunnin kuluttua.
+    check: test
+    tests:
+      - 'odota(1) instanceof Promise'
+      - 'await (async () => { const alku = Date.now(); await odota(30); return Date.now() - alku >= 25; })()'
+    solution: |
+      const odota = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

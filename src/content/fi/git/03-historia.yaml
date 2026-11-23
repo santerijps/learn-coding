@@ -20,6 +20,7 @@ theory: |
   ```bash
   git diff           # muutokset, joita EI ole vielä lisätty valmistelualueelle
   git diff --staged  # valmistelualueella olevat muutokset (eli mitä commit sisältää)
+  git diff app.js    # vain yhden tiedoston muutokset
   ```
 
   Jos `git diff` ei näytä mitään, vaikka muutit tiedostoa, olet luultavasti jo lisännyt muutokset `git add`-komennolla. Kokeile silloin `git diff --staged`.
@@ -28,7 +29,10 @@ theory: |
 
   ```bash
   git show a1b2c3d   # commitin tiedot ja sen tekemät muutokset
+  git show           # viimeisin commit (sama kuin git show HEAD)
   ```
+
+  Valintoja voi yhdistää: `git log --oneline -5` näyttää viisi viimeisintä committia tiiviisti.
 
   `HEAD` tarkoittaa nykyistä committia. `HEAD~1` on sitä edellinen ja `HEAD~2` kahta edellinen.
 exercises:
@@ -83,3 +87,29 @@ cards:
     prompt: Näytä commitin `a1b2c3d` tiedot ja muutokset.
     check: match
     solution: git show a1b2c3d
+  - id: git-log-file
+    prompt: Näytä vain ne commitit, jotka koskevat tiedostoa `app.js`.
+    check: match
+    solution: git log app.js
+    accepted:
+      - git log -- app.js
+  - id: git-show-latest
+    prompt: Näytä viimeisimmän commitin tiedot ja muutokset.
+    check: match
+    solution: git show
+    accepted:
+      - git show HEAD
+  - id: git-diff-file
+    prompt: Näytä tiedoston `app.js` muutokset, joita ei ole vielä lisätty valmistelualueelle.
+    check: match
+    solution: git diff app.js
+    accepted:
+      - git diff -- app.js
+  - id: git-log-oneline-limit
+    prompt: Näytä viisi viimeisintä committia tiiviisti, yksi commit per rivi.
+    check: match
+    solution: git log --oneline -5
+    accepted:
+      - git log -5 --oneline
+      - git log --oneline -n 5
+      - git log -n 5 --oneline

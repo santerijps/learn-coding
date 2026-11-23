@@ -115,3 +115,40 @@ cards:
       - 'siisti === "hei"'
     solution: |
       const siisti = syote.trim();
+  - id: js-lowercase
+    prompt: Muuta merkkijono `sahkoposti` pieniksi kirjaimiksi ja tallenna tulos vakioon `pienena`.
+    check: test
+    setup: |
+      const sahkoposti = "Ada@Example.COM";
+    tests:
+      - 'pienena === "ada@example.com"'
+    solution: |
+      const pienena = sahkoposti.toLowerCase();
+  - id: js-starts-with
+    prompt: Tarkista, alkaako `url` tekstillä `"https"`, ja tallenna tulos vakioon `onSuojattu`.
+    check: test
+    setup: |
+      const url = "https://esimerkki.fi";
+    tests:
+      - 'onSuojattu === true'
+    solution: |
+      const onSuojattu = url.startsWith("https");
+  - id: js-first-char
+    prompt: Tallenna merkkijonon `nimi` ensimmäinen merkki vakioon `alkukirjain`.
+    check: test
+    setup: |
+      const nimi = "Grace";
+    tests:
+      - 'alkukirjain === "G"'
+    solution: |
+      const alkukirjain = nimi[0];
+  - id: js-template-expression
+    prompt: 'Luo vakio `kuvaus`, jonka arvo on `Hinta: 12 €`. Laske summa template literalin sisällä lausekkeella `kpl * hinta`.'
+    check: test
+    setup: |
+      const kpl = 3;
+      const hinta = 4;
+    tests:
+      - 'kuvaus === "Hinta: 12 €"'
+    solution: |
+      const kuvaus = `Hinta: ${kpl * hinta} €`;

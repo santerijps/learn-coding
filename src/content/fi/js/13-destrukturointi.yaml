@@ -150,3 +150,30 @@ cards:
       - 'a === 2 && b === 1'
     solution: |
       [a, b] = [b, a];
+  - id: js-destructure-default
+    prompt: 'Pura oliosta `asetukset` vakio `teema`, jonka oletusarvo on `"vaalea"`.'
+    check: test
+    setup: |
+      const asetukset = { kieli: "fi" };
+    tests:
+      - 'teema === "vaalea"'
+    solution: |
+      const { teema = "vaalea" } = asetukset;
+  - id: js-destructure-rename
+    prompt: Pura oliosta `kayttaja` ominaisuus `nimi` vakioon, jonka nimi on `kayttajanimi`.
+    check: test
+    setup: |
+      const kayttaja = { nimi: "Ada" };
+    tests:
+      - 'kayttajanimi === "Ada"'
+    solution: |
+      const { nimi: kayttajanimi } = kayttaja;
+  - id: js-spread-copy-array
+    prompt: Luo taulukosta `alkuperainen` kopio `kopio` spreadilla.
+    check: test
+    setup: |
+      const alkuperainen = [1, 2, 3];
+    tests:
+      - 'JSON.stringify(kopio) === "[1,2,3]" && kopio !== alkuperainen'
+    solution: |
+      const kopio = [...alkuperainen];

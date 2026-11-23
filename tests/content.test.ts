@@ -3,6 +3,7 @@ import { Glob } from 'bun'
 import { course } from '../src/content'
 import { buildProgram, runProgram } from '../src/check/program'
 import { matches, normalize } from '../src/check/normalize'
+import { ROUND_SIZE } from '../src/session/buildRound'
 
 /**
  * Content checks: a broken card fails the build instead of reaching learners.
@@ -16,6 +17,12 @@ describe('course structure', () => {
     for (const track of course.tracks) {
       const files = [...new Glob('*.yaml').scanSync(`src/content/fi/${track.id}`)]
       expect(track.lessons.length).toBe(files.length)
+    }
+  })
+
+  test('every lesson has enough cards for a full round', () => {
+    for (const track of course.tracks) {
+      for (const lesson of track.lessons) expect([lesson.id, lesson.cards.length >= ROUND_SIZE]).toEqual([lesson.id, true])
     }
   })
 

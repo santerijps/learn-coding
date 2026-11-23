@@ -115,3 +115,39 @@ cards:
       - 'Array.isArray(sanat) && sanat.length === 3 && sanat[2] === "nopeasti"'
     solution: |
       const sanat = lause.split(" ");
+  - id: js-array-pop
+    prompt: Poista taulukon `pino` viimeinen alkio ja tallenna poistettu alkio vakioon `poistettu`.
+    check: test
+    setup: |
+      const pino = [1, 2, 3];
+    tests:
+      - 'poistettu === 3 && pino.length === 2'
+    solution: |
+      const poistettu = pino.pop();
+  - id: js-array-unshift
+    prompt: 'Lisää merkkijono `"alku"` taulukon `jono` alkuun.'
+    check: test
+    setup: |
+      const jono = ["keski", "loppu"];
+    tests:
+      - 'jono.length === 3 && jono[0] === "alku"'
+    solution: |
+      jono.unshift("alku");
+  - id: js-array-index-of
+    prompt: 'Tallenna alkion `"kiivi"` indeksi taulukossa `hedelmat` vakioon `paikka`.'
+    check: test
+    setup: |
+      const hedelmat = ["omena", "banaani", "kiivi"];
+    tests:
+      - 'paikka === 2'
+    solution: |
+      const paikka = hedelmat.indexOf("kiivi");
+  - id: js-array-join
+    prompt: 'Yhdistä taulukon `osat` alkiot merkkijonoksi `polku` niin, että erottimena on `"/"`.'
+    check: test
+    setup: |
+      const osat = ["home", "ada", "koodi"];
+    tests:
+      - 'polku === "home/ada/koodi"'
+    solution: |
+      const polku = osat.join("/");

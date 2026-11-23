@@ -10,7 +10,7 @@ theory: |
   git clone https://github.com/esimerkki/projekti.git
   ```
 
-  `clone` lataa koko historian ja asettaa etärepon nimellä `origin` automaattisesti.
+  `clone` lataa koko historian ja asettaa etärepon nimellä `origin` automaattisesti. Kohdekansion nimen voi antaa perään: `git clone <osoite> oma-kopio`.
 
   ### Oman repon yhdistäminen etärepoon
 
@@ -29,6 +29,8 @@ theory: |
   # ... tee muutoksia, add, commit ...
   git push        # lähetä omat commitit
   ```
+
+  Uusi haara lähetetään ensimmäistä kertaa samoin kuin `main`: `git push -u origin ominaisuus`. Etärepon ja haaran voi myös nimetä erikseen: `git pull origin main`.
 
   ### fetch vai pull?
 
@@ -98,3 +100,17 @@ cards:
     prompt: Lähetä uudet commitisi etärepoon. Seurattava haara on jo asetettu.
     check: match
     solution: git push
+  - id: git-clone-into-dir
+    prompt: 'Kloonaa repo osoitteesta `https://github.com/esimerkki/projekti.git` kansioon `oma-kopio`.'
+    check: match
+    solution: git clone https://github.com/esimerkki/projekti.git oma-kopio
+  - id: git-push-new-branch
+    prompt: Lähetä uusi haara `ominaisuus` etärepoon `origin` ensimmäistä kertaa ja aseta se seurattavaksi.
+    check: match
+    solution: git push -u origin ominaisuus
+    accepted:
+      - git push --set-upstream origin ominaisuus
+  - id: git-pull-explicit
+    prompt: Hae ja yhdistä nykyiseen haaraan etärepon `origin` haara `main`, nimeten molemmat komennossa.
+    check: match
+    solution: git pull origin main

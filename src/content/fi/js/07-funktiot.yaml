@@ -127,3 +127,50 @@ cards:
       - 'tulos === 21'
     solution: |
       const tulos = laske(4, 5);
+  - id: js-function-template
+    prompt: 'Kirjoita funktio `tervehdi(nimi)`, joka palauttaa merkkijonon `` `Hei ${nimi}!` ``.'
+    check: test
+    tests:
+      - 'tervehdi("Ada") === "Hei Ada!"'
+      - 'tervehdi("Linus") === "Hei Linus!"'
+    solution: |
+      function tervehdi(nimi) {
+        return `Hei ${nimi}!`;
+      }
+  - id: js-function-is-even
+    prompt: Kirjoita funktio `onParillinen(n)`, joka palauttaa `true` parilliselle luvulle ja muuten `false`.
+    check: test
+    tests:
+      - 'onParillinen(4) === true'
+      - 'onParillinen(7) === false'
+    solution: |
+      function onParillinen(n) {
+        return n % 2 === 0;
+      }
+  - id: js-function-early-return
+    prompt: Kirjoita funktio `jaa(a, b)`, joka palauttaa `null`, jos `b` on nolla, ja muuten osamäärän `a / b`.
+    check: test
+    tests:
+      - 'jaa(6, 2) === 3'
+      - 'jaa(1, 0) === null'
+    solution: |
+      function jaa(a, b) {
+        if (b === 0) {
+          return null;
+        }
+        return a / b;
+      }
+  - id: js-function-abs
+    prompt: Kirjoita funktio `itseisarvo(x)`, joka palauttaa luvun itseisarvon. Älä käytä `Math.abs`-funktiota.
+    check: test
+    tests:
+      - 'itseisarvo(-5) === 5'
+      - 'itseisarvo(3) === 3'
+      - '!String(itseisarvo).includes("Math.abs")'
+    solution: |
+      function itseisarvo(x) {
+        if (x < 0) {
+          return -x;
+        }
+        return x;
+      }

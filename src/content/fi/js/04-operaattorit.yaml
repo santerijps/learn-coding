@@ -124,3 +124,39 @@ cards:
       - 'eiSada === true'
     solution: |
       const eiSada = !sataa;
+  - id: js-power
+    prompt: Laske `2` potenssiin `10` operaattorilla `**` ja tallenna tulos vakioon `tulos`.
+    check: test
+    tests:
+      - 'tulos === 1024'
+    solution: |
+      const tulos = 2 ** 10;
+  - id: js-or
+    prompt: Luo vakio `vapaapaiva`, joka on tosi, kun `onLauantai` **tai** `onSunnuntai` on tosi.
+    check: test
+    setup: |
+      const onLauantai = false;
+      const onSunnuntai = true;
+    tests:
+      - 'vapaapaiva === true'
+    solution: |
+      const vapaapaiva = onLauantai || onSunnuntai;
+  - id: js-not-equal
+    prompt: Luo vakio `eriSuuret`, joka on tosi, kun `a` ja `b` ovat eri suuret. Käytä tiukkaa vertailua.
+    check: test
+    setup: |
+      const a = 5;
+      const b = 7;
+    tests:
+      - 'eriSuuret === true'
+    solution: |
+      const eriSuuret = a !== b;
+  - id: js-range-check
+    prompt: Luo vakio `onValilla`, joka on tosi, kun `luku` on vähintään `1` ja enintään `10`.
+    check: test
+    setup: |
+      const luku = 10;
+    tests:
+      - 'onValilla === true'
+    solution: |
+      const onValilla = luku >= 1 && luku <= 10;

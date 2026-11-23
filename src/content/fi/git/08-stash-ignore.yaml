@@ -14,6 +14,7 @@ theory: |
   ```
 
   ```bash
+  git stash push -m "Keskeneräinen lomake"   # stash viestin kanssa
   git stash list         # näytä sivuun siirretyt muutokset
   git stash -u           # ota mukaan myös seuraamattomat (uudet) tiedostot
   git stash apply        # palauta, mutta jätä myös listalle
@@ -101,3 +102,21 @@ cards:
       - node_modules
       - /node_modules/
       - /node_modules
+  - id: git-stash-message
+    prompt: 'Siirrä muutokset sivuun viestillä `"Keskeneräinen lomake"`.'
+    check: match
+    solution: git stash push -m "Keskeneräinen lomake"
+    accepted:
+      - git stash -m "Keskeneräinen lomake"
+  - id: git-stash-apply
+    prompt: Palauta viimeisin stash, mutta jätä se myös stash-listalle.
+    check: match
+    solution: git stash apply
+  - id: git-stash-drop
+    prompt: Poista viimeisin stash palauttamatta sitä.
+    check: match
+    solution: git stash drop
+  - id: git-ignore-extension
+    prompt: Kirjoita `.gitignore`-rivi, joka jättää huomiotta kaikki `.log`-päätteiset tiedostot.
+    check: match
+    solution: '*.log'

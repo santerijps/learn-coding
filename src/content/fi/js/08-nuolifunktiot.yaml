@@ -106,3 +106,51 @@ cards:
       - '!Object.hasOwn(keskiarvo, "prototype")'
     solution: |
       const keskiarvo = (a, b) => (a + b) / 2;
+  - id: js-arrow-no-params
+    prompt: 'Kirjoita parametriton nuolifunktio `moikkaa`, joka palauttaa merkkijonon `"Moi!"`.'
+    check: test
+    tests:
+      - 'moikkaa() === "Moi!"'
+      - '!Object.hasOwn(moikkaa, "prototype")'
+    solution: |
+      const moikkaa = () => "Moi!";
+  - id: js-arrow-block-body
+    prompt: 'Kirjoita aaltosulkeellinen nuolifunktio `luokittele(x)`, joka palauttaa `"iso"`, jos `x` on yli 100, ja muuten `"pieni"`.'
+    check: test
+    tests:
+      - 'luokittele(150) === "iso"'
+      - 'luokittele(100) === "pieni"'
+      - '!Object.hasOwn(luokittele, "prototype")'
+    solution: |
+      const luokittele = (x) => {
+        if (x > 100) {
+          return "iso";
+        }
+        return "pieni";
+      };
+  - id: js-default-exponent
+    prompt: Kirjoita funktio `potenssi(kanta, eksponentti)`, jossa eksponentin oletusarvo on `2`.
+    check: test
+    tests:
+      - 'potenssi(3) === 9'
+      - 'potenssi(2, 3) === 8'
+    solution: |
+      const potenssi = (kanta, eksponentti = 2) => kanta ** eksponentti;
+  - id: js-callback-twice
+    prompt: Kirjoita funktio `kahdesti(f)`, joka kutsuu sille annettua funktiota kaksi kertaa.
+    check: test
+    tests:
+      - '(() => { let n = 0; kahdesti(() => n++); return n === 2; })()'
+    solution: |
+      const kahdesti = (f) => {
+        f();
+        f();
+      };
+  - id: js-callback-apply
+    prompt: Kirjoita funktio `sovella(f, x)`, joka kutsuu funktiota `f` argumentilla `x` ja palauttaa tuloksen.
+    check: test
+    tests:
+      - 'sovella((n) => n + 1, 1) === 2'
+      - 'sovella((s) => s.length, "abc") === 3'
+    solution: |
+      const sovella = (f, x) => f(x);

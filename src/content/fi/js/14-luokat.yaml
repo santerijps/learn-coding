@@ -187,3 +187,56 @@ cards:
           this.koulu = koulu;
         }
       }
+  - id: js-class-default-param
+    prompt: Luo luokka `Tili`, jonka konstruktori ottaa parametrin `saldo` (oletusarvo `0`) ja tallentaa sen ominaisuuteen `saldo`.
+    check: test
+    tests:
+      - 'new Tili().saldo === 0'
+      - 'new Tili(50).saldo === 50'
+    solution: |
+      class Tili {
+        constructor(saldo = 0) {
+          this.saldo = saldo;
+        }
+      }
+  - id: js-class-method-param
+    prompt: Luo luokka `Tili`, jonka `saldo` alkaa nollasta ja jonka metodi `talleta(summa)` kasvattaa saldoa annetulla summalla.
+    check: test
+    tests:
+      - '(() => { const t = new Tili(); t.talleta(20); t.talleta(5); return t.saldo === 25; })()'
+    solution: |
+      class Tili {
+        constructor() {
+          this.saldo = 0;
+        }
+        talleta(summa) {
+          this.saldo += summa;
+        }
+      }
+  - id: js-class-two-instances
+    prompt: Luo valmiista luokasta `Piste` kaksi oliota, `a` (x = 1, y = 2) ja `b` (x = 3, y = 4).
+    check: test
+    setup: |
+      class Piste {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+      }
+    tests:
+      - 'a instanceof Piste && a.x === 1 && a.y === 2'
+      - 'b instanceof Piste && b.x === 3 && b.y === 4'
+    solution: |
+      const a = new Piste(1, 2);
+      const b = new Piste(3, 4);
+  - id: js-instanceof
+    prompt: Tallenna vakioon `onElain` tieto siitä, onko `lemmikki` luokan `Elain` olio. Käytä `instanceof`-operaattoria.
+    check: test
+    setup: |
+      class Elain {}
+      class Koira extends Elain {}
+      const lemmikki = new Koira();
+    tests:
+      - 'onElain === true'
+    solution: |
+      const onElain = lemmikki instanceof Elain;

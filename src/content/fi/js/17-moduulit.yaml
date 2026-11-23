@@ -104,3 +104,29 @@ cards:
     check: match
     solution: |
       import * as apu from "./apu.js";
+  - id: js-import-rename
+    prompt: Tuo nimetty vienti `summa` tiedostosta `./laskin.js` niin, että sen nimi omassa tiedostossasi on `plus`.
+    check: match
+    solution: |
+      import { summa as plus } from "./laskin.js";
+  - id: js-import-default-and-named
+    prompt: Tuo samalla rivillä paketin `react` oletusvienti nimellä `React` ja nimetty vienti `useState`.
+    check: match
+    solution: |
+      import React, { useState } from "react";
+  - id: js-export-function
+    prompt: Kirjoita nimettynä vientinä funktio `tuplaa(x)`, joka palauttaa luvun kaksinkertaisena.
+    check: match
+    solution: |
+      export function tuplaa(x) {
+        return x * 2;
+      }
+    accepted:
+      - 'export const tuplaa = (x) => x * 2;'
+      - 'export const tuplaa = x => x * 2;'
+      - 'export function tuplaa(x) { return 2 * x; }'
+  - id: js-import-parent-dir
+    prompt: Tuo nimetty vienti `api` tiedostosta `api.js`, joka on yhden tason ylempänä kansiossa `palvelut`.
+    check: match
+    solution: |
+      import { api } from "../palvelut/api.js";

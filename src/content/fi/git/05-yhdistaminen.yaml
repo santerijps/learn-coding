@@ -33,10 +33,13 @@ theory: |
   - Merkitse tiedosto ratkaistuksi: `git add tiedosto.js`.
   - Viimeistele yhdistäminen: `git commit`.
 
-  Jos haluat perua koko yhdistämisen, aja `git merge --abort`.
+  Kesken olevan yhdistämisen tilan näet komennolla `git status`, joka listaa konfliktissa olevat tiedostot. Jos haluat perua koko yhdistämisen, aja `git merge --abort`. Viimeistelyyn käy myös `git merge --continue`.
 
   ```bash
-  git branch --merged   # haarat, jotka on jo yhdistetty nykyiseen (turvallista poistaa)
+  git merge ominaisuus -m "Yhdistä ominaisuus"  # merge-commitin viesti suoraan
+  git branch --merged                           # haarat, jotka on jo yhdistetty nykyiseen (turvallista poistaa)
+  git branch --no-merged                        # haarat, joita ei ole vielä yhdistetty
+  git log --oneline --graph --all               # historia graafina kaikista haaroista
   ```
 exercises:
   - type: choice
@@ -79,3 +82,33 @@ cards:
     prompt: Listaa haarat, jotka on jo yhdistetty nykyiseen haaraan.
     check: match
     solution: git branch --merged
+  - id: git-merge-status
+    prompt: Yhdistäminen pysähtyi konfliktiin. Tarkista, mitkä tiedostot ovat konfliktissa.
+    check: match
+    solution: git status
+  - id: git-merge-continue
+    prompt: Olet ratkaissut konfliktit ja lisännyt tiedostot valmistelualueelle. Viimeistele yhdistäminen.
+    check: match
+    solution: git commit
+    accepted:
+      - git merge --continue
+  - id: git-branch-no-merged
+    prompt: Listaa haarat, joita ei ole vielä yhdistetty nykyiseen haaraan.
+    check: match
+    solution: git branch --no-merged
+  - id: git-merge-message
+    prompt: 'Yhdistä haara `ominaisuus` ja anna merge-commitille viesti `"Yhdistä ominaisuus"`.'
+    check: match
+    solution: git merge ominaisuus -m "Yhdistä ominaisuus"
+    accepted:
+      - git merge -m "Yhdistä ominaisuus" ominaisuus
+  - id: git-log-graph
+    prompt: Näytä kaikkien haarojen historia tiiviinä graafina, josta haarautumiset ja yhdistämiset näkyvät.
+    check: match
+    solution: git log --oneline --graph --all
+    accepted:
+      - git log --graph --oneline --all
+      - git log --all --oneline --graph
+      - git log --oneline --all --graph
+      - git log --graph --all --oneline
+      - git log --all --graph --oneline

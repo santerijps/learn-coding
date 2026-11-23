@@ -118,3 +118,83 @@ cards:
       } finally {
         console.log("Valmis");
       }
+  - id: js-error-object
+    prompt: 'Luo vakio `virhe`, joka on uusi `Error`-olio viestillä `"Hups"`, ja tulosta virheen viesti.'
+    check: test
+    tests:
+      - 'virhe instanceof Error && virhe.message === "Hups"'
+      - '__logs[0] === "Hups"'
+    solution: |
+      const virhe = new Error("Hups");
+      console.log(virhe.message);
+  - id: js-throw-validate
+    prompt: 'Kirjoita funktio `tarkistaIka(ika)`, joka heittää virheen `new Error("Ikä ei voi olla negatiivinen")`, jos ikä on alle nollan, ja muuten palauttaa iän.'
+    check: test
+    tests:
+      - 'tarkistaIka(30) === 30'
+      - '(() => { try { tarkistaIka(-1); return false; } catch (e) { return e.message === "Ikä ei voi olla negatiivinen"; } })()'
+    solution: |
+      function tarkistaIka(ika) {
+        if (ika < 0) {
+          throw new Error("Ikä ei voi olla negatiivinen");
+        }
+        return ika;
+      }
+  - id: js-catch-log
+    prompt: Kutsu funktiota `lataa()` try/catch-rakenteen sisällä ja tulosta virheen viesti, jos kutsu epäonnistuu.
+    check: test
+    setup: |
+      function lataa() {
+        throw new Error("Tiedostoa ei löytynyt");
+      }
+    tests:
+      - '__logs[0] === "Tiedostoa ei löytynyt"'
+    solution: |
+      try {
+        lataa();
+      } catch (virhe) {
+        console.log(virhe.message);
+      }
+  - id: js-parse-number-or-throw
+    prompt: 'Kirjoita funktio `lueLuku(teksti)`, joka palauttaa `Number(teksti)`, mutta heittää virheen `new Error("Ei luku")`, jos tulos on NaN.'
+    check: test
+    tests:
+      - 'lueLuku("5") === 5'
+      - '(() => { try { lueLuku("kissa"); return false; } catch (e) { return e.message === "Ei luku"; } })()'
+    solution: |
+      function lueLuku(teksti) {
+        const luku = Number(teksti);
+        if (Number.isNaN(luku)) {
+          throw new Error("Ei luku");
+        }
+        return luku;
+      }
+  - id: js-parse-or-default
+    prompt: Kirjoita funktio `jasenna(json)`, joka palauttaa `JSON.parse(json)`-kutsun tuloksen, tai tyhjän olion `{}`, jos jäsennys epäonnistuu.
+    check: test
+    tests:
+      - 'jasenna(''{"a": 1}'').a === 1'
+      - 'JSON.stringify(jasenna("rikki")) === "{}"'
+    solution: |
+      function jasenna(json) {
+        try {
+          return JSON.parse(json);
+        } catch {
+          return {};
+        }
+      }
+  - id: js-try-flag
+    prompt: Aseta muuttujan `onnistui` arvoksi `true`, jos `JSON.parse(syote)` onnistuu, ja `false`, jos se heittää virheen.
+    check: test
+    setup: |
+      const syote = '{"ok": true}';
+    tests:
+      - 'onnistui === true'
+    solution: |
+      let onnistui;
+      try {
+        JSON.parse(syote);
+        onnistui = true;
+      } catch {
+        onnistui = false;
+      }

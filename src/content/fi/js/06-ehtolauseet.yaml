@@ -39,6 +39,15 @@ theory: |
     console.log("Nimi puuttuu");
   }
   ```
+
+  ### Oletusarvo ||-operaattorilla
+
+  `a || b` palauttaa arvon `a`, jos se on truthy, ja muuten arvon `b`. Tätä käytetään usein oletusarvon antamiseen:
+
+  ```js
+  const syote = "";
+  const nimi = syote || "Anonyymi"; // "Anonyymi"
+  ```
 exercises:
   - type: choice
     question: Mikä näistä arvoista on falsy?
@@ -129,3 +138,63 @@ cards:
       } else {
         console.log("Kirjaudu sisään");
       }
+  - id: js-if-equals
+    prompt: Tulosta `Oikein!`, jos `vastaus` on täsmälleen `42`.
+    check: test
+    setup: |
+      const vastaus = 42;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Oikein!"'
+    solution: |
+      if (vastaus === 42) {
+        console.log("Oikein!");
+      }
+  - id: js-sign
+    prompt: 'Aseta muuttujaan `merkki` arvo `"positiivinen"`, `"negatiivinen"` tai `"nolla"` luvun `luku` mukaan.'
+    check: test
+    setup: |
+      const luku = 0;
+    tests:
+      - 'merkki === "nolla"'
+    solution: |
+      let merkki;
+      if (luku > 0) {
+        merkki = "positiivinen";
+      } else if (luku < 0) {
+        merkki = "negatiivinen";
+      } else {
+        merkki = "nolla";
+      }
+  - id: js-ternary-plural
+    prompt: 'Luo vakio `teksti` ternary-operaattorilla: `"1 viesti"`, jos `maara` on 1, ja muuten esimerkiksi `"3 viestiä"`.'
+    check: test
+    setup: |
+      const maara = 3;
+    tests:
+      - 'teksti === "3 viestiä"'
+    solution: |
+      const teksti = maara === 1 ? "1 viesti" : `${maara} viestiä`;
+  - id: js-if-and-else
+    prompt: Tulosta `Tervetuloa`, jos sekä `kirjautunut` että `onAdmin` ovat tosia, ja muuten `Ei pääsyä`.
+    check: test
+    setup: |
+      const kirjautunut = true;
+      const onAdmin = false;
+    tests:
+      - '__logs.length === 1 && __logs[0] === "Ei pääsyä"'
+    solution: |
+      if (kirjautunut && onAdmin) {
+        console.log("Tervetuloa");
+      } else {
+        console.log("Ei pääsyä");
+      }
+  - id: js-or-default
+    prompt: 'Luo vakio `nimi`, jonka arvo on `syote`, jos se on truthy, ja muuten `"Anonyymi"`.'
+    check: test
+    setup: |
+      const syote = "";
+    tests:
+      - 'nimi === "Anonyymi"'
+    hint: '`||` palauttaa oikean puolen, kun vasen puoli on falsy.'
+    solution: |
+      const nimi = syote || "Anonyymi";

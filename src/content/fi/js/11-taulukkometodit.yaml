@@ -17,6 +17,14 @@ theory: |
   const parilliset = [1, 2, 3, 4].filter((x) => x % 2 === 0); // [2, 4]
   ```
 
+  ### forEach: tee jotain jokaiselle
+
+  `forEach` kutsuu funktiota jokaiselle alkiolle, mutta ei palauta mitään. Se korvaa yksinkertaisen for...of-silmukan:
+
+  ```js
+  ["Ada", "Linus"].forEach((nimi) => console.log(nimi));
+  ```
+
   ### find, some ja every
 
   ```js
@@ -138,3 +146,30 @@ cards:
       - 'JSON.stringify(tulos) === "[1,9,25]"'
     solution: |
       const tulos = luvut.filter((x) => x % 2 === 1).map((x) => x * x);
+  - id: js-map-strings
+    prompt: Luo `map`-metodilla taulukko `isot`, jossa ovat taulukon `nimet` nimet isoilla kirjaimilla.
+    check: test
+    setup: |
+      const nimet = ["ada", "linus"];
+    tests:
+      - 'JSON.stringify(isot) === JSON.stringify(["ADA", "LINUS"])'
+    solution: |
+      const isot = nimet.map((nimi) => nimi.toUpperCase());
+  - id: js-every
+    prompt: Tarkista `every`-metodilla, ovatko kaikki taulukon `pisteet` luvut vähintään `50`, ja tallenna tulos vakioon `kaikkiLapi`.
+    check: test
+    setup: |
+      const pisteet = [55, 70, 49];
+    tests:
+      - 'kaikkiLapi === false'
+    solution: |
+      const kaikkiLapi = pisteet.every((p) => p >= 50);
+  - id: js-for-each
+    prompt: Tulosta `forEach`-metodilla jokainen taulukon `varit` alkio omalle rivilleen.
+    check: test
+    setup: |
+      const varit = ["punainen", "sininen"];
+    tests:
+      - '__logs.join(",") === "punainen,sininen"'
+    solution: |
+      varit.forEach((vari) => console.log(vari));

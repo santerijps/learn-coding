@@ -33,7 +33,10 @@ theory: |
   const luku = Number(syote);  // 42
   const teksti = String(2026); // "2026"
   Number("kissa");             // NaN ("Not a Number")
+  Number.isNaN(Number("kissa")); // true
   ```
+
+  Epäonnistuneen muunnoksen tunnistaa funktiolla `Number.isNaN()`.
 
   Varo `+`-operaattoria: jos toinen puoli on merkkijono, `+` yhdistää tekstit eikä laske yhteen. `"5" + 3` on `"53"`.
 exercises:
@@ -106,3 +109,50 @@ cards:
     solution: |
       const onTotta = true;
       const onValetta = false;
+  - id: js-typeof-variable
+    prompt: Tallenna muuttujan `arvo` tyyppi vakioon `tyyppi` käyttäen `typeof`-operaattoria.
+    check: test
+    setup: |
+      const arvo = "hei";
+    tests:
+      - 'tyyppi === "string"'
+    solution: |
+      const tyyppi = typeof arvo;
+  - id: js-string-to-decimal
+    prompt: Muunna merkkijono `hintaTeksti` luvuksi ja tallenna se vakioon `hinta`.
+    check: test
+    setup: |
+      const hintaTeksti = "4.95";
+    tests:
+      - 'hinta === 4.95'
+    solution: |
+      const hinta = Number(hintaTeksti);
+  - id: js-sum-string-numbers
+    prompt: Merkkijonoissa `a` ja `b` on lukuja. Laske niiden lukuarvojen summa vakioon `summa`.
+    check: test
+    setup: |
+      const a = "5";
+      const b = "3";
+    tests:
+      - 'summa === 8'
+    hint: Muunna molemmat ensin luvuiksi `Number`-funktiolla, muuten `+` yhdistää tekstit.
+    solution: |
+      const summa = Number(a) + Number(b);
+  - id: js-is-nan
+    prompt: Tallenna vakioon `eiLuku` tieto siitä, onko `Number(syote)` NaN. Käytä funktiota `Number.isNaN`.
+    check: test
+    setup: |
+      const syote = "kissa";
+    tests:
+      - 'eiLuku === true'
+    solution: |
+      const eiLuku = Number.isNaN(Number(syote));
+  - id: js-concat-number
+    prompt: 'Luo vakio `teksti`, jonka arvo on `"Vuosi 2026"`. Liitä luku `vuosi` merkkijonon `"Vuosi "` perään `+`-operaattorilla.'
+    check: test
+    setup: |
+      const vuosi = 2026;
+    tests:
+      - 'teksti === "Vuosi 2026"'
+    solution: |
+      const teksti = "Vuosi " + vuosi;

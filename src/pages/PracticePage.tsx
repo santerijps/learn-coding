@@ -29,8 +29,9 @@ function trackCards(trackId: TrackId, progress: Progress) {
   )
 }
 
-function startRound(trackId: TrackId, progress: Progress, practiceAhead: boolean): Round {
-  const queue = buildRound(trackCards(trackId, progress), progress, new Date(), practiceAhead)
+/** Every round has ROUND_SIZE cards when enough are unlocked: due and new cards first, then the soonest upcoming. */
+function startRound(trackId: TrackId, progress: Progress): Round {
+  const queue = buildRound(trackCards(trackId, progress), progress, new Date(), true)
   return {
     queue,
     index: 0,
@@ -44,12 +45,12 @@ function startRound(trackId: TrackId, progress: Progress, practiceAhead: boolean
 export function PracticePage({ trackId }: { trackId: TrackId }) {
   const { progress, update } = useProgress()
   const track = course.trackById.get(trackId)!
-  const [round, setRound] = useState(() => startRound(trackId, progress, false))
+  const [round, setRound] = useState(() => startRound(trackId, progress))
   // Each attempt gets its own key so a requeued card starts fresh.
   const [attempt, setAttempt] = useState(0)
 
-  const restart = (practiceAhead: boolean) => {
-    setRound(startRound(trackId, progress, practiceAhead))
+  const restart = () => {
+    setRound(startRound(trackId, progress))
     setAttempt((a) => a + 1)
   }
 
@@ -89,41 +90,19 @@ export function PracticePage({ trackId }: { trackId: TrackId }) {
     </nav>
   )
 
-  // Nothing to practice yet, or nothing due.
+  // No completed lessons yet, so nothing is unlocked.
   if (round.queue.length === 0) {
-    const unlocked = trackCards(trackId, progress)
     const first = track.lessons.find((l) => !progress.lessons[l.id])
-    const upcoming = nextDue(unlocked, progress)
     return (
       <div className="page">
         {crumbs}
         <h1>{m.practice}</h1>
-        {unlocked.length === 0 ? (
-          <>
-            <p className="lead">{m.noLessonsDone}</p>
-            {first ? (
-              <a className="btn btn-primary" href={href({ name: 'lesson', lessonId: first.id })}>
-                {m.firstLesson(first.title)}
-              </a>
-            ) : null}
-          </>
-        ) : (
-          <>
-            <p className="lead">
-              {m.caughtUp} {upcoming ? m.nextReviewAt(formatRelative(upcoming)) : ''}
-            </p>
-            <div className="actions">
-              <button className="btn btn-primary" onClick={() => restart(true)}>
-                {m.practiceAnyway}
-              </button>
-              {first ? (
-                <a className="btn btn-ghost" href={href({ name: 'lesson', lessonId: first.id })}>
-                  {m.continueWith(first.title)}
-                </a>
-              ) : null}
-            </div>
-          </>
-        )}
+        <p className="lead">{m.noLessonsDone}</p>
+        {first ? (
+          <a className="btn btn-primary" href={href({ name: 'lesson', lessonId: first.id })}>
+            {m.firstLesson(first.title)}
+          </a>
+        ) : null}
       </div>
     )
   }
@@ -144,7 +123,7 @@ export function PracticePage({ trackId }: { trackId: TrackId }) {
             {upcoming ? ` · ${m.nextReviewAt(formatRelative(upcoming))}` : ''}
           </p>
           <div className="actions">
-            <button className="btn btn-primary" onClick={() => restart(false)} autoFocus>
+            <button className="btn btn-primary" onClick={restart} autoFocus>
               {m.newRound}
             </button>
             {first ? (

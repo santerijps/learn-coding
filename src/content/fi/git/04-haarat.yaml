@@ -12,6 +12,7 @@ theory: |
   git switch kirjautuminen   # siirry haaraan
   git switch -c korjaus      # luo haara ja siirry siihen samalla
   git switch main            # takaisin päähaaraan
+  git switch -               # palaa edelliseen haaraan
   ```
 
   ### Vanhempi syntaksi
@@ -82,3 +83,21 @@ cards:
     prompt: Nimeä nykyinen haara uudelleen nimelle `main`.
     check: match
     solution: git branch -m main
+  - id: git-checkout-old
+    prompt: Siirry haaraan `kehitys` käyttäen vanhempaa `checkout`-komentoa.
+    check: match
+    solution: git checkout kehitys
+  - id: git-checkout-b-old
+    prompt: Luo haara `testi` ja siirry siihen käyttäen vanhempaa `checkout`-komentoa.
+    check: match
+    solution: git checkout -b testi
+  - id: git-branch-force-delete
+    prompt: Poista haara `kokeilu`, jota ei ole yhdistetty, pakottamalla poisto.
+    check: match
+    solution: git branch -D kokeilu
+  - id: git-switch-previous
+    prompt: Palaa haaraan, jossa olit ennen nykyistä.
+    check: match
+    solution: git switch -
+    accepted:
+      - git checkout -

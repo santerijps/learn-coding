@@ -42,8 +42,17 @@ describe('buildRound', () => {
     const p = progress({ c5: at(-5), c6: at(-60), c7: at(30) })
     const round = buildRound(deck, p, now)
     expect(round.slice(0, 2).map((c) => c.id)).toEqual(['c6', 'c5'])
-    expect(round.length).toBe(2 + NEW_PER_ROUND)
-    expect(round.some((c) => c.id === 'c7')).toBe(false)
+    expect(round.length).toBe(ROUND_SIZE)
+    expect(round.slice(2).every((c) => !p.cards[c.id])).toBe(true)
+    expect(NEW_PER_ROUND).toBeLessThanOrEqual(ROUND_SIZE)
+  })
+
+  test('a round is topped up with not-yet-due cards to always have ROUND_SIZE cards', () => {
+    const small = deck.slice(0, 12)
+    const cards = Object.fromEntries(small.map((c, i) => [c.id, i === 0 ? at(-1) : at(i)]))
+    const round = buildRound(small, progress(cards), now)
+    expect(round.length).toBe(ROUND_SIZE)
+    expect(round.map((c) => c.id).slice(0, 3)).toEqual(['c0', 'c1', 'c2'])
   })
 
   test('rounds never exceed the round size', () => {

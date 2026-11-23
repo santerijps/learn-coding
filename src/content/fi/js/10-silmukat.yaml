@@ -151,3 +151,56 @@ cards:
         }
         return -1;
       }
+  - id: js-while-countdown
+    prompt: Tulosta while-silmukalla luvut `3`, `2` ja `1` tässä järjestyksessä.
+    check: test
+    tests:
+      - '__logs.join(",") === "3,2,1"'
+    solution: |
+      let i = 3;
+      while (i > 0) {
+        console.log(i);
+        i--;
+      }
+  - id: js-loop-max
+    prompt: Etsi silmukalla taulukon `luvut` suurin luku muuttujaan `suurin`. Älä käytä `Math.max`-funktiota.
+    check: test
+    setup: |
+      const luvut = [3, 17, 8, 12];
+    tests:
+      - 'suurin === 17'
+    solution: |
+      let suurin = luvut[0];
+      for (const luku of luvut) {
+        if (luku > suurin) {
+          suurin = luku;
+        }
+      }
+  - id: js-loop-break
+    prompt: Tulosta taulukon `luvut` alkiot järjestyksessä, mutta lopeta silmukka `break`-lauseella heti, kun vastaan tulee negatiivinen luku.
+    check: test
+    setup: |
+      const luvut = [4, 7, -1, 9];
+    tests:
+      - '__logs.join(",") === "4,7"'
+    solution: |
+      for (const luku of luvut) {
+        if (luku < 0) {
+          break;
+        }
+        console.log(luku);
+      }
+  - id: js-loop-chars
+    prompt: Laske silmukalla, montako `"a"`-kirjainta merkkijonossa `sana` on, ja tallenna määrä muuttujaan `maara`.
+    check: test
+    setup: |
+      const sana = "banaani";
+    tests:
+      - 'maara === 3'
+    solution: |
+      let maara = 0;
+      for (const kirjain of sana) {
+        if (kirjain === "a") {
+          maara++;
+        }
+      }

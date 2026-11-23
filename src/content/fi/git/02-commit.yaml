@@ -9,7 +9,9 @@ theory: |
 
   ```bash
   git add index.html        # yksi tiedosto
+  git add index.html app.js # useita tiedostoja kerralla
   git add src/              # kokonainen kansio
+  git add *.js              # kaikki .js-tiedostot nykyisessä kansiossa
   git add .                 # kaikki muutokset nykyisessä kansiossa
   git commit -m "Lisää etusivu"
   ```
@@ -86,3 +88,29 @@ cards:
     prompt: Poista tiedosto `vanha.txt` sekä levyltä että Gitin seurannasta.
     check: match
     solution: git rm vanha.txt
+  - id: git-add-two-files
+    prompt: Lisää tiedostot `index.html` ja `style.css` valmistelualueelle samalla komennolla.
+    check: match
+    solution: git add index.html style.css
+    accepted:
+      - git add style.css index.html
+  - id: git-add-folder
+    prompt: Lisää koko kansio `src` valmistelualueelle.
+    check: match
+    solution: git add src
+    accepted:
+      - git add src/
+  - id: git-add-pattern
+    prompt: Lisää valmistelualueelle kaikki nykyisen kansion `.js`-päätteiset tiedostot.
+    check: match
+    solution: git add *.js
+    accepted:
+      - git add "*.js"
+  - id: git-commit-editor
+    prompt: Tee commit niin, että Git avaa tekstieditorin viestin kirjoittamista varten.
+    check: match
+    solution: git commit
+  - id: git-mv
+    prompt: Nimeä tiedosto `vanha.js` uudelleen nimelle `uusi.js` Gitin komennolla.
+    check: match
+    solution: git mv vanha.js uusi.js
