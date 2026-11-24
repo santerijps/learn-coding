@@ -155,3 +155,34 @@ cards:
       - 'x == 3 and y == 7'
     solution: |
       x, y = piste
+  - id: py-list-add-unique
+    prompt: 'Lisää `tuote` listan `ostokset` loppuun, mutta vain jos listassa ei vielä ole sitä.'
+    check: test
+    setup: |
+      ostokset = ["maito", "leipä"]
+      tuote = "munat"
+    tests:
+      - 'ostokset == ["maito", "leipä", "munat"]'
+    solution: |
+      if tuote not in ostokset:
+          ostokset.append(tuote)
+  - id: py-list-average-passed
+    prompt: 'Luo muuttuja `keskiarvo`, jossa on listan `pisteet` keskiarvo (käytä `sum`- ja `len`-funktioita), ja muuttuja `hyvaksytty`, joka on tosi, kun keskiarvo on vähintään 50.'
+    check: test
+    setup: |
+      pisteet = [40, 75, 90, 30]
+    tests:
+      - 'keskiarvo == 58.75 and hyvaksytty == True'
+    solution: |
+      keskiarvo = sum(pisteet) / len(pisteet)
+      hyvaksytty = keskiarvo >= 50
+  - id: py-list-first-last-word
+    prompt: 'Jaa merkkijono `lause` sanalistaksi `sanat` ja luo sitten muuttuja `yhteenveto`, esimerkiksi `"eka: Ada, vika: Grace"`, sen ensimmäisestä ja viimeisestä sanasta.'
+    check: test
+    setup: |
+      lause = "Ada Linus Grace"
+    tests:
+      - 'sanat == ["Ada", "Linus", "Grace"] and yhteenveto == "eka: Ada, vika: Grace"'
+    solution: |
+      sanat = lause.split()
+      yhteenveto = f"eka: {sanat[0]}, vika: {sanat[-1]}"

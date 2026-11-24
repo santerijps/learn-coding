@@ -198,3 +198,43 @@ cards:
     hint: '`||` returns the right side when the left side is falsy.'
     solution: |
       const name = input || "Anonymous";
+  - id: js-if-password-length
+    prompt: 'Print `Too short` if `password` has fewer than 8 characters, and `OK` otherwise.'
+    check: test
+    setup: |
+      const password = "abc123";
+    tests:
+      - '__logs.join(",") === "Too short"'
+    solution: |
+      if (password.length < 8) {
+        console.log("Too short");
+      } else {
+        console.log("OK");
+      }
+  - id: js-if-member-discount
+    prompt: 'Create a variable `total` that is `price` minus 10% when `isMember` is true and `price` is at least 50, and just `price` otherwise.'
+    check: test
+    setup: |
+      const price = 80;
+      const isMember = true;
+    tests:
+      - 'total === 72'
+    solution: |
+      let total = price;
+      if (isMember && price >= 50) {
+        total = price * 0.9;
+      }
+  - id: js-if-number-input
+    prompt: 'Convert the string `input` to a number. If the result is NaN, print `Not a number`; otherwise print the number doubled.'
+    check: test
+    setup: |
+      const input = "abc";
+    tests:
+      - '__logs.join(",") === "Not a number"'
+    solution: |
+      const number = Number(input);
+      if (Number.isNaN(number)) {
+        console.log("Not a number");
+      } else {
+        console.log(number * 2);
+      }

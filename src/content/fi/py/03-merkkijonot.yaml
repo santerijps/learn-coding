@@ -159,3 +159,32 @@ cards:
       - 'polku == "home/ada/koodi"'
     solution: |
       polku = "/".join(osat)
+  - id: py-str-initials
+    prompt: 'Luo muuttuja `nimikirjaimet`, jossa on `etunimi`- ja `sukunimi`-merkkijonojen alkukirjaimet isoina ja niiden perässä pisteet: nimille `"ada"` ja `"lovelace"` se on `"A.L."`.'
+    check: test
+    setup: |
+      etunimi = "ada"
+      sukunimi = "lovelace"
+    tests:
+      - 'nimikirjaimet == "A.L."'
+    solution: |
+      nimikirjaimet = f"{etunimi[0]}.{sukunimi[0]}.".upper()
+  - id: py-str-letter-count
+    prompt: 'Luo merkkijonosta `sana` muuttuja `kuvaus`, esimerkiksi `"banaani: 7 kirjainta"`. Käytä f-merkkijonoa ja `len`-funktiota.'
+    check: test
+    setup: |
+      sana = "banaani"
+    tests:
+      - 'kuvaus == "banaani: 7 kirjainta"'
+    solution: |
+      kuvaus = f"{sana}: {len(sana)} kirjainta"
+  - id: py-str-clean-label
+    prompt: 'Luo muuttuja `siisti`, jossa välilyönnit on poistettu `syote`-merkkijonon alusta ja lopusta ja teksti on isoilla kirjaimilla. Luo sitten `kuvaus`, esimerkiksi `"HEI (3)"`: siisti teksti ja sen pituus suluissa.'
+    check: test
+    setup: |
+      syote = "  hei  "
+    tests:
+      - 'siisti == "HEI" and kuvaus == "HEI (3)"'
+    solution: |
+      siisti = syote.strip().upper()
+      kuvaus = f"{siisti} ({len(siisti)})"

@@ -147,3 +147,25 @@ cards:
       - 'a == 2 and b == 1'
     solution: |
       a, b = b, a
+  - id: py-vars-total-print
+    prompt: 'Create variables `price` (12) and `quantity` (3), a variable `total` that is their product, and print `total`.'
+    check: test
+    tests:
+      - 'price == 12 and quantity == 3 and total == 36'
+      - '__logs == ["36"]'
+    solution: |
+      price = 12
+      quantity = 3
+      total = price * quantity
+      print(total)
+  - id: py-vars-input-double
+    prompt: 'The string `user_input` contains a whole number. Convert it to an integer in a variable `number` and print the number doubled.'
+    check: test
+    setup: |
+      user_input = "21"
+    tests:
+      - 'number == 21'
+      - '__logs == ["42"]'
+    solution: |
+      number = int(user_input)
+      print(number * 2)

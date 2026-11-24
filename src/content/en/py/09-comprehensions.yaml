@@ -149,3 +149,34 @@ cards:
       - 'double.__name__ == "<lambda>"'
     solution: |
       double = lambda x: x * 2
+  - id: py-comprehension-cheap
+    prompt: 'The dictionary `prices` maps products to prices. Use a list comprehension to create a list `cheap` with the names of the products that cost less than 5.'
+    check: test
+    setup: |
+      prices = {"coffee": 4.5, "cake": 6, "tea": 3}
+    tests:
+      - 'cheap == ["coffee", "tea"]'
+    solution: |
+      cheap = [name for name, price in prices.items() if price < 5]
+  - id: py-comprehension-tags
+    prompt: 'Write a function `parse_tags(text)` that splits the text on commas and returns the tags in lower case with the spaces around them removed, leaving out empty tags. Use a list comprehension.'
+    check: test
+    tests:
+      - 'parse_tags(" Python, WEB ,, code ") == ["python", "web", "code"]'
+    solution: |
+      def parse_tags(text):
+          return [tag.strip().lower() for tag in text.split(",") if tag.strip()]
+  - id: py-comprehension-ranking
+    prompt: 'Create a list `ranking` with the names of the players in `players`, from the highest score to the lowest. Sort with `sorted` and a lambda, then take the names with a list comprehension.'
+    check: test
+    setup: |
+      players = [
+          {"name": "Ada", "score": 70},
+          {"name": "Tim", "score": 95},
+          {"name": "Grace", "score": 80},
+      ]
+    tests:
+      - 'ranking == ["Tim", "Grace", "Ada"]'
+    solution: |
+      ordered = sorted(players, key=lambda p: p["score"], reverse=True)
+      ranking = [p["name"] for p in ordered]

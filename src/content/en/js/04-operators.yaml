@@ -160,3 +160,33 @@ cards:
       - 'inRange === true'
     solution: |
       const inRange = number >= 1 && number <= 10;
+  - id: js-ops-price-with-tax
+    prompt: 'The string `priceText` contains a price. Convert it to a number in a constant `price`, and create a constant `total` that is the price plus 25% tax.'
+    check: test
+    setup: |
+      const priceText = "20";
+    tests:
+      - 'price === 20 && total === 25'
+    solution: |
+      const price = Number(priceText);
+      const total = price * 1.25;
+  - id: js-ops-minutes-seconds
+    prompt: '`totalSeconds` is a duration in seconds. Create a constant `seconds` that is the remainder of dividing it by 60, and a constant `minutes` with the whole minutes (subtract `seconds` first, then divide by 60).'
+    check: test
+    setup: |
+      const totalSeconds = 135;
+    tests:
+      - 'seconds === 15 && minutes === 2'
+    solution: |
+      const seconds = totalSeconds % 60;
+      const minutes = (totalSeconds - seconds) / 60;
+  - id: js-ops-can-vote
+    prompt: 'The string `ageText` contains an age. Create a constant `canVote` that is true when the age, converted to a number, is at least 18 **and** `isCitizen` is true.'
+    check: test
+    setup: |
+      const ageText = "18";
+      const isCitizen = true;
+    tests:
+      - 'canVote === true'
+    solution: |
+      const canVote = Number(ageText) >= 18 && isCitizen;

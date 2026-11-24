@@ -182,3 +182,41 @@ cards:
           sign = "negative"
       else:
           sign = "zero"
+  - id: py-if-password-length
+    prompt: 'Print `Too short` if `password` has fewer than 8 characters, and `OK` otherwise.'
+    check: test
+    setup: |
+      password = "abc123"
+    tests:
+      - '__logs == ["Too short"]'
+    solution: |
+      if len(password) < 8:
+          print("Too short")
+      else:
+          print("OK")
+  - id: py-if-member-discount
+    prompt: 'Create a variable `total` that is `price` minus 10% when `is_member` is true and `price` is at least 50, and just `price` otherwise.'
+    check: test
+    setup: |
+      price = 80
+      is_member = True
+    tests:
+      - 'total == 72'
+    solution: |
+      total = price
+      if is_member and price >= 50:
+          total = price * 0.9
+  - id: py-if-age-input
+    prompt: 'The string `age_text` contains an age. Convert it to an integer in a variable `age`, then print `Adult` if the age is at least 18 and `Minor` otherwise.'
+    check: test
+    setup: |
+      age_text = "15"
+    tests:
+      - 'age == 15'
+      - '__logs == ["Minor"]'
+    solution: |
+      age = int(age_text)
+      if age >= 18:
+          print("Adult")
+      else:
+          print("Minor")

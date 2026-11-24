@@ -154,3 +154,28 @@ cards:
       - 'sovella((s) => s.length, "abc") === 3'
     solution: |
       const sovella = (f, x) => f(x);
+  - id: js-arrow-initial
+    prompt: 'Kirjoita nuolifunktio `alkukirjain(nimi)`, joka palauttaa nimen ensimmäisen kirjaimen isona ja pisteen perässä: `alkukirjain("ada")` palauttaa `"A."`.'
+    check: test
+    tests:
+      - 'alkukirjain("ada") === "A." && alkukirjain("Linus") === "L."'
+    solution: |
+      const alkukirjain = (nimi) => `${nimi[0].toUpperCase()}.`;
+  - id: js-arrow-tax-default
+    prompt: 'Kirjoita nuolifunktio `verollinen(hinta, vero)`, joka palauttaa hinnan veron kanssa: `hinta * (1 + vero)`. Veron oletusarvo on `0.25`.'
+    check: test
+    tests:
+      - 'verollinen(100) === 125'
+      - 'verollinen(100, 0.5) === 150'
+    solution: |
+      const verollinen = (hinta, vero = 0.25) => hinta * (1 + vero);
+  - id: js-arrow-describe
+    prompt: 'Kirjoita funktio `kuvaa(n, f)`, joka kutsuu funktiota `f` luvulla `n` ja palauttaa merkkijonon kuten `"3 → 6"`: luvun, nuolen `→` ja tuloksen.'
+    check: test
+    tests:
+      - 'kuvaa(3, (x) => x * 2) === "3 → 6"'
+      - 'kuvaa(5, (x) => x + 1) === "5 → 6"'
+    solution: |
+      function kuvaa(n, f) {
+        return `${n} → ${f(n)}`;
+      }

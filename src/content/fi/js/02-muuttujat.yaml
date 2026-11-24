@@ -146,3 +146,25 @@ cards:
     solution: |
       const viesti = "Moi";
       console.log(viesti);
+  - id: js-vars-total-log
+    prompt: 'Luo vakiot `hinta` (12) ja `maara` (3), vakio `yhteensa`, joka on niiden tulo, ja tulosta `yhteensa`.'
+    check: test
+    tests:
+      - 'hinta === 12 && maara === 3 && yhteensa === 36'
+      - '__logs.join(",") === "36"'
+    solution: |
+      const hinta = 12;
+      const maara = 3;
+      const yhteensa = hinta * maara;
+      console.log(yhteensa);
+  - id: js-vars-double-log
+    prompt: 'Luo muuttuja `laskuri`, jonka arvo on `1`, ja tulosta se. Kaksinkertaista se sitten ja tulosta uudelleen.'
+    check: test
+    tests:
+      - 'laskuri === 2'
+      - '__logs.join(",") === "1,2"'
+    solution: |
+      let laskuri = 1;
+      console.log(laskuri);
+      laskuri = laskuri * 2;
+      console.log(laskuri);

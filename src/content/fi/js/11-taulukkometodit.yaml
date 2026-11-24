@@ -173,3 +173,39 @@ cards:
       - '__logs.join(",") === "punainen,sininen"'
     solution: |
       varit.forEach((vari) => console.log(vari));
+  - id: js-methods-average
+    prompt: 'Kirjoita funktio `keskiarvo(luvut)`, joka palauttaa taulukon keskiarvon `reduce`-metodilla laskettuna. Tyhjälle taulukolle palauta `0`.'
+    check: test
+    tests:
+      - 'keskiarvo([2, 4, 9]) === 5'
+      - 'keskiarvo([]) === 0'
+    solution: |
+      function keskiarvo(luvut) {
+        if (luvut.length === 0) {
+          return 0;
+        }
+        const summa = luvut.reduce((yhteensa, luku) => yhteensa + luku, 0);
+        return summa / luvut.length;
+      }
+  - id: js-methods-short-names
+    prompt: 'Kirjoita funktio `lyhyetNimet(nimet)`, joka palauttaa alle 5 kirjaimen nimet isoilla kirjaimilla yhdeksi merkkijonoksi yhdistettynä erottimella `", "`.'
+    check: test
+    tests:
+      - 'lyhyetNimet(["Ada", "Grace", "Linus", "Tim"]) === "ADA, TIM"'
+    solution: |
+      function lyhyetNimet(nimet) {
+        return nimet
+          .filter((nimi) => nimi.length < 5)
+          .map((nimi) => nimi.toUpperCase())
+          .join(", ");
+      }
+  - id: js-methods-pass-summary
+    prompt: 'Luo vakio `yhteenveto`, esimerkiksi `"2/4 hyväksytty"`: montako `pisteet`-taulukon tuloksista on vähintään 50, kaikista tuloksista. Laske hyväksytyt `filter`-metodilla.'
+    check: test
+    setup: |
+      const pisteet = [40, 75, 90, 30];
+    tests:
+      - 'yhteenveto === "2/4 hyväksytty"'
+    solution: |
+      const hyvaksytyt = pisteet.filter((p) => p >= 50).length;
+      const yhteenveto = `${hyvaksytyt}/${pisteet.length} hyväksytty`;

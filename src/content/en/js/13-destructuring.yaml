@@ -177,3 +177,43 @@ cards:
       - 'JSON.stringify(copy) === "[1,2,3]" && copy !== original'
     solution: |
       const copy = [...original];
+  - id: js-destructure-oldest
+    prompt: 'Write a function `oldest(users)` that returns the name of the oldest user. Destructure `name` and `age` in the loop: `for (const { name, age } of users)`.'
+    check: test
+    tests:
+      - 'oldest([{ name: "Ada", age: 36 }, { name: "Grace", age: 45 }, { name: "Tim", age: 12 }]) === "Grace"'
+    solution: |
+      function oldest(users) {
+        let oldestName = "";
+        let highest = -1;
+        for (const { name, age } of users) {
+          if (age > highest) {
+            highest = age;
+            oldestName = name;
+          }
+        }
+        return oldestName;
+      }
+  - id: js-destructure-min-max
+    prompt: 'Write a function `minMax(numbers)` that returns the array `[smallest, largest]`, using `Math.min` and `Math.max` with spread. Then unpack `low` and `high` from `minMax(scores)`.'
+    check: test
+    setup: |
+      const scores = [7, 2, 9, 4];
+    tests:
+      - 'low === 2 && high === 9'
+      - 'minMax([5, -1]).join(",") === "-1,5"'
+    solution: |
+      function minMax(numbers) {
+        return [Math.min(...numbers), Math.max(...numbers)];
+      }
+      const [low, high] = minMax(scores);
+  - id: js-destructure-add-item
+    prompt: 'Write a function `addItem(cart, item)` that returns a new array with `item` at the end, without changing `cart`. The added item gets `quantity: 1` unless it already has a quantity.'
+    check: test
+    tests:
+      - '(() => { const cart = []; const next = addItem(cart, { name: "tea" }); return cart.length === 0 && next.length === 1 && next[0].name === "tea" && next[0].quantity === 1; })()'
+      - 'addItem([], { name: "tea", quantity: 3 })[0].quantity === 3'
+    solution: |
+      function addItem(cart, item) {
+        return [...cart, { quantity: 1, ...item }];
+      }

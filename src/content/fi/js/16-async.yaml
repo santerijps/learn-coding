@@ -202,3 +202,43 @@ cards:
       - 'await (async () => { const alku = Date.now(); await odota(30); return Date.now() - alku >= 25; })()'
     solution: |
       const odota = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  - id: js-async-total
+    prompt: 'Kirjoita async-funktio `yhteensa()`, joka odottaa valmiin funktion `haeHinnat()` palauttaman taulukon ja palauttaa hintojen summan `reduce`-metodilla.'
+    check: test
+    setup: |
+      const haeHinnat = async () => [3, 4.5, 2];
+    tests:
+      - '(await yhteensa()) === 9.5'
+    solution: |
+      async function yhteensa() {
+        const hinnat = await haeHinnat();
+        return hinnat.reduce((summa, hinta) => summa + hinta, 0);
+      }
+  - id: js-async-active-names
+    prompt: 'Kirjoita async-funktio `aktiivisetNimet()`, joka odottaa käyttäjät funktiolta `haeKayttajat()` ja palauttaa niiden käyttäjien nimet, joiden `aktiivinen` on tosi.'
+    check: test
+    setup: |
+      const haeKayttajat = async () => [
+        { nimi: "Ada", aktiivinen: true },
+        { nimi: "Tim", aktiivinen: false },
+        { nimi: "Grace", aktiivinen: true },
+      ];
+    tests:
+      - '(await aktiivisetNimet()).join(",") === "Ada,Grace"'
+    solution: |
+      async function aktiivisetNimet() {
+        const kayttajat = await haeKayttajat();
+        return kayttajat.filter((k) => k.aktiivinen).map((k) => k.nimi);
+      }
+  - id: js-async-all-names
+    prompt: 'Kirjoita async-funktio `kayttajienNimet(idt)`, joka hakee jokaisen käyttäjän rinnakkain funktiolla `haeKayttaja(id)` (käytä `map`-metodia ja `Promise.all`-funktiota) ja palauttaa taulukon heidän nimistään.'
+    check: test
+    setup: |
+      const haeKayttaja = async (id) => ({ id, nimi: `Käyttäjä ${id}` });
+    tests:
+      - '(await kayttajienNimet([1, 2])).join(",") === "Käyttäjä 1,Käyttäjä 2"'
+    solution: |
+      async function kayttajienNimet(idt) {
+        const kayttajat = await Promise.all(idt.map((id) => haeKayttaja(id)));
+        return kayttajat.map((k) => k.nimi);
+      }

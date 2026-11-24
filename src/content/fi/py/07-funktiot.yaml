@@ -156,3 +156,44 @@ cards:
     check: match
     solution: |
       from random import randint
+  - id: py-def-fizzbuzz
+    prompt: 'Kirjoita funktio `fizz_buzz(n)`, joka palauttaa `"FizzBuzz"`, jos `n` on jaollinen sekä 3:lla että 5:llä, `"Fizz"`, jos vain 3:lla, `"Buzz"`, jos vain 5:llä, ja muuten luvun merkkijonona.'
+    check: test
+    tests:
+      - 'fizz_buzz(15) == "FizzBuzz" and fizz_buzz(9) == "Fizz" and fizz_buzz(10) == "Buzz"'
+      - 'fizz_buzz(7) == "7"'
+    solution: |
+      def fizz_buzz(n):
+          if n % 15 == 0:
+              return "FizzBuzz"
+          if n % 3 == 0:
+              return "Fizz"
+          if n % 5 == 0:
+              return "Buzz"
+          return str(n)
+  - id: py-def-cart-total
+    prompt: 'Kirjoita funktio `ostoskorin_summa(hinta, maara, on_jasen=False)`, joka tallentaa `hinta * maara` muuttujaan `yhteensa`, vähentää siitä 10 %, jos `on_jasen` on tosi, ja palauttaa `yhteensa`.'
+    check: test
+    tests:
+      - 'ostoskorin_summa(10, 3) == 30'
+      - 'ostoskorin_summa(10, 5, True) == 45'
+    solution: |
+      def ostoskorin_summa(hinta, maara, on_jasen=False):
+          yhteensa = hinta * maara
+          if on_jasen:
+              yhteensa = yhteensa * 0.9
+          return yhteensa
+  - id: py-def-count-vowels
+    prompt: 'Kirjoita funktio `laske_vokaalit(teksti)`, joka laskee silmukalla, montako kirjaimista a, e, i, o, u, y, ä ja ö tekstissä on, isoina tai pieninä.'
+    check: test
+    tests:
+      - 'laske_vokaalit("Ada Lovelace") == 6'
+      - 'laske_vokaalit("Äiti") == 3'
+      - 'laske_vokaalit("xz") == 0'
+    solution: |
+      def laske_vokaalit(teksti):
+          maara = 0
+          for merkki in teksti.lower():
+              if merkki in "aeiouyäö":
+                  maara += 1
+          return maara

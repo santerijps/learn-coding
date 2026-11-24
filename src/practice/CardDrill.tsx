@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { DeckCard } from '../content/schema'
 import { checkAnswer } from '../check/check'
+import { sameCode } from '../check/normalize'
 import { preloadPython } from '../check/python'
 import { logAttempt } from '../storage/progress'
 import { answerPlaceholder, checkingLabel, checkMessages, submitHint } from './answerUi'
@@ -136,8 +137,17 @@ export function CardDrill({ card, isNew, onFinish }: { card: DeckCard; isNew: bo
       {phase === 'correct' ? (
         <div className="feedback feedback-right" role="status">
           <p className="feedback-title">{m.correct}</p>
-          <p className="label">{m.modelAnswer}</p>
-          <CodeBlock code={card.solution} language={card.language} />
+          {/* The learner's own code, and the model answer too when it was written differently. */}
+          <p className="label">{m.answerLabel}</p>
+          <CodeBlock code={answer} language={card.language} />
+          {sameCode(answer, card.solution, card.language) ? (
+            <p className="muted small">{m.sameAsModel}</p>
+          ) : (
+            <>
+              <p className="label">{m.modelAnswerAlt}</p>
+              <CodeBlock code={card.solution} language={card.language} />
+            </>
+          )}
           <button className="btn btn-primary" onClick={() => finish()} autoFocus>
             {m.continue}
           </button>

@@ -198,3 +198,54 @@ cards:
       } catch {
         onnistui = false;
       }
+  - id: js-error-withdraw
+    prompt: 'Luo luokka `Tili`, jonka konstruktori saa parametrin `saldo` ja jonka metodi `nosta(summa)` heittää virheen `new Error("Saldo ei riitä")`, jos summa on saldoa suurempi, ja muuten vähentää sen.'
+    check: test
+    tests:
+      - '(() => { const t = new Tili(50); t.nosta(20); return t.saldo === 30; })()'
+      - '(() => { const t = new Tili(10); try { t.nosta(20); return false; } catch (e) { return e.message === "Saldo ei riitä" && t.saldo === 10; } })()'
+    solution: |
+      class Tili {
+        constructor(saldo) {
+          this.saldo = saldo;
+        }
+        nosta(summa) {
+          if (summa > this.saldo) {
+            throw new Error("Saldo ei riitä");
+          }
+          this.saldo -= summa;
+        }
+      }
+  - id: js-error-parse-numbers
+    prompt: 'Kirjoita funktio `luvuiksi(tekstit)`, joka muuntaa merkkijonotaulukon luvuiksi `Number`-funktiolla ja palauttaa ne. Jos jokin niistä on NaN, heitä virhe `` new Error(`Ei luku: ${teksti}`) ``.'
+    check: test
+    tests:
+      - 'luvuiksi(["1", "2.5"]).join(",") === "1,2.5"'
+      - '(() => { try { luvuiksi(["1", "x"]); return false; } catch (e) { return e.message === "Ei luku: x"; } })()'
+    solution: |
+      function luvuiksi(tekstit) {
+        const luvut = [];
+        for (const teksti of tekstit) {
+          const luku = Number(teksti);
+          if (Number.isNaN(luku)) {
+            throw new Error(`Ei luku: ${teksti}`);
+          }
+          luvut.push(luku);
+        }
+        return luvut;
+      }
+  - id: js-error-read-setting
+    prompt: 'Kirjoita funktio `lueAsetus(json, avain)`, joka jäsentää JSON-merkkijonon ja palauttaa ominaisuuden `avain` arvon. Jos jäsentäminen epäonnistuu, palauta `null`.'
+    check: test
+    tests:
+      - 'lueAsetus(''{"teema":"tumma"}'', "teema") === "tumma"'
+      - 'lueAsetus("hups", "teema") === null'
+    solution: |
+      function lueAsetus(json, avain) {
+        try {
+          const asetukset = JSON.parse(json);
+          return asetukset[avain];
+        } catch {
+          return null;
+        }
+      }

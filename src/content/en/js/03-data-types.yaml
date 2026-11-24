@@ -156,3 +156,35 @@ cards:
       - 'text === "Year 2026"'
     solution: |
       const text = "Year " + year;
+  - id: js-types-input-double
+    prompt: 'The string `input` contains a number. Convert it to a number in a constant `number`, store twice its value in a constant `doubled`, and print `doubled`.'
+    check: test
+    setup: |
+      const input = "21";
+    tests:
+      - 'number === 21 && doubled === 42'
+      - '__raw.length === 1 && __raw[0][0] === 42'
+    solution: |
+      const number = Number(input);
+      const doubled = number * 2;
+      console.log(doubled);
+  - id: js-types-next-year
+    prompt: 'The string `ageText` contains an age. Create a constant `nextYear` that is the age one year from now, as a number.'
+    check: test
+    setup: |
+      const ageText = "35";
+    tests:
+      - 'nextYear === 36'
+    solution: |
+      const nextYear = Number(ageText) + 1;
+  - id: js-types-log-type
+    prompt: 'Convert the number `count` to a string in a constant `text`, then print the type of `text` with `typeof`.'
+    check: test
+    setup: |
+      const count = 5;
+    tests:
+      - 'text === "5"'
+      - '__logs.join(",") === "string"'
+    solution: |
+      const text = String(count);
+      console.log(typeof text);

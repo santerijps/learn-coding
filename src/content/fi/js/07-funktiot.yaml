@@ -174,3 +174,47 @@ cards:
         }
         return x;
       }
+  - id: js-function-fizzbuzz
+    prompt: 'Kirjoita funktio `fizzBuzz(n)`, joka palauttaa `"FizzBuzz"`, jos `n` on jaollinen sekä 3:lla että 5:llä, `"Fizz"`, jos vain 3:lla, `"Buzz"`, jos vain 5:llä, ja muuten luvun merkkijonona.'
+    check: test
+    tests:
+      - 'fizzBuzz(15) === "FizzBuzz" && fizzBuzz(9) === "Fizz" && fizzBuzz(10) === "Buzz"'
+      - 'fizzBuzz(7) === "7"'
+    solution: |
+      function fizzBuzz(n) {
+        if (n % 15 === 0) {
+          return "FizzBuzz";
+        }
+        if (n % 3 === 0) {
+          return "Fizz";
+        }
+        if (n % 5 === 0) {
+          return "Buzz";
+        }
+        return String(n);
+      }
+  - id: js-function-cart-total
+    prompt: 'Kirjoita funktio `ostoskorinSumma(hinta, maara, onJasen)`, joka tallentaa `hinta * maara` muuttujaan `yhteensa`, vähentää siitä 10 %, jos `onJasen` on tosi, ja palauttaa `yhteensa`.'
+    check: test
+    tests:
+      - 'ostoskorinSumma(10, 3, false) === 30'
+      - 'ostoskorinSumma(10, 5, true) === 45'
+    solution: |
+      function ostoskorinSumma(hinta, maara, onJasen) {
+        let yhteensa = hinta * maara;
+        if (onJasen) {
+          yhteensa = yhteensa * 0.9;
+        }
+        return yhteensa;
+      }
+  - id: js-function-shout
+    prompt: 'Kirjoita funktio `huuda(teksti)`, joka poistaa välilyönnit tekstin alusta ja lopusta, muuttaa sen isoiksi kirjaimiksi ja palauttaa sen `!`-merkillä lopussa.'
+    check: test
+    tests:
+      - 'huuda("  hei ") === "HEI!"'
+      - 'huuda("hei maailma") === "HEI MAAILMA!"'
+    solution: |
+      function huuda(teksti) {
+        const siisti = teksti.trim().toUpperCase();
+        return `${siisti}!`;
+      }

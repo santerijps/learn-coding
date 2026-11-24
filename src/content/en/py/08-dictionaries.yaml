@@ -167,3 +167,42 @@ cards:
       - 'unique == {1, 2, 3}'
     solution: |
       unique = set(numbers)
+  - id: py-dict-cart-total
+    prompt: 'Write a function `cart_total(cart)` that returns the total of the list `cart`. Each item is a dictionary with the keys `"price"` and `"quantity"`.'
+    check: test
+    tests:
+      - 'cart_total([{"price": 2, "quantity": 3}, {"price": 5, "quantity": 1}]) == 11'
+      - 'cart_total([]) == 0'
+    solution: |
+      def cart_total(cart):
+          total = 0
+          for item in cart:
+              total += item["price"] * item["quantity"]
+          return total
+  - id: py-dict-adult-names
+    prompt: 'Create a list `adults` with the names of the users in `users` who are at least 18. Use a loop.'
+    check: test
+    setup: |
+      users = [
+          {"name": "Ada", "age": 36},
+          {"name": "Tim", "age": 12},
+          {"name": "Grace", "age": 18},
+      ]
+    tests:
+      - 'adults == ["Ada", "Grace"]'
+    solution: |
+      adults = []
+      for user in users:
+          if user["age"] >= 18:
+              adults.append(user["name"])
+  - id: py-dict-word-counts
+    prompt: 'Write a function `word_counts(sentence)` that returns a dictionary telling how many times each word of the sentence appears. Convert the sentence to lower case first.'
+    check: test
+    tests:
+      - 'word_counts("The cat and the hat") == {"the": 2, "cat": 1, "and": 1, "hat": 1}'
+    solution: |
+      def word_counts(sentence):
+          counts = {}
+          for word in sentence.lower().split():
+              counts[word] = counts.get(word, 0) + 1
+          return counts

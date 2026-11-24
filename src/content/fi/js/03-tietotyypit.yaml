@@ -156,3 +156,35 @@ cards:
       - 'teksti === "Vuosi 2026"'
     solution: |
       const teksti = "Vuosi " + vuosi;
+  - id: js-types-input-double
+    prompt: 'Merkkijono `syote` sisältää luvun. Muunna se luvuksi vakioon `luku`, tallenna sen kaksinkertainen arvo vakioon `tupla` ja tulosta `tupla`.'
+    check: test
+    setup: |
+      const syote = "21";
+    tests:
+      - 'luku === 21 && tupla === 42'
+      - '__raw.length === 1 && __raw[0][0] === 42'
+    solution: |
+      const luku = Number(syote);
+      const tupla = luku * 2;
+      console.log(tupla);
+  - id: js-types-next-year
+    prompt: 'Merkkijono `ikaTeksti` sisältää iän. Luo vakio `ensiVuonna`, joka on ikä vuoden päästä lukuna.'
+    check: test
+    setup: |
+      const ikaTeksti = "35";
+    tests:
+      - 'ensiVuonna === 36'
+    solution: |
+      const ensiVuonna = Number(ikaTeksti) + 1;
+  - id: js-types-log-type
+    prompt: 'Muunna luku `maara` merkkijonoksi vakioon `teksti` ja tulosta sitten `teksti`-vakion tyyppi `typeof`-operaattorilla.'
+    check: test
+    setup: |
+      const maara = 5;
+    tests:
+      - 'teksti === "5"'
+      - '__logs.join(",") === "string"'
+    solution: |
+      const teksti = String(maara);
+      console.log(typeof teksti);

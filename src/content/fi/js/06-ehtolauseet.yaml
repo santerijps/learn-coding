@@ -198,3 +198,43 @@ cards:
     hint: '`||` palauttaa oikean puolen, kun vasen puoli on falsy.'
     solution: |
       const nimi = syote || "Anonyymi";
+  - id: js-if-password-length
+    prompt: 'Tulosta `Liian lyhyt`, jos `salasana`-merkkijonossa on alle 8 merkkiä, ja muuten `OK`.'
+    check: test
+    setup: |
+      const salasana = "abc123";
+    tests:
+      - '__logs.join(",") === "Liian lyhyt"'
+    solution: |
+      if (salasana.length < 8) {
+        console.log("Liian lyhyt");
+      } else {
+        console.log("OK");
+      }
+  - id: js-if-member-discount
+    prompt: 'Luo muuttuja `yhteensa`, joka on `hinta` vähennettynä 10 %:lla, kun `onJasen` on tosi ja `hinta` on vähintään 50, ja muuten pelkkä `hinta`.'
+    check: test
+    setup: |
+      const hinta = 80;
+      const onJasen = true;
+    tests:
+      - 'yhteensa === 72'
+    solution: |
+      let yhteensa = hinta;
+      if (onJasen && hinta >= 50) {
+        yhteensa = hinta * 0.9;
+      }
+  - id: js-if-number-input
+    prompt: 'Muunna merkkijono `syote` luvuksi. Jos tulos on NaN, tulosta `Ei luku`; muuten tulosta luku kaksinkertaisena.'
+    check: test
+    setup: |
+      const syote = "abc";
+    tests:
+      - '__logs.join(",") === "Ei luku"'
+    solution: |
+      const luku = Number(syote);
+      if (Number.isNaN(luku)) {
+        console.log("Ei luku");
+      } else {
+        console.log(luku * 2);
+      }

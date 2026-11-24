@@ -38,3 +38,8 @@ export function matches(answer: string, expected: string[], language: AnswerLang
   const a = normalize(answer, language)
   return a.length > 0 && expected.some((e) => normalize(e, language) === a)
 }
+
+/** Whether two pieces of code are the same once formatting is ignored (used to skip showing a duplicate model answer). */
+export function sameCode(a: string, b: string, language: AnswerLanguage): boolean {
+  return normalize(a, language) === normalize(b, language)
+}

@@ -151,3 +151,34 @@ cards:
       - 'polku === "home/ada/koodi"'
     solution: |
       const polku = osat.join("/");
+  - id: js-array-first-last
+    prompt: 'Kirjoita funktio `ekaJaVika(taulukko)`, joka palauttaa uuden taulukon, jossa on `taulukko`-taulukon ensimmäinen ja viimeinen alkio.'
+    check: test
+    tests:
+      - 'ekaJaVika([1, 2, 3, 4]).join(",") === "1,4"'
+      - 'ekaJaVika(["a", "b"]).join(",") === "a,b"'
+    solution: |
+      function ekaJaVika(taulukko) {
+        return [taulukko[0], taulukko[taulukko.length - 1]];
+      }
+  - id: js-array-add-unique
+    prompt: 'Kirjoita funktio `lisaaKerran(lista, alkio)`, joka lisää `alkio`-arvon listan loppuun vain, jos listassa ei vielä ole sitä, ja palauttaa listan.'
+    check: test
+    tests:
+      - 'lisaaKerran(["maito"], "leipä").join(",") === "maito,leipä"'
+      - 'lisaaKerran(["maito", "leipä"], "maito").join(",") === "maito,leipä"'
+    solution: |
+      function lisaaKerran(lista, alkio) {
+        if (!lista.includes(alkio)) {
+          lista.push(alkio);
+        }
+        return lista;
+      }
+  - id: js-array-word-count
+    prompt: 'Kirjoita nuolifunktio `sanoja(lause)`, joka palauttaa lauseen sanojen määrän. Poista ensin välilyönnit alusta ja lopusta ja jaa sitten välilyöntien kohdalta.'
+    check: test
+    tests:
+      - 'sanoja("  hei iso maailma ") === 3'
+      - 'sanoja("moi") === 1'
+    solution: |
+      const sanoja = (lause) => lause.trim().split(" ").length;

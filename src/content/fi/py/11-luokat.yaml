@@ -209,3 +209,52 @@ cards:
       - 'on_elain is True'
     solution: |
       on_elain = isinstance(lemmikki, Elain)
+  - id: py-class-cart
+    prompt: 'Luo luokka `Ostoskori`, jonka attribuutti `tuotteet` on aluksi tyhjä lista. Sen metodi `lisaa(nimi, hinta)` lisää `tuotteet`-listaan sanakirjan `{"nimi": nimi, "hinta": hinta}`, ja metodi `summa()` palauttaa hintojen summan.'
+    check: test
+    tests:
+      - '(lambda k: (k.lisaa("tee", 3), k.lisaa("kakku", 5), k.summa() == 8 and len(k.tuotteet) == 2 and k.tuotteet[0]["nimi"] == "tee")[-1])(Ostoskori())'
+      - 'Ostoskori().summa() == 0'
+    solution: |
+      class Ostoskori:
+          def __init__(self):
+              self.tuotteet = []
+
+          def lisaa(self, nimi, hinta):
+              self.tuotteet.append({"nimi": nimi, "hinta": hinta})
+
+          def summa(self):
+              return sum([tuote["hinta"] for tuote in self.tuotteet])
+  - id: py-class-withdraw
+    prompt: 'Luo luokka `Tili`, jonka `__init__` saa parametrin `saldo` ja jonka metodi `nosta(summa)` heittää virheen `ValueError("Saldo ei riitä")`, jos summa on saldoa suurempi, ja muuten vähentää sen.'
+    check: test
+    tests:
+      - '(lambda t: (t.nosta(20), t.saldo)[-1])(Tili(50)) == 30'
+      - '__raises(lambda: Tili(10).nosta(20), ValueError, "Saldo ei riitä")'
+    solution: |
+      class Tili:
+          def __init__(self, saldo):
+              self.saldo = saldo
+
+          def nosta(self, summa):
+              if summa > self.saldo:
+                  raise ValueError("Saldo ei riitä")
+              self.saldo -= summa
+  - id: py-class-todo
+    prompt: 'Luo luokka `Tehtavalista`, jolla on lista `tehtavat`. Sen metodi `lisaa(teksti)` lisää sanakirjan `{"teksti": teksti, "tehty": False}`, `merkitse(indeksi)` merkitsee sen kohdan tehtävän tehdyksi ja `jaljella()` palauttaa, montako tehtävää on tekemättä.'
+    check: test
+    tests:
+      - '(lambda l: (l.lisaa("kauppa"), l.lisaa("kokkaa"), l.lisaa("syö"), l.merkitse(1), l.jaljella() == 2 and l.tehtavat[1]["tehty"] and l.tehtavat[0]["teksti"] == "kauppa")[-1])(Tehtavalista())'
+    solution: |
+      class Tehtavalista:
+          def __init__(self):
+              self.tehtavat = []
+
+          def lisaa(self, teksti):
+              self.tehtavat.append({"teksti": teksti, "tehty": False})
+
+          def merkitse(self, indeksi):
+              self.tehtavat[indeksi]["tehty"] = True
+
+          def jaljella(self):
+              return len([t for t in self.tehtavat if not t["tehty"]])

@@ -183,3 +183,47 @@ cards:
       - 'street === undefined'
     solution: |
       const street = user.address?.street;
+  - id: js-object-cart-total
+    prompt: 'Write a function `cartTotal(cart)` that returns the total of the array `cart`. Each item is an object with the properties `price` and `quantity`.'
+    check: test
+    tests:
+      - 'cartTotal([{ price: 2, quantity: 3 }, { price: 5, quantity: 1 }]) === 11'
+      - 'cartTotal([]) === 0'
+    solution: |
+      function cartTotal(cart) {
+        let total = 0;
+        for (const item of cart) {
+          total += item.price * item.quantity;
+        }
+        return total;
+      }
+  - id: js-object-adult-names
+    prompt: 'Create an array `adults` with the names of the users in `users` who are at least 18. Use `filter` and `map`.'
+    check: test
+    setup: |
+      const users = [
+        { name: "Ada", age: 36 },
+        { name: "Tim", age: 12 },
+        { name: "Grace", age: 18 },
+      ];
+    tests:
+      - 'adults.join(",") === "Ada,Grace"'
+    solution: |
+      const adults = users.filter((u) => u.age >= 18).map((u) => u.name);
+  - id: js-object-count-words
+    prompt: 'Write a function `countWords(words)` that returns an object telling how many times each word appears in the array: `countWords(["a", "b", "a"])` returns `{ a: 2, b: 1 }`.'
+    check: test
+    tests:
+      - '(() => { const c = countWords(["a", "b", "a"]); return c.a === 2 && c.b === 1 && Object.keys(c).length === 2; })()'
+    solution: |
+      function countWords(words) {
+        const counts = {};
+        for (const word of words) {
+          if (counts[word]) {
+            counts[word] += 1;
+          } else {
+            counts[word] = 1;
+          }
+        }
+        return counts;
+      }

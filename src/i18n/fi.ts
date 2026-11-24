@@ -73,6 +73,8 @@ export const fi = {
   retypeWrong: 'Ei vielä. Vertaa mallivastaukseen ja yritä uudelleen.',
   retypeDone: 'Hyvä! Tämä kortti tulee pian uudelleen.',
   modelAnswer: 'Mallivastaus',
+  sameAsModel: 'Sama kuin mallivastaus.',
+  modelAnswerAlt: 'Mallivastaus (toinen tapa kirjoittaa sama)',
   diffLegend: 'Punaisella: väärin tai ylimääräistä vastauksessasi. Vihreällä: puuttui vastauksestasi.',
   overrideRight: 'Vastaukseni oli oikein',
   errorPrefix: 'Virhe',

@@ -184,3 +184,43 @@ cards:
           onnistui = True
       except ValueError:
           onnistui = False
+  - id: py-errors-parse-numbers
+    prompt: 'Kirjoita funktio `luvuiksi(tekstit)`, joka muuntaa merkkijonolistan kokonaisluvuiksi ja palauttaa ne. Jos muunnos aiheuttaa `ValueError`-virheen, heitä sen sijaan `ValueError(f"Ei luku: {teksti}")`.'
+    check: test
+    tests:
+      - 'luvuiksi(["1", "22"]) == [1, 22]'
+      - '__raises(lambda: luvuiksi(["1", "x"]), ValueError, "Ei luku: x")'
+    solution: |
+      def luvuiksi(tekstit):
+          luvut = []
+          for teksti in tekstit:
+              try:
+                  luvut.append(int(teksti))
+              except ValueError:
+                  raise ValueError(f"Ei luku: {teksti}")
+          return luvut
+  - id: py-errors-average
+    prompt: 'Kirjoita funktio `keskiarvo(luvut)`, joka heittää virheen `ValueError("Tyhjä lista")`, jos lista on tyhjä, ja muuten palauttaa lukujen keskiarvon.'
+    check: test
+    tests:
+      - 'keskiarvo([2, 4, 9]) == 5'
+      - '__raises(lambda: keskiarvo([]), ValueError, "Tyhjä lista")'
+    solution: |
+      def keskiarvo(luvut):
+          if len(luvut) == 0:
+              raise ValueError("Tyhjä lista")
+          return sum(luvut) / len(luvut)
+  - id: py-errors-valid-numbers
+    prompt: 'Kirjoita funktio `kelvolliset(tekstit)`, joka palauttaa listan niistä merkkijonoista, jotka voi muuntaa kokonaisluvuiksi, kokonaislukuina. Ohita ne, jotka aiheuttavat `ValueError`-virheen.'
+    check: test
+    tests:
+      - 'kelvolliset(["1", "x", "3", ""]) == [1, 3]'
+    solution: |
+      def kelvolliset(tekstit):
+          luvut = []
+          for teksti in tekstit:
+              try:
+                  luvut.append(int(teksti))
+              except ValueError:
+                  continue
+          return luvut

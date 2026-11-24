@@ -174,3 +174,47 @@ cards:
         }
         return x;
       }
+  - id: js-function-fizzbuzz
+    prompt: 'Write a function `fizzBuzz(n)` that returns `"FizzBuzz"` if `n` is divisible by both 3 and 5, `"Fizz"` if only by 3, `"Buzz"` if only by 5, and otherwise the number as a string.'
+    check: test
+    tests:
+      - 'fizzBuzz(15) === "FizzBuzz" && fizzBuzz(9) === "Fizz" && fizzBuzz(10) === "Buzz"'
+      - 'fizzBuzz(7) === "7"'
+    solution: |
+      function fizzBuzz(n) {
+        if (n % 15 === 0) {
+          return "FizzBuzz";
+        }
+        if (n % 3 === 0) {
+          return "Fizz";
+        }
+        if (n % 5 === 0) {
+          return "Buzz";
+        }
+        return String(n);
+      }
+  - id: js-function-cart-total
+    prompt: 'Write a function `cartTotal(price, quantity, isMember)` that stores `price * quantity` in a variable `total`, takes 10% off it if `isMember` is true, and returns `total`.'
+    check: test
+    tests:
+      - 'cartTotal(10, 3, false) === 30'
+      - 'cartTotal(10, 5, true) === 45'
+    solution: |
+      function cartTotal(price, quantity, isMember) {
+        let total = price * quantity;
+        if (isMember) {
+          total = total * 0.9;
+        }
+        return total;
+      }
+  - id: js-function-shout
+    prompt: 'Write a function `shout(text)` that removes the spaces from the start and end of the text, converts it to upper case and returns it with `!` at the end.'
+    check: test
+    tests:
+      - 'shout("  hi ") === "HI!"'
+      - 'shout("hello world") === "HELLO WORLD!"'
+    solution: |
+      function shout(text) {
+        const clean = text.trim().toUpperCase();
+        return `${clean}!`;
+      }
