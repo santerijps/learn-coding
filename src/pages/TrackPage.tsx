@@ -3,6 +3,7 @@ import type { TrackId } from '../content/schema'
 import { href } from '../app/router'
 import { useProgress } from '../app/progress'
 import { dueCards, newCards, unlockedCards } from '../session/buildRound'
+import { nextLesson } from '../session/nextLesson'
 import { m } from '../i18n'
 
 export function TrackPage({ trackId }: { trackId: TrackId }) {
@@ -11,7 +12,8 @@ export function TrackPage({ trackId }: { trackId: TrackId }) {
   const unlocked = unlockedCards(course.deck.filter((c) => c.track === trackId), progress)
   const due = dueCards(unlocked, progress).length
   const fresh = newCards(unlocked, progress).length
-  const nextIndex = track.lessons.findIndex((l) => !progress.lessons[l.id])
+  const next = nextLesson(track.lessons, progress)
+  const nextIndex = next ? track.lessons.indexOf(next) : -1
   const done = track.lessons.filter((l) => progress.lessons[l.id]).length
 
   return (

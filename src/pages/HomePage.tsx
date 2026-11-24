@@ -3,6 +3,7 @@ import { href } from '../app/router'
 import { useProgress } from '../app/progress'
 import { dueCards, newCards, unlockedCards } from '../session/buildRound'
 import { currentStreak, emptyProgress, loadAttempts, localDay, resetAll } from '../storage/progress'
+import { nextLesson } from '../session/nextLesson'
 import { m } from '../i18n'
 
 export function HomePage() {
@@ -39,7 +40,7 @@ export function HomePage() {
           const due = dueCards(unlocked, progress).length
           const fresh = newCards(unlocked, progress).length
           const done = track.lessons.filter((l) => progress.lessons[l.id]).length
-          const next = track.lessons.find((l) => !progress.lessons[l.id])
+          const next = nextLesson(track.lessons, progress)
           return (
             <section key={track.id} className="track-card">
               <h2>
