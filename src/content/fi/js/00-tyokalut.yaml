@@ -1,0 +1,224 @@
+id: js-tyokalut
+title: 'Alkuvalmistelut: Node.js ja Bun'
+summary: Mikä ajaa JavaScriptiä selaimen ulkopuolella, miten se asennetaan Windowsiin ja Maciin ja miten omia ohjelmia ajetaan.
+theory: |
+  JavaScript syntyi verkkosivujen kieleksi, ja jokainen selain osaa yhä ajaa sitä. Jotta voit ajaa JavaScriptiä omalla koneellasi selaimen ulkopuolella (skriptejä, palvelimia, komentorivityökaluja), tarvitset **ajoympäristön** (engl. runtime): ohjelman, joka lukee `.js`-tiedostosi ja suorittaa sen.
+
+  Tätä kurssia varten ei tarvitse asentaa mitään, koska tehtävät ajetaan selaimessasi. Ajoympäristöä tarvitset, kun kirjoitat omia ohjelmia.
+
+  ### Node.js ja Bun
+
+  - **Node.js** (2009) on käytetyin JavaScriptin ajoympäristö. Sen mukana tulee **npm**, paketinhallinta, joka asentaa kirjastoja npm-rekisteristä, maailman suurimmasta koodipakettien kokoelmasta. Useimmat oppaat, työpaikat ja palveluntarjoajat olettavat Noden.
+  - **Bun** on uudempi, nopeuteen tähtäävä ajoympäristö. Se on kaikki yhdessä: ajoympäristö, paketinhallinta, testien ajaja ja bundleri. Se ajaa TypeScript-tiedostoja suoraan ja toimii useimpien npm-pakettien kanssa, joten suurin osa Node-koodista toimii myös Bunilla.
+  - **Deno** on kolmas vaihtoehto. Sen teki Noden alkuperäinen kehittäjä, ja se painottaa tietoturvaa ja valmiita työkaluja.
+
+  Node ja Bun ajavat samaa kieltä, joten kaikki tällä kurssilla oppimasi toimii molemmissa. Hyvä nyrkkisääntö: valitse Node, kun haluat varmimman ja parhaiten dokumentoidun vaihtoehdon, ja kokeile Bunia, kun haluat nopeutta ja vähemmän säädettävää.
+
+  Nodesta julkaistaan uusi pääversio säännöllisesti. Valitse **LTS**-versio (Long-Term Support): se on vakaa versio, joka saa korjauksia vuosien ajan.
+
+  ### JavaScript verrattuna muihin kieliin
+
+  - **Python** on myös dynaaminen ja helppo aloittaa. Python on vahvimmillaan data-analyysissä, koneoppimisessa ja automaatiossa; JavaScript on ainoa kieli, jota selaimet ajavat suoraan, joten verkossa sitä ei voi välttää.
+  - **TypeScript** on JavaScriptiä tyyppimerkinnöillä. Se tarkistetaan ennen ajoa ja muunnetaan sitten tavalliseksi JavaScriptiksi (Bun ja Deno ajavat sen suoraan).
+  - **Java, C# ja Go** käännetään ja ovat staattisesti tyypitettyjä: alussa on enemmän kirjoitettavaa, mutta kääntäjä löytää enemmän virheitä ennen kuin ohjelma ajetaan.
+
+  ### Pääte
+
+  Ohjelmia asennetaan ja ajetaan kirjoittamalla komentoja **päätteeseen** (terminaaliin).
+
+  - **Windows:** avaa Käynnistä-valikko ja hae **Terminal** (Windows Terminal, jossa toimii PowerShell).
+  - **Mac:** paina **⌘ + välilyönti**, kirjoita **Terminal** ja paina Enter.
+
+  Myös koodieditori auttaa. **Visual Studio Code** on ilmainen ja toimii molemmissa.
+
+  ### Asennus Windowsiin
+
+  Lataa LTS-asennusohjelma osoitteesta **nodejs.org** ja aja se, tai asenna Node päätteessä wingetillä:
+
+  ```powershell
+  winget install OpenJS.NodeJS.LTS
+  ```
+
+  Bun asennetaan yhdellä PowerShell-komennolla:
+
+  ```powershell
+  powershell -c "irm bun.sh/install.ps1 | iex"
+  ```
+
+  ### Asennus Maciin
+
+  Lataa LTS-asennusohjelma (`.pkg`) osoitteesta **nodejs.org**, tai käytä Homebrew'ta, jos se on asennettu:
+
+  ```bash
+  brew install node
+  ```
+
+  Bun asennetaan näin:
+
+  ```bash
+  curl -fsSL https://bun.sh/install | bash
+  ```
+
+  ### Asennuksen tarkistus
+
+  Sulje pääte ja avaa uusi, jotta se löytää uudet komennot, ja tarkista sitten versiot. Komennot ovat samat Windowsissa ja Macissa:
+
+  ```bash
+  node --version
+  npm --version
+  bun --version
+  ```
+
+  Jos saat ilmoituksen "command not found" (Mac) tai "not recognized" (Windows), pääte avattiin ennen kuin asennus valmistui: avaa uusi.
+
+  ### Ohjelman ajaminen
+
+  Tee kansio ja sen sisälle tiedosto `hello.js`:
+
+  ```js
+  console.log("Hei maailma");
+  ```
+
+  Siirry kansioon `cd`-komennolla ja aja tiedosto. Windowsissa poluissa käytetään merkkiä `\` ja Macissa `/`, mutta PowerShell hyväksyy myös `/`-merkin:
+
+  ```bash
+  cd Documents/koodi    # Windows: cd Documents\koodi
+  node hello.js         # aja Nodella
+  bun hello.js          # aja Bunilla
+  ```
+
+  Hyödyllisiä lisäkomentoja:
+
+  - `node --watch hello.js` tai `bun --watch hello.js` ajaa tiedoston uudelleen aina, kun tallennat sen.
+  - Pelkkä `node` avaa vuorovaikutteisen kehotteen (REPL), jossa voit kokeilla koodia rivi kerrallaan. Poistu komennolla `.exit` tai painamalla Ctrl + C kahdesti.
+  - **Ctrl + C** pysäyttää ohjelman, joka jää käyntiin, kuten palvelimen.
+
+  ### Projektit ja paketit
+
+  Projekti listaa pakettinsa ja skriptinsä tiedostoon `package.json`:
+
+  ```bash
+  npm init -y           # luo package.json         (Bun: bun init)
+  npm install lodash    # asenna paketti           (Bun: bun add lodash)
+  npm install           # asenna kaikki package.json-tiedostossa luetellut  (Bun: bun install)
+  npm run dev           # aja skripti "dev"        (Bun: bun run dev)
+  ```
+exercises:
+  - type: choice
+    question: Mikä Node.js on?
+    options:
+      - Ajoympäristö, joka ajaa JavaScriptiä selaimen ulkopuolella
+      - Ohjelmointikieli, joka korvaa JavaScriptin
+      - JavaScriptin koodieditori
+      - Verkkosivusto JavaScript-ohjelmien julkaisemiseen
+    answer: 0
+    explanation: Node.js on ajoympäristö. Se ajaa samaa JavaScript-kieltä kuin selain, mutta omalla koneellasi. Bun ja Deno ovat muita ajoympäristöjä.
+  - type: choice
+    question: Minkä Node.js-version aloittelijan kannattaa asentaa?
+    options:
+      - LTS-version
+      - Vanhimman saatavilla olevan version
+      - Minkä tahansa yöllisen kehitysversion
+      - Ei ole väliä, versiot eivät voi erota toisistaan
+    answer: 0
+    explanation: LTS-versiot (Long-Term Support) ovat vakaita versioita, jotka saavat korjauksia vuosien ajan. Niitä oppaat ja palveluntarjoajat odottavat.
+  - type: blank
+    question: Täydennä komento, joka tarkistaa, mikä Node.js-versio on asennettu.
+    code: |
+      node ___
+    blanks:
+      - ['--version', '-v']
+    explanation: '`node --version` (tai lyhyesti `node -v`) tulostaa asennetun version. Se toimii samoin Windowsissa ja Macissa.'
+  - type: bug
+    question: Näiden komentojen pitäisi ajaa kansiossa `koodi` oleva tiedosto `hello.js`. Mikä rivi on väärin?
+    code: |
+      cd koodi
+      ls
+      node run hello.js
+    bugLine: 3
+    explanation: 'Node ajaa tiedoston suoraan: `node hello.js`. (`npm run` ja `bun run` ajavat package.json-tiedoston skriptejä, ja Bun hyväksyy myös muodon `bun run hello.js`, mutta Nodella ei ole `run`-komentoa.)'
+  - type: choice
+    question: Asensit Node.js:n, mutta pääte sanoo, ettei `node`-komentoa tunnisteta. Mikä on todennäköisin korjaus?
+    options:
+      - Sulje pääte ja avaa uusi
+      - Asenna käyttöjärjestelmä uudelleen
+      - Nimeä tiedosto muotoon hello.node
+      - Aja tiedosto selaimessa
+    answer: 0
+    explanation: Ennen asennusta avattu pääte ei vielä tiedä uudesta komennosta. Uusi pääte tietää.
+cards:
+  - id: js-tools-node-run
+    prompt: Aja tiedosto `hello.js` Node.js:llä.
+    check: match
+    language: shell
+    solution: node hello.js
+  - id: js-tools-bun-run
+    prompt: Aja tiedosto `hello.js` Bunilla.
+    check: match
+    language: shell
+    solution: bun hello.js
+    accepted:
+      - bun run hello.js
+  - id: js-tools-node-version
+    prompt: Tarkista, mikä Node.js-versio on asennettu.
+    check: match
+    language: shell
+    solution: node --version
+    accepted:
+      - node -v
+  - id: js-tools-bun-version
+    prompt: Tarkista, mikä Bun-versio on asennettu.
+    check: match
+    language: shell
+    solution: bun --version
+    accepted:
+      - bun -v
+  - id: js-tools-node-watch
+    prompt: Aja `server.js` Nodella niin, että se käynnistyy uudelleen aina, kun tiedosto tallennetaan.
+    check: match
+    language: shell
+    solution: node --watch server.js
+  - id: js-tools-npm-init
+    prompt: Luo npm:llä tiedosto `package.json` ja hyväksy kaikki oletusvastaukset.
+    check: match
+    language: shell
+    solution: npm init -y
+    accepted:
+      - npm init --yes
+  - id: js-tools-bun-init
+    prompt: Aloita Bunilla uusi projekti nykyiseen kansioon.
+    check: match
+    language: shell
+    solution: bun init
+    accepted:
+      - bun init -y
+  - id: js-tools-npm-install
+    prompt: Asenna paketti `lodash` npm:llä.
+    check: match
+    language: shell
+    solution: npm install lodash
+    accepted:
+      - npm i lodash
+  - id: js-tools-bun-add
+    prompt: Asenna paketti `lodash` Bunilla.
+    check: match
+    language: shell
+    solution: bun add lodash
+  - id: js-tools-npm-run
+    prompt: Aja `package.json`-tiedoston skripti `dev` npm:llä.
+    check: match
+    language: shell
+    solution: npm run dev
+  - id: js-tools-mac-install
+    prompt: Asenna Node.js Maciin Homebrew'lla.
+    check: match
+    language: shell
+    solution: brew install node
+  - id: js-tools-windows-install
+    prompt: Asenna Node.js:n LTS-versio Windowsiin wingetillä.
+    check: match
+    language: shell
+    solution: winget install OpenJS.NodeJS.LTS
+    accepted:
+      - winget install --id OpenJS.NodeJS.LTS
+      - winget install -e --id OpenJS.NodeJS.LTS

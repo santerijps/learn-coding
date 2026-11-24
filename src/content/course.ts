@@ -41,7 +41,7 @@ export function buildCourse(sources: TrackSource[]): Course {
 
   const deck: DeckCard[] = tracks.flatMap((t) =>
     t.lessons.flatMap((l) =>
-      l.cards.map((c) => ({ ...c, lessonId: l.id, lessonTitle: l.title, track: t.id, language: t.language })),
+      l.cards.map((c) => ({ ...c, lessonId: l.id, lessonTitle: l.title, track: t.id, language: ('language' in c && c.language) || t.language })),
     ),
   )
 

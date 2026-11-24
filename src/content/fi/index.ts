@@ -1,5 +1,6 @@
 import type { TrackSource } from '../course'
 
+import js00 from './js/00-tyokalut.yaml'
 import js01 from './js/01-ensimmainen-ohjelma.yaml'
 import js02 from './js/02-muuttujat.yaml'
 import js03 from './js/03-tietotyypit.yaml'
@@ -18,6 +19,7 @@ import js15 from './js/15-virheet.yaml'
 import js16 from './js/16-async.yaml'
 import js17 from './js/17-moduulit.yaml'
 
+import py00 from './py/00-tyokalut.yaml'
 import py01 from './py/01-ensimmainen-ohjelma.yaml'
 import py02 from './py/02-muuttujat.yaml'
 import py03 from './py/03-merkkijonot.yaml'
@@ -30,6 +32,7 @@ import py09 from './py/09-listakoosteet.yaml'
 import py10 from './py/10-virheet.yaml'
 import py11 from './py/11-luokat.yaml'
 
+import git00 from './git/00-asennus.yaml'
 import git01 from './git/01-aloitus.yaml'
 import git02 from './git/02-commit.yaml'
 import git03 from './git/03-historia.yaml'
@@ -46,20 +49,20 @@ export const tracks: TrackSource[] = [
     title: 'JavaScript',
     description: 'Kielen perusteet tulostamisesta luokkiin, asynkronisuuteen ja moduuleihin.',
     language: 'js',
-    lessons: [js01, js02, js03, js04, js05, js06, js07, js08, js09, js10, js11, js12, js13, js14, js15, js16, js17],
+    lessons: [js00, js01, js02, js03, js04, js05, js06, js07, js08, js09, js10, js11, js12, js13, js14, js15, js16, js17],
   },
   {
     id: 'py',
     title: 'Python',
     description: 'Kielen perusteet tulostamisesta listoihin, sanakirjoihin, funktioihin ja luokkiin.',
     language: 'python',
-    lessons: [py01, py02, py03, py04, py05, py06, py07, py08, py09, py10, py11],
+    lessons: [py00, py01, py02, py03, py04, py05, py06, py07, py08, py09, py10, py11],
   },
   {
     id: 'git',
     title: 'Git',
     description: 'Versionhallinnan arki: commitit, haarat, etärepot ja virheiden korjaaminen.',
     language: 'shell',
-    lessons: [git01, git02, git03, git04, git05, git06, git07, git08],
+    lessons: [git00, git01, git02, git03, git04, git05, git06, git07, git08],
   },
 ]

@@ -5,6 +5,7 @@ import { href } from '../app/router'
 import { useProgress } from '../app/progress'
 import { buildRound, nextDue, unlockedCards } from '../session/buildRound'
 import { weakestRound } from '../session/weak'
+import { nextLesson } from '../session/nextLesson'
 import { gradeAttempt, newCard, review } from '../srs/scheduler'
 import { bumpStreak, loadAttempts, type Progress } from '../storage/progress'
 import { formatDuration, formatRelative, m } from '../i18n'
@@ -121,7 +122,7 @@ export function PracticePage({ scope }: { scope: PracticeScope }) {
       <a href={back.to}>← {back.label}</a>
     </nav>
   )
-  const firstOpenLesson = track.lessons.find((l) => !progress.lessons[l.id])
+  const firstOpenLesson = nextLesson(track.lessons, progress)
 
   // Nothing to practice: no completed lessons, or (weak round) nothing practiced yet.
   if (round.queue.length === 0) {

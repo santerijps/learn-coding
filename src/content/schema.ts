@@ -17,6 +17,8 @@ const cardBase = {
 const matchCard = z.strictObject({
   ...cardBase,
   check: z.literal('match'),
+  /** Overrides the track's answer language, e.g. a terminal command (`shell`) in the JavaScript track. */
+  language: z.enum(['js', 'python', 'shell']).optional(),
   accepted: z.array(z.string().min(1)).default([]),
 })
 

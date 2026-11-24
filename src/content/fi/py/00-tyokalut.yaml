@@ -1,0 +1,216 @@
+id: py-tyokalut
+title: 'Alkuvalmistelut: Pythonin asennus'
+summary: Pythonin versiot, Python verrattuna muihin kieliin, asennus Windowsiin ja Maciin ja omien ohjelmien ajaminen.
+theory: |
+  Pythonia ajaa **tulkki**: ohjelma, joka lukee `.py`-tiedostosi ja suorittaa sen rivi kerrallaan. Vakiotulkki, jonka saat osoitteesta **python.org**, on nimeltään **CPython**.
+
+  Tätä kurssia varten ei tarvitse asentaa mitään, koska tehtävät ajavat Pythonia selaimessasi. Pythonia tarvitset koneellasi, kun kirjoitat omia ohjelmia.
+
+  ### Pythonin versiot
+
+  - **Python 2 vai Python 3:** Python 3 (2008) muutti kieltä tavoilla, jotka rikkoivat vanhaa koodia, esimerkiksi `print "hei"` muuttui muotoon `print("hei")`. Python 2:n tuki päättyi vuonna 2020. Käytä aina Python 3:a; jos opas käyttää `print`-komentoa ilman sulkeita, se on vanhentunut.
+  - **3.x-versiot:** uusi Python 3 -versio julkaistaan joka lokakuu (3.12, 3.13, 3.14, …), ja kukin saa tietoturvakorjauksia noin viiden vuoden ajan. Erot versioiden välillä ovat pieniä lisäyksiä; tämä kurssi toimii millä tahansa tuoreella versiolla. Asenna uusin vakaa versio.
+  - **Muut tulkit:** **PyPy** ajaa samaa koodia usein paljon nopeammin, ja **MicroPython** toimii pienillä mikrokontrollerikorteilla.
+
+  ### Python verrattuna muihin kieliin
+
+  - **JavaScript** on yhtä helppo aloittaa ja on verkon kieli. Python muistuttaa enemmän tavallista englantia, käyttää sisennystä aaltosulkeiden sijaan ja on suosituin valinta data-analyysiin, koneoppimiseen, skripteihin ja automaatioon.
+  - **C, Rust ja Go** käännetään konekielelle ja toimivat paljon nopeammin. Pythonia on nopeampi kirjoittaa ja lukea, ja sen raskaat kirjastot (kuten NumPy) on kirjoitettu konepellin alla C:llä, joten usein saat molemmat.
+  - **Java ja C#** ovat staattisesti tyypitettyjä: jokaisen muuttujan tyyppi kerrotaan. Python tarkistaa tyypit vasta ajon aikana, mutta voit lisätä valinnaisia tyyppivihjeitä.
+
+  ### Pääte
+
+  Ohjelmia asennetaan ja ajetaan kirjoittamalla komentoja **päätteeseen** (terminaaliin).
+
+  - **Windows:** avaa Käynnistä-valikko ja hae **Terminal** (Windows Terminal, jossa toimii PowerShell).
+  - **Mac:** paina **⌘ + välilyönti**, kirjoita **Terminal** ja paina Enter.
+
+  Myös koodieditori auttaa. **Visual Studio Code** ja sen Python-laajennus ovat ilmaisia ja toimivat molemmissa.
+
+  ### Asennus Windowsiin
+
+  Asenna **Python install manager**, virallinen tapa saada Python Windowsiin: hae "Python Install Manager" **Microsoft Storesta** tai lataa se osoitteesta **python.org/downloads**. Avaa sitten uusi pääte ja asenna Python-versio:
+
+  ```powershell
+  py install 3.14       # tai mikä tahansa uusin versio on
+  py list               # näytä asennetut versiot
+  ```
+
+  Windowsissa komennot ovat `python` ja `py`. Jos versioita on useita, `py` valitsee niistä: `py -V:3.13 hello.py`.
+
+  ### Asennus Maciin
+
+  Macissa saattaa olla valmiina `python3`-komento, mutta se on Applen kehitystyökalujen mukana tuleva vanha versio. Asenna oma: lataa macOS-asennusohjelma (`.pkg`) osoitteesta **python.org/downloads**, tai käytä Homebrew'ta, jos se on asennettu:
+
+  ```bash
+  brew install python
+  ```
+
+  Macissa komento on `python3` (ja `pip3`). Pelkkää `python`-komentoa ei yleensä ole.
+
+  ### Asennuksen tarkistus
+
+  Avaa uusi pääte ja tarkista versio:
+
+  ```bash
+  python3 --version     # Mac
+  python --version      # Windows
+  ```
+
+  ### Ohjelman ajaminen
+
+  Tee kansio ja sen sisälle tiedosto `hello.py`:
+
+  ```python
+  print("Hei maailma")
+  ```
+
+  Siirry kansioon `cd`-komennolla ja aja tiedosto:
+
+  ```bash
+  cd Documents/koodi    # Windows: cd Documents\koodi
+  python3 hello.py      # Mac
+  python hello.py       # Windows (myös py hello.py toimii)
+  ```
+
+  Pelkkä `python3` (tai `python`) avaa vuorovaikutteisen kehotteen, jossa voit kokeilla koodia rivi kerrallaan. Poistu komennolla `exit()`. **Ctrl + C** pysäyttää ohjelman, joka jää käyntiin.
+
+  ### Paketit ja virtuaaliympäristöt
+
+  Lisäkirjastoja asennetaan **pip**-työkalulla Python Package Indexistä (PyPI). Asenna ne **virtuaaliympäristöön**: kansioon `.venv`, jossa on projektin oma Python ja paketit, jotta projektit eivät sotke toisiaan.
+
+  ```bash
+  python3 -m venv .venv            # luo se (Windows: python -m venv .venv)
+  source .venv/bin/activate        # ota käyttöön Macissa
+  .venv\Scripts\activate           # ota käyttöön Windowsissa
+  pip install requests             # asenna paketti siihen
+  pip freeze > requirements.txt    # tallenna pakettien lista
+  pip install -r requirements.txt  # asenna kaikki listan paketit
+  deactivate                       # poistu ympäristöstä
+  ```
+
+  **uv** on uudempi, hyvin nopea työkalu, joka tekee kaiken tämän (ja asentaa myös itse Pythonin) yhdellä komennolla: `uv run hello.py`.
+exercises:
+  - type: choice
+    question: Mitä Python-versiota uudessa koodissa kannattaa käyttää?
+    options:
+      - Uusinta vakaata Python 3 -versiota
+      - Python 2.7:ää, koska se on testatuin
+      - Mitä tahansa, kaikki ovat samaa kieltä
+      - Python 1:tä, koska se on yksinkertaisin
+    answer: 0
+    explanation: Python 2:n tuki päättyi vuonna 2020, ja se eroaa Python 3:sta tavoilla, jotka rikkovat koodia. Käytä uusinta vakaata Python 3:a.
+  - type: choice
+    question: Mikä komento ajaa tiedoston `hello.py` Macissa?
+    options:
+      - '`python3 hello.py`'
+      - '`run hello.py`'
+      - '`py hello.py`'
+      - '`open hello.py`'
+    answer: 0
+    explanation: Macissa komento on `python3`. Windowsissa se on `python` tai `py`.
+  - type: blank
+    question: Täydennä komento, joka luo virtuaaliympäristön kansioon `.venv`.
+    code: |
+      python3 -m ___ .venv
+    blanks:
+      - [venv]
+    explanation: '`-m venv` ajaa Pythonin mukana tulevan `venv`-moduulin, joka luo ympäristön.'
+  - type: bug
+    question: Näiden komentojen pitäisi luoda Macissa projektille oma ympäristö ja asentaa siihen `requests`. Mikä rivi on väärin?
+    code: |
+      python3 -m venv .venv
+      .venv\Scripts\activate
+      pip install requests
+    bugLine: 2
+    explanation: 'Näin ympäristö otetaan käyttöön Windowsissa. Macissa se on `source .venv/bin/activate`.'
+  - type: choice
+    question: Opas käyttää muotoa `print "Hei"` ilman sulkeita, ja se antaa syntaksivirheen. Miksi?
+    options:
+      - Opas on kirjoitettu Python 2:lle
+      - Python ei osaa tulostaa tekstiä
+      - Tulostamiseen pitää asentaa paketti
+      - Tiedoston pitää päättyä .txt
+    answer: 0
+    explanation: 'Python 2:ssa `print` oli lause. Python 3:ssa se on funktio, joten se tarvitsee sulkeet: `print("Hei")`.'
+cards:
+  - id: py-tools-run-mac
+    prompt: Aja Macissa tiedosto `hello.py`.
+    check: match
+    language: shell
+    solution: python3 hello.py
+  - id: py-tools-run-windows
+    prompt: Aja Windowsissa tiedosto `hello.py` `py`-komennolla.
+    check: match
+    language: shell
+    solution: py hello.py
+  - id: py-tools-version
+    prompt: Tarkista Macissa, mikä Python-versio on asennettu.
+    check: match
+    language: shell
+    solution: python3 --version
+    accepted:
+      - python3 -V
+  - id: py-tools-venv
+    prompt: Luo Macissa virtuaaliympäristö kansioon `.venv`.
+    check: match
+    language: shell
+    solution: python3 -m venv .venv
+  - id: py-tools-activate-mac
+    prompt: Ota Macissa käyttöön kansiossa `.venv` oleva virtuaaliympäristö.
+    check: match
+    language: shell
+    solution: source .venv/bin/activate
+    accepted:
+      - . .venv/bin/activate
+  - id: py-tools-activate-windows
+    prompt: Ota Windowsissa käyttöön kansiossa `.venv` oleva virtuaaliympäristö.
+    check: match
+    language: shell
+    solution: .venv\Scripts\activate
+    accepted:
+      - .venv\Scripts\Activate.ps1
+      - .\.venv\Scripts\activate
+      - .\.venv\Scripts\Activate.ps1
+  - id: py-tools-pip-install
+    prompt: Asenna paketti `requests` pipillä.
+    check: match
+    language: shell
+    solution: pip install requests
+    accepted:
+      - pip3 install requests
+      - python3 -m pip install requests
+      - python -m pip install requests
+  - id: py-tools-requirements
+    prompt: Asenna pipillä kaikki tiedostossa `requirements.txt` luetellut paketit.
+    check: match
+    language: shell
+    solution: pip install -r requirements.txt
+    accepted:
+      - pip3 install -r requirements.txt
+      - python3 -m pip install -r requirements.txt
+      - python -m pip install -r requirements.txt
+  - id: py-tools-freeze
+    prompt: Tallenna pipillä asennettujen pakettien lista tiedostoon `requirements.txt`.
+    check: match
+    language: shell
+    solution: pip freeze > requirements.txt
+    accepted:
+      - pip3 freeze > requirements.txt
+  - id: py-tools-deactivate
+    prompt: Poistu käytössä olevasta virtuaaliympäristöstä.
+    check: match
+    language: shell
+    solution: deactivate
+  - id: py-tools-mac-install
+    prompt: Asenna Python Maciin Homebrew'lla.
+    check: match
+    language: shell
+    solution: brew install python
+    accepted:
+      - brew install python3
+  - id: py-tools-windows-list
+    prompt: Näytä Windowsissa Python install managerilla asennetut Python-versiot.
+    check: match
+    language: shell
+    solution: py list
