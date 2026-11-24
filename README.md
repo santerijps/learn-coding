@@ -6,11 +6,11 @@ Each lesson is a short piece of theory plus a few quick understanding checks (mu
 
 Content, in **Finnish and English**:
 
-- **JavaScript**: 17 lessons, from `console.log` to modules
-- **Python**: 11 lessons, from `print` to classes
-- **Git**: 8 lessons, from `git init` to stash
+- **JavaScript**: 18 lessons, from installing Node.js and Bun to modules
+- **Python**: 12 lessons, from installing Python to classes
+- **Git**: 9 lessons, from installing Git to stash
 
-Every lesson has at least 10 cards. In the JavaScript and Python lessons, the last few cards combine the new topic with earlier ones (a function lesson ends with functions that use variables, conditions and strings; a classes lesson with classes that hold lists and loop over them). The UI language defaults to the browser's (Finnish for Finnish browsers, English otherwise) and can be switched from the top bar at any time.
+Each track starts with a lesson 0 on installing the tools on Windows and Mac, running programs, and how the tools compare with the alternatives. Every lesson has at least 10 cards. In the JavaScript and Python lessons, the last few cards combine the new topic with earlier ones (a function lesson ends with functions that use variables, conditions and strings; a classes lesson with classes that hold lists and loop over them). The UI language defaults to the browser's (Finnish for Finnish browsers, English otherwise) and can be switched from the top bar at any time.
 
 ## Running it
 
@@ -55,7 +55,7 @@ exercises:                   # understanding checks, in order
 cards:                       # rapid-fire cards (at least 10)
   - id: js-array-push
     prompt: Add the number `4` to the end of the array `numbers`.
-    check: test              # or: match (with optional accepted: [...])
+    check: test              # or: match (with optional accepted: [...], and language: shell for a terminal command in a code track)
     setup: |
       const numbers = [1, 2, 3];
     tests:

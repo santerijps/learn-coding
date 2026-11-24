@@ -85,9 +85,10 @@ for (const locale of locales) {
             })
           } else {
             test(`${card.id}: accepted answers are distinct`, () => {
-              const all = [card.solution, ...card.accepted].map((s) => normalize(s, track.language))
+              const language = card.language ?? track.language
+              const all = [card.solution, ...card.accepted].map((s) => normalize(s, language))
               expect(new Set(all).size).toBe(all.length)
-              expect(matches(card.solution, [card.solution], track.language)).toBe(true)
+              expect(matches(card.solution, [card.solution], language)).toBe(true)
             })
           }
         }

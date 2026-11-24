@@ -50,7 +50,7 @@ export function TrackPage({ trackId }: { trackId: TrackId }) {
             <li key={lesson.id}>
               <a className={`lesson-row ${isDone ? 'is-done' : ''} ${isNext ? 'is-next' : ''}`} href={href({ name: 'lesson', lessonId: lesson.id })}>
                 <span className="lesson-no" aria-hidden="true">
-                  {isDone ? '✓' : i + 1}
+                  {isDone ? '✓' : i}
                 </span>
                 <span className="lesson-text">
                   <span className="lesson-title">

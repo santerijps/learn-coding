@@ -38,7 +38,7 @@ export function LessonPage({ lessonId }: { lessonId: string }) {
         <a href={href({ name: 'track', track: track.id })}>← {track.title}</a>
       </nav>
       <p className="eyebrow">
-        {m.lessonNumber(index + 1)}
+        {m.lessonNumber(index)}
         {completed ? <span className="badge badge-done">{m.lessonDone}</span> : null}
       </p>
       <h1>{lesson.title}</h1>

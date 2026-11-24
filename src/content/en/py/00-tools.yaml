@@ -1,0 +1,216 @@
+id: py-tyokalut
+title: 'Getting set up: installing Python'
+summary: Python versions, how Python compares with other languages, installing it on Windows and Mac, and running your own programs.
+theory: |
+  Python is run by an **interpreter**: a program that reads your `.py` file and runs it line by line. The standard interpreter, the one you get from **python.org**, is called **CPython**.
+
+  You don't need to install anything to follow this course, because the exercises run Python in your browser. You'll need Python on your computer once you write your own programs.
+
+  ### Python versions
+
+  - **Python 2 vs Python 3:** Python 3 (2008) changed the language in ways that broke old code, for example `print "hi"` became `print("hi")`. Python 2 reached its end of life in 2020. Always use Python 3; if a tutorial uses `print` without brackets, it's outdated.
+  - **3.x versions:** a new Python 3 version comes out every October (3.12, 3.13, 3.14, …), and each one gets security fixes for about five years. The differences between them are small additions; this course works on any recent version. Install the newest stable release.
+  - **Other interpreters:** **PyPy** runs the same code, often much faster, and **MicroPython** runs on small microcontroller boards.
+
+  ### How Python compares with other languages
+
+  - **JavaScript** is just as easy to start with and is the language of the web. Python reads more like plain English, uses indentation instead of curly braces, and is the most popular choice for data science, machine learning, scripting and automation.
+  - **C, Rust and Go** are compiled to machine code and run much faster. Python is quicker to write and read, and its heavy-duty libraries (such as NumPy) are written in C under the hood, so you often get both.
+  - **Java and C#** are statically typed: you declare the type of every variable. Python checks types only while running, though you can add optional type hints.
+
+  ### The terminal
+
+  You install and run programs by typing commands in a **terminal**.
+
+  - **Windows:** open the Start menu and search for **Terminal** (Windows Terminal, which runs PowerShell).
+  - **Mac:** press **⌘ + Space**, type **Terminal** and press Enter.
+
+  A code editor helps too. **Visual Studio Code** with its Python extension is free and works on both.
+
+  ### Installing on Windows
+
+  Install the **Python install manager**, the official way to get Python on Windows: search for "Python Install Manager" in the **Microsoft Store**, or download it from **python.org/downloads**. Then open a new terminal and install a Python version:
+
+  ```powershell
+  py install 3.14       # or whichever version is newest
+  py list               # show the installed versions
+  ```
+
+  On Windows the commands are `python` and `py`. With several versions installed, `py` picks one: `py -V:3.13 hello.py`.
+
+  ### Installing on a Mac
+
+  A Mac may offer a `python3` command, but it's an old copy that comes with Apple's developer tools. Install your own: download the macOS installer (`.pkg`) from **python.org/downloads**, or use Homebrew if you have it:
+
+  ```bash
+  brew install python
+  ```
+
+  On a Mac the command is `python3` (and `pip3`). Plain `python` usually doesn't exist.
+
+  ### Checking the installation
+
+  Open a new terminal and check the version:
+
+  ```bash
+  python3 --version     # Mac
+  python --version      # Windows
+  ```
+
+  ### Running a program
+
+  Make a folder, and inside it a file `hello.py`:
+
+  ```python
+  print("Hello world")
+  ```
+
+  Go to the folder with `cd` and run the file:
+
+  ```bash
+  cd Documents/code     # Windows: cd Documents\code
+  python3 hello.py      # Mac
+  python hello.py       # Windows (py hello.py works too)
+  ```
+
+  Running `python3` (or `python`) on its own opens an interactive prompt where you can try code line by line. Leave it with `exit()`. **Ctrl + C** stops a program that keeps running.
+
+  ### Packages and virtual environments
+
+  Extra libraries are installed with **pip** from the Python Package Index (PyPI). Install them into a **virtual environment**: a folder `.venv` with the project's own Python and packages, so projects don't get in each other's way.
+
+  ```bash
+  python3 -m venv .venv            # create it (Windows: python -m venv .venv)
+  source .venv/bin/activate        # activate it on a Mac
+  .venv\Scripts\activate           # activate it on Windows
+  pip install requests             # install a package into it
+  pip freeze > requirements.txt    # save the list of packages
+  pip install -r requirements.txt  # install everything on the list
+  deactivate                       # leave the environment
+  ```
+
+  **uv** is a newer, very fast tool that does all of this (and installs Python itself) with one command: `uv run hello.py`.
+exercises:
+  - type: choice
+    question: Which version of Python should you use for new code?
+    options:
+      - The newest stable Python 3 release
+      - Python 2.7, because it's the most tested
+      - Any version, they're all the same language
+      - Python 1, because it's the simplest
+    answer: 0
+    explanation: Python 2 reached its end of life in 2020 and differs from Python 3 in ways that break code. Use the newest stable Python 3.
+  - type: choice
+    question: Which command runs `hello.py` on a Mac?
+    options:
+      - '`python3 hello.py`'
+      - '`run hello.py`'
+      - '`py hello.py`'
+      - '`open hello.py`'
+    answer: 0
+    explanation: On a Mac the command is `python3`. On Windows it's `python` or `py`.
+  - type: blank
+    question: Complete the command that creates a virtual environment in the folder `.venv`.
+    code: |
+      python3 -m ___ .venv
+    blanks:
+      - [venv]
+    explanation: '`-m venv` runs the built-in `venv` module, which creates the environment.'
+  - type: bug
+    question: These commands should set up a project on a Mac and install `requests` into its own environment. Which line is wrong?
+    code: |
+      python3 -m venv .venv
+      .venv\Scripts\activate
+      pip install requests
+    bugLine: 2
+    explanation: 'That''s how you activate it on Windows. On a Mac it''s `source .venv/bin/activate`.'
+  - type: choice
+    question: A tutorial uses `print "Hello"` without brackets, and it gives a syntax error. Why?
+    options:
+      - The tutorial was written for Python 2
+      - Python can't print text
+      - You need to install a print package
+      - The file must end in .txt
+    answer: 0
+    explanation: 'In Python 2 `print` was a statement. In Python 3 it''s a function, so it needs brackets: `print("Hello")`.'
+cards:
+  - id: py-tools-run-mac
+    prompt: On a Mac, run the file `hello.py`.
+    check: match
+    language: shell
+    solution: python3 hello.py
+  - id: py-tools-run-windows
+    prompt: On Windows, run the file `hello.py` with the `py` command.
+    check: match
+    language: shell
+    solution: py hello.py
+  - id: py-tools-version
+    prompt: On a Mac, check which version of Python is installed.
+    check: match
+    language: shell
+    solution: python3 --version
+    accepted:
+      - python3 -V
+  - id: py-tools-venv
+    prompt: On a Mac, create a virtual environment in the folder `.venv`.
+    check: match
+    language: shell
+    solution: python3 -m venv .venv
+  - id: py-tools-activate-mac
+    prompt: On a Mac, activate the virtual environment in the folder `.venv`.
+    check: match
+    language: shell
+    solution: source .venv/bin/activate
+    accepted:
+      - . .venv/bin/activate
+  - id: py-tools-activate-windows
+    prompt: On Windows, activate the virtual environment in the folder `.venv`.
+    check: match
+    language: shell
+    solution: .venv\Scripts\activate
+    accepted:
+      - .venv\Scripts\Activate.ps1
+      - .\.venv\Scripts\activate
+      - .\.venv\Scripts\Activate.ps1
+  - id: py-tools-pip-install
+    prompt: Install the package `requests` with pip.
+    check: match
+    language: shell
+    solution: pip install requests
+    accepted:
+      - pip3 install requests
+      - python3 -m pip install requests
+      - python -m pip install requests
+  - id: py-tools-requirements
+    prompt: Install all the packages listed in the file `requirements.txt` with pip.
+    check: match
+    language: shell
+    solution: pip install -r requirements.txt
+    accepted:
+      - pip3 install -r requirements.txt
+      - python3 -m pip install -r requirements.txt
+      - python -m pip install -r requirements.txt
+  - id: py-tools-freeze
+    prompt: Save the list of installed packages to the file `requirements.txt` with pip.
+    check: match
+    language: shell
+    solution: pip freeze > requirements.txt
+    accepted:
+      - pip3 freeze > requirements.txt
+  - id: py-tools-deactivate
+    prompt: Leave the virtual environment that is active.
+    check: match
+    language: shell
+    solution: deactivate
+  - id: py-tools-mac-install
+    prompt: Install Python on a Mac with Homebrew.
+    check: match
+    language: shell
+    solution: brew install python
+    accepted:
+      - brew install python3
+  - id: py-tools-windows-list
+    prompt: On Windows, list the Python versions installed with the Python install manager.
+    check: match
+    language: shell
+    solution: py list

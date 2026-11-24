@@ -1,0 +1,164 @@
+id: git-asennus
+title: 'Getting set up: installing Git'
+summary: What Git is and isn't, how it compares with other tools, installing it on Windows and Mac, and using the terminal.
+theory: |
+  Git is a **version control system**: it records the history of a project's files, so you can go back to any earlier version, see what changed, and combine work from several people. It runs on your own computer as a command-line program.
+
+  You don't need to install anything to follow this course, because the exercises only check the commands you type. You'll need Git once you use it in your own projects.
+
+  ### Git is not GitHub
+
+  - **Git** is the tool that keeps the history, on your computer. It works without the internet.
+  - **GitHub**, **GitLab** and **Bitbucket** are websites that host Git repositories online, so you can back them up, share them and review each other's changes.
+
+  ### How Git compares with other tools
+
+  - **Subversion (SVN)** is an older, **centralized** system: the history lives on one server, and most commands need a connection to it.
+  - **Git** and **Mercurial** are **distributed**: every copy of a repository has the full history, so committing, branching and browsing history are fast and work offline. Git won: today almost every project uses it.
+  - **Graphical tools** such as GitHub Desktop and the Source Control panel in Visual Studio Code are buttons on top of the same Git commands. Learning the commands means you understand what the buttons do, and you can use Git anywhere.
+
+  ### The terminal
+
+  - **Windows:** open the Start menu and search for **Terminal** (Windows Terminal, which runs PowerShell). Git for Windows also installs **Git Bash**, a terminal that understands the same commands as a Mac.
+  - **Mac:** press **⌘ + Space**, type **Terminal** and press Enter.
+
+  ### Installing on Windows
+
+  Download **Git for Windows** from **git-scm.com** and run the installer; the default choices are fine. Or install it from the terminal with winget:
+
+  ```powershell
+  winget install --id Git.Git -e --source winget
+  ```
+
+  ### Installing on a Mac
+
+  Type `git --version` in the terminal. If Git isn't installed, the Mac offers to install Apple's **command line developer tools**, which include Git. You can also start that yourself, or use Homebrew for a newer version:
+
+  ```bash
+  xcode-select --install   # Apple's developer tools, which include Git
+  brew install git         # or with Homebrew
+  ```
+
+  ### Checking the installation
+
+  Open a new terminal and check the version. If it prints something like `git version 2.x`, you're ready:
+
+  ```bash
+  git --version
+  ```
+
+  ### Getting around in the terminal
+
+  Git commands always run in a folder: the project you're working on. These commands work in PowerShell, Git Bash and the Mac terminal:
+
+  ```bash
+  pwd             # show which folder you're in
+  ls              # list the files in it
+  mkdir project   # create a folder
+  cd project      # go into it
+  cd ..           # go back up one level
+  ```
+
+  ### Getting help
+
+  Every Git command starts with `git`, followed by the command's name. Help is built in:
+
+  ```bash
+  git help commit     # the full manual for a command (also: git commit --help)
+  git commit -h       # a short summary of its options
+  ```
+
+  Long output such as the manual or the history opens in a viewer. Scroll with the arrow keys and press **q** to leave it.
+exercises:
+  - type: choice
+    question: What's the difference between Git and GitHub?
+    options:
+      - Git keeps the history on your computer; GitHub is a website that hosts Git repositories
+      - They are two names for the same program
+      - GitHub is the command-line version of Git
+      - Git only works when you're connected to GitHub
+    answer: 0
+    explanation: Git is the tool and works offline. GitHub (like GitLab and Bitbucket) is a service for storing and sharing Git repositories online.
+  - type: choice
+    question: What does it mean that Git is distributed?
+    options:
+      - Every copy of a repository has the full history
+      - The history is kept only on one central server
+      - Git is installed on several servers at once
+      - Each file is saved in a different folder
+    answer: 0
+    explanation: In a distributed system such as Git, every clone has the whole history, so most commands work offline. A centralized system such as SVN keeps the history on one server.
+  - type: blank
+    question: Complete the command that goes back up one folder level in the terminal.
+    code: |
+      cd ___
+    blanks:
+      - ['..']
+    explanation: '`..` means the parent folder, so `cd ..` moves up one level.'
+  - type: bug
+    question: These commands should create a folder `project` and go into it. Which line is wrong?
+    code: |
+      mkdir project
+      cd ..
+      pwd
+    bugLine: 2
+    explanation: '`cd ..` goes up one level. To go into the new folder, write `cd project`.'
+  - type: choice
+    question: The Git manual opened in the terminal and you can't type commands any more. How do you get out?
+    options:
+      - Press q
+      - Close the computer
+      - Type git exit
+      - Press Enter ten times
+    answer: 0
+    explanation: Long output opens in a viewer. Press q to leave it and get back to the prompt.
+cards:
+  - id: git-install-windows
+    prompt: Install Git on Windows with winget.
+    solution: winget install --id Git.Git -e --source winget
+    check: match
+    accepted:
+      - winget install Git.Git
+      - winget install --id Git.Git
+      - winget install --id Git.Git -e
+      - winget install -e --id Git.Git
+  - id: git-install-mac-brew
+    prompt: Install Git on a Mac with Homebrew.
+    check: match
+    solution: brew install git
+  - id: git-install-mac-tools
+    prompt: On a Mac, install Apple's command line developer tools, which include Git.
+    check: match
+    solution: xcode-select --install
+  - id: git-terminal-pwd
+    prompt: Show which folder the terminal is in.
+    check: match
+    solution: pwd
+  - id: git-terminal-ls
+    prompt: List the files in the current folder.
+    check: match
+    solution: ls
+    accepted:
+      - dir
+  - id: git-terminal-mkdir
+    prompt: Create a folder called `project`.
+    check: match
+    solution: mkdir project
+  - id: git-terminal-cd
+    prompt: Go into the folder `project`.
+    check: match
+    solution: cd project
+  - id: git-terminal-cd-up
+    prompt: Go back up one folder level.
+    check: match
+    solution: cd ..
+  - id: git-help-command
+    prompt: Open the full manual for the command `git commit`.
+    check: match
+    solution: git help commit
+    accepted:
+      - git commit --help
+  - id: git-help-short
+    prompt: Show a short summary of the options of `git commit`.
+    check: match
+    solution: git commit -h

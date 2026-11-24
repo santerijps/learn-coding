@@ -10,7 +10,7 @@ export function codeLanguage(fenceInfo: string | undefined, fallback: CodeLangua
   const lang = (fenceInfo ?? '').trim().toLowerCase()
   if (['js', 'javascript', 'ts', 'typescript', 'jsx'].includes(lang)) return 'js'
   if (['py', 'python'].includes(lang)) return 'python'
-  if (['bash', 'sh', 'shell', 'console', 'git', 'gitignore'].includes(lang)) return 'shell'
+  if (['bash', 'sh', 'shell', 'console', 'git', 'gitignore', 'powershell', 'ps', 'cmd'].includes(lang)) return 'shell'
   return lang ? 'plain' : fallback
 }
 

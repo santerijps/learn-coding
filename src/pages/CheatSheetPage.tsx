@@ -49,7 +49,7 @@ export function CheatSheetPage({ trackId }: { trackId: TrackId }) {
                   <Inline text={c.prompt} />
                 </dt>
                 <dd>
-                  <CodeBlock code={c.solution} language={lang} />
+                  <CodeBlock code={c.solution} language={'language' in c && c.language ? codeLanguage(c.language) : lang} />
                 </dd>
               </div>
             ))}

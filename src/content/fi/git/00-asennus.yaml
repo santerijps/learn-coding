@@ -1,0 +1,164 @@
+id: git-asennus
+title: 'Alkuvalmistelut: Gitin asennus'
+summary: Mitä Git on ja mitä se ei ole, Git verrattuna muihin työkaluihin, asennus Windowsiin ja Maciin ja päätteen käyttö.
+theory: |
+  Git on **versionhallintajärjestelmä**: se tallentaa projektin tiedostojen historian, joten voit palata mihin tahansa aiempaan versioon, nähdä mitä muuttui ja yhdistää usean ihmisen työt. Se toimii omalla koneellasi komentoriviohjelmana.
+
+  Tätä kurssia varten ei tarvitse asentaa mitään, koska tehtävät vain tarkistavat kirjoittamasi komennot. Gitiä tarvitset, kun käytät sitä omissa projekteissasi.
+
+  ### Git ei ole GitHub
+
+  - **Git** on työkalu, joka pitää historiaa omalla koneellasi. Se toimii ilman internetiä.
+  - **GitHub**, **GitLab** ja **Bitbucket** ovat verkkopalveluita, joissa Git-repositorioita säilytetään verkossa, jotta niistä on varmuuskopio, niitä voi jakaa ja toisten muutoksia voi katselmoida.
+
+  ### Git verrattuna muihin työkaluihin
+
+  - **Subversion (SVN)** on vanhempi, **keskitetty** järjestelmä: historia on yhdellä palvelimella, ja useimmat komennot tarvitsevat yhteyden siihen.
+  - **Git** ja **Mercurial** ovat **hajautettuja**: jokaisessa repositorion kopiossa on koko historia, joten commitointi, haarat ja historian selaaminen ovat nopeita ja toimivat ilman verkkoa. Git voitti: nykyään lähes jokainen projekti käyttää sitä.
+  - **Graafiset työkalut**, kuten GitHub Desktop ja Visual Studio Coden Source Control -paneeli, ovat painikkeita samojen Git-komentojen päällä. Kun osaat komennot, ymmärrät mitä painikkeet tekevät, ja voit käyttää Gitiä missä tahansa.
+
+  ### Pääte
+
+  - **Windows:** avaa Käynnistä-valikko ja hae **Terminal** (Windows Terminal, jossa toimii PowerShell). Git for Windows asentaa myös **Git Bashin**, päätteen, joka ymmärtää samat komennot kuin Mac.
+  - **Mac:** paina **⌘ + välilyönti**, kirjoita **Terminal** ja paina Enter.
+
+  ### Asennus Windowsiin
+
+  Lataa **Git for Windows** osoitteesta **git-scm.com** ja aja asennusohjelma; oletusvalinnat käyvät hyvin. Tai asenna Git päätteessä wingetillä:
+
+  ```powershell
+  winget install --id Git.Git -e --source winget
+  ```
+
+  ### Asennus Maciin
+
+  Kirjoita päätteeseen `git --version`. Jos Gitiä ei ole asennettu, Mac tarjoutuu asentamaan Applen **komentorivin kehitystyökalut**, joihin Git kuuluu. Voit myös käynnistää asennuksen itse tai käyttää Homebrew'ta uudemman version saamiseksi:
+
+  ```bash
+  xcode-select --install   # Applen kehitystyökalut, joihin Git kuuluu
+  brew install git         # tai Homebrew'lla
+  ```
+
+  ### Asennuksen tarkistus
+
+  Avaa uusi pääte ja tarkista versio. Jos se tulostaa esimerkiksi `git version 2.x`, olet valmis:
+
+  ```bash
+  git --version
+  ```
+
+  ### Liikkuminen päätteessä
+
+  Git-komennot ajetaan aina jossakin kansiossa: siinä projektissa, jonka parissa työskentelet. Nämä komennot toimivat PowerShellissä, Git Bashissa ja Macin päätteessä:
+
+  ```bash
+  pwd             # näytä, missä kansiossa olet
+  ls              # listaa sen tiedostot
+  mkdir projekti  # luo kansio
+  cd projekti     # siirry sinne
+  cd ..           # palaa yksi taso ylöspäin
+  ```
+
+  ### Ohjeet
+
+  Jokainen Git-komento alkaa sanalla `git`, jota seuraa komennon nimi. Ohjeet on rakennettu sisään:
+
+  ```bash
+  git help commit     # komennon koko käyttöohje (myös: git commit --help)
+  git commit -h       # lyhyt yhteenveto sen valitsimista
+  ```
+
+  Pitkä tuloste, kuten käyttöohje tai historia, avautuu katseluohjelmaan. Vieritä nuolinäppäimillä ja poistu painamalla **q**.
+exercises:
+  - type: choice
+    question: Mikä ero on Gitillä ja GitHubilla?
+    options:
+      - Git pitää historiaa omalla koneellasi; GitHub on verkkopalvelu, jossa säilytetään Git-repositorioita
+      - Ne ovat saman ohjelman kaksi nimeä
+      - GitHub on Gitin komentoriviversio
+      - Git toimii vain, kun olet yhteydessä GitHubiin
+    answer: 0
+    explanation: Git on työkalu ja toimii ilman verkkoa. GitHub (kuten GitLab ja Bitbucket) on palvelu Git-repositorioiden säilyttämiseen ja jakamiseen verkossa.
+  - type: choice
+    question: Mitä tarkoittaa, että Git on hajautettu?
+    options:
+      - Jokaisessa repositorion kopiossa on koko historia
+      - Historia on vain yhdellä keskuspalvelimella
+      - Git on asennettu usealle palvelimelle yhtä aikaa
+      - Jokainen tiedosto tallennetaan eri kansioon
+    answer: 0
+    explanation: Hajautetussa järjestelmässä, kuten Gitissä, jokaisessa kloonissa on koko historia, joten useimmat komennot toimivat ilman verkkoa. Keskitetty järjestelmä, kuten SVN, pitää historiaa yhdellä palvelimella.
+  - type: blank
+    question: Täydennä komento, joka palaa päätteessä yhden kansiotason ylöspäin.
+    code: |
+      cd ___
+    blanks:
+      - ['..']
+    explanation: '`..` tarkoittaa yläkansiota, joten `cd ..` siirtyy yhden tason ylöspäin.'
+  - type: bug
+    question: Näiden komentojen pitäisi luoda kansio `projekti` ja siirtyä sinne. Mikä rivi on väärin?
+    code: |
+      mkdir projekti
+      cd ..
+      pwd
+    bugLine: 2
+    explanation: '`cd ..` siirtyy tason ylöspäin. Uuteen kansioon siirrytään komennolla `cd projekti`.'
+  - type: choice
+    question: Gitin käyttöohje aukesi päätteeseen, etkä voi enää kirjoittaa komentoja. Miten pääset pois?
+    options:
+      - Paina q
+      - Sammuta tietokone
+      - Kirjoita git exit
+      - Paina Enteriä kymmenen kertaa
+    answer: 0
+    explanation: Pitkä tuloste avautuu katseluohjelmaan. Paina q, niin pääset takaisin kehotteeseen.
+cards:
+  - id: git-install-windows
+    prompt: Asenna Git Windowsiin wingetillä.
+    solution: winget install --id Git.Git -e --source winget
+    check: match
+    accepted:
+      - winget install Git.Git
+      - winget install --id Git.Git
+      - winget install --id Git.Git -e
+      - winget install -e --id Git.Git
+  - id: git-install-mac-brew
+    prompt: Asenna Git Maciin Homebrew'lla.
+    check: match
+    solution: brew install git
+  - id: git-install-mac-tools
+    prompt: Asenna Macissa Applen komentorivin kehitystyökalut, joihin Git kuuluu.
+    check: match
+    solution: xcode-select --install
+  - id: git-terminal-pwd
+    prompt: Näytä, missä kansiossa pääte on.
+    check: match
+    solution: pwd
+  - id: git-terminal-ls
+    prompt: Listaa nykyisen kansion tiedostot.
+    check: match
+    solution: ls
+    accepted:
+      - dir
+  - id: git-terminal-mkdir
+    prompt: Luo kansio nimeltä `projekti`.
+    check: match
+    solution: mkdir projekti
+  - id: git-terminal-cd
+    prompt: Siirry kansioon `projekti`.
+    check: match
+    solution: cd projekti
+  - id: git-terminal-cd-up
+    prompt: Palaa yksi kansiotaso ylöspäin.
+    check: match
+    solution: cd ..
+  - id: git-help-command
+    prompt: Avaa komennon `git commit` koko käyttöohje.
+    check: match
+    solution: git help commit
+    accepted:
+      - git commit --help
+  - id: git-help-short
+    prompt: Näytä lyhyt yhteenveto komennon `git commit` valitsimista.
+    check: match
+    solution: git commit -h
