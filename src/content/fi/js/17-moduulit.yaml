@@ -43,7 +43,7 @@ theory: |
 
   Paketit (esim. npm:stä asennetut) tuodaan pelkällä nimellä, kuten `"react"`. Omat tiedostot tuodaan suhteellisella polulla, joka alkaa `./` tai `../`.
 
-  Selaimessa moduulit vaativat `<script type="module">`-tagin. Node ja Bun tukevat moduuleja suoraan.
+  Selaimessa moduulit vaativat `<script type="module">`-tagin. Node.js tukee niitä suoraan.
 exercises:
   - type: choice
     question: Montako oletusvientiä (`export default`) yhdessä tiedostossa voi olla?

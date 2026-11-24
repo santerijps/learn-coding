@@ -2,7 +2,7 @@ id: js-ensimmainen-ohjelma
 title: Your first program
 summary: Printing, statements and comments.
 theory: |
-  JavaScript is the programming language of the web. It runs in the browser, and on servers and the command line with tools like Node.js or Bun.
+  JavaScript is the programming language of the web. It runs in the browser, and on servers and the command line with Node.js.
 
   ### Printing
 

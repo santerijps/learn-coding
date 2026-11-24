@@ -6,7 +6,7 @@ Each lesson is a short piece of theory plus a few quick understanding checks (mu
 
 Content, in **Finnish and English**:
 
-- **JavaScript**: 18 lessons, from installing Node.js and Bun to modules
+- **JavaScript**: 18 lessons, from installing Node.js to modules
 - **Python**: 12 lessons, from installing Python to classes
 - **Git**: 9 lessons, from installing Git to stash
 
