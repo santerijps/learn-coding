@@ -43,7 +43,7 @@ theory: |
 
   Packages (for example ones installed from npm) are imported by name only, like `"react"`. Your own files are imported with a relative path starting with `./` or `../`.
 
-  In the browser, modules need a `<script type="module">` tag. Node and Bun support modules directly.
+  In the browser, modules need a `<script type="module">` tag. Node.js supports them directly.
 exercises:
   - type: choice
     question: How many default exports (`export default`) can one file have?

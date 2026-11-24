@@ -2,7 +2,7 @@ id: js-ensimmainen-ohjelma
 title: Ensimmäinen ohjelma
 summary: Tulostaminen, lauseet ja kommentit.
 theory: |
-  JavaScript on verkon ohjelmointikieli. Sitä ajetaan selaimessa, ja palvelimella ja komentorivillä sitä ajetaan esimerkiksi Node.js:llä tai Bunilla.
+  JavaScript on verkon ohjelmointikieli. Sitä ajetaan selaimessa, ja palvelimella ja komentorivillä sitä ajetaan Node.js:llä.
 
   ### Tulostaminen
 

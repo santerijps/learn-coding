@@ -1,25 +1,23 @@
 id: js-tyokalut
-title: 'Getting set up: Node.js and Bun'
-summary: What runs JavaScript outside the browser, how to install it on Windows and Mac, and how to run your own programs.
+title: 'Getting set up: Node.js'
+summary: What Node.js is, how to install it on Windows and Mac, and how to run your own programs.
 theory: |
   JavaScript started as the language of web pages, and every browser can still run it. To run JavaScript on your own computer, outside a browser (scripts, servers, command-line tools), you need a **runtime**: a program that reads your `.js` file and runs it.
 
   You don't need to install anything to follow this course, because the exercises run in your browser. You'll need a runtime once you write your own programs.
 
-  ### Node.js and Bun
+  ### Node.js
 
-  - **Node.js** (2009) is the most widely used JavaScript runtime. It comes with **npm**, the package manager that installs libraries from the npm registry, the largest collection of code packages in the world. Most tutorials, jobs and hosting services assume Node.
-  - **Bun** is a newer runtime built for speed. It's an all-in-one tool: runtime, package manager, test runner and bundler. It runs TypeScript files directly and works with most npm packages, so most Node code also runs on Bun.
-  - **Deno** is a third option, made by the original author of Node, with a focus on security and built-in tools.
+  **Node.js** (2009) is the standard JavaScript runtime. It runs the same JavaScript language as the browser, so everything you learn in this course works in Node. Most tutorials, jobs and hosting services assume it.
 
-  Node and Bun run the same language, so everything you learn in this course works in both. A good rule: use Node when you want the safest, best-documented choice, and try Bun when you want speed and fewer tools to set up.
+  Node comes with **npm**, the package manager that installs libraries from the npm registry, the largest collection of code packages in the world, and with **npx**, which runs a package's command without installing it permanently.
 
   Node releases a new major version regularly. Choose the **LTS** (Long-Term Support) version: it's the stable one that gets fixes for years.
 
   ### How JavaScript compares with other languages
 
   - **Python** is also dynamic and easy to start with. Python is strongest in data science, machine learning and automation; JavaScript is the only language browsers run natively, so it's unavoidable for the web.
-  - **TypeScript** is JavaScript with type annotations. It's checked before running and then turned into plain JavaScript (Bun and Deno run it directly).
+  - **TypeScript** is JavaScript with type annotations. It's checked before running and then turned into plain JavaScript.
   - **Java, C# and Go** are compiled and statically typed: more ceremony up front, but the compiler catches more mistakes before the program runs.
 
   ### The terminal
@@ -39,24 +37,12 @@ theory: |
   winget install OpenJS.NodeJS.LTS
   ```
 
-  Bun is installed with a single command in PowerShell:
-
-  ```powershell
-  powershell -c "irm bun.sh/install.ps1 | iex"
-  ```
-
   ### Installing on a Mac
 
   Download the LTS installer (`.pkg`) from **nodejs.org**, or use Homebrew if you have it:
 
   ```bash
   brew install node
-  ```
-
-  Bun is installed with:
-
-  ```bash
-  curl -fsSL https://bun.sh/install | bash
   ```
 
   ### Checking the installation
@@ -66,7 +52,6 @@ theory: |
   ```bash
   node --version
   npm --version
-  bun --version
   ```
 
   If you get "command not found" (Mac) or "not recognized" (Windows), the terminal was opened before the installation finished: open a new one.
@@ -83,13 +68,12 @@ theory: |
 
   ```bash
   cd Documents/code     # Windows: cd Documents\code
-  node hello.js         # run with Node
-  bun hello.js          # run with Bun
+  node hello.js         # run the file
   ```
 
   Useful extras:
 
-  - `node --watch hello.js` or `bun --watch hello.js` runs the file again every time you save it.
+  - `node --watch hello.js` runs the file again every time you save it.
   - `node` on its own opens an interactive prompt (a REPL) where you can try out code line by line. Leave it with `.exit` or by pressing Ctrl + C twice.
   - **Ctrl + C** stops a program that keeps running, such as a server.
 
@@ -98,10 +82,12 @@ theory: |
   A project lists its packages and scripts in the file `package.json`:
 
   ```bash
-  npm init -y           # create package.json      (Bun: bun init)
-  npm install lodash    # install a package        (Bun: bun add lodash)
-  npm install           # install everything listed in package.json  (Bun: bun install)
-  npm run dev           # run the "dev" script     (Bun: bun run dev)
+  npm init -y                 # create package.json
+  npm install lodash          # install a package the program uses
+  npm install -D typescript   # install a development tool (a "dev dependency")
+  npm uninstall lodash        # remove a package
+  npm install                 # install everything listed in package.json
+  npm run dev                 # run the "dev" script
   ```
 exercises:
   - type: choice
@@ -112,7 +98,7 @@ exercises:
       - A code editor for JavaScript
       - A website for hosting JavaScript programs
     answer: 0
-    explanation: Node.js is a runtime. It runs the same JavaScript language as the browser, but on your own computer. Bun and Deno are other runtimes.
+    explanation: Node.js is a runtime. It runs the same JavaScript language as the browser, but on your own computer.
   - type: choice
     question: Which Node.js version should a beginner install?
     options:
@@ -136,7 +122,7 @@ exercises:
       ls
       node run hello.js
     bugLine: 3
-    explanation: 'Node runs a file directly: `node hello.js`. (`npm run` and `bun run` run scripts from package.json, and Bun also accepts `bun run hello.js`, but Node has no `run` command.)'
+    explanation: 'Node runs a file directly: `node hello.js`. (`npm run` runs scripts from package.json, but `node` has no `run` command.)'
   - type: choice
     question: You installed Node.js, but the terminal says `node` is not recognized. What's the most likely fix?
     options:
@@ -152,13 +138,6 @@ cards:
     check: match
     language: shell
     solution: node hello.js
-  - id: js-tools-bun-run
-    prompt: Run the file `hello.js` with Bun.
-    check: match
-    language: shell
-    solution: bun hello.js
-    accepted:
-      - bun run hello.js
   - id: js-tools-node-version
     prompt: Check which version of Node.js is installed.
     check: match
@@ -166,13 +145,6 @@ cards:
     solution: node --version
     accepted:
       - node -v
-  - id: js-tools-bun-version
-    prompt: Check which version of Bun is installed.
-    check: match
-    language: shell
-    solution: bun --version
-    accepted:
-      - bun -v
   - id: js-tools-node-watch
     prompt: Run `server.js` with Node so that it restarts every time the file is saved.
     check: match
@@ -185,13 +157,6 @@ cards:
     solution: npm init -y
     accepted:
       - npm init --yes
-  - id: js-tools-bun-init
-    prompt: Start a new project in the current folder with Bun.
-    check: match
-    language: shell
-    solution: bun init
-    accepted:
-      - bun init -y
   - id: js-tools-npm-install
     prompt: Install the package `lodash` with npm.
     check: match
@@ -199,11 +164,30 @@ cards:
     solution: npm install lodash
     accepted:
       - npm i lodash
-  - id: js-tools-bun-add
-    prompt: Install the package `lodash` with Bun.
+  - id: js-tools-npm-install-all
+    prompt: Install all the packages listed in `package.json` with npm.
     check: match
     language: shell
-    solution: bun add lodash
+    solution: npm install
+    accepted:
+      - npm i
+  - id: js-tools-npm-install-dev
+    prompt: Install the package `typescript` as a development dependency with npm.
+    check: match
+    language: shell
+    solution: npm install -D typescript
+    accepted:
+      - npm install --save-dev typescript
+      - npm i -D typescript
+      - npm i --save-dev typescript
+  - id: js-tools-npm-uninstall
+    prompt: Remove the package `lodash` from the project with npm.
+    check: match
+    language: shell
+    solution: npm uninstall lodash
+    accepted:
+      - npm remove lodash
+      - npm un lodash
   - id: js-tools-npm-run
     prompt: Run the script `dev` from `package.json` with npm.
     check: match
