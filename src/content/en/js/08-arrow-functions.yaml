@@ -154,3 +154,28 @@ cards:
       - 'apply((s) => s.length, "abc") === 3'
     solution: |
       const apply = (f, x) => f(x);
+  - id: js-arrow-initial
+    prompt: 'Write an arrow function `initial(name)` that returns the first letter of the name in upper case followed by a dot: `initial("ada")` returns `"A."`.'
+    check: test
+    tests:
+      - 'initial("ada") === "A." && initial("Linus") === "L."'
+    solution: |
+      const initial = (name) => `${name[0].toUpperCase()}.`;
+  - id: js-arrow-tax-default
+    prompt: 'Write an arrow function `withTax(price, rate)` that returns the price with tax added: `price * (1 + rate)`. The rate defaults to `0.25`.'
+    check: test
+    tests:
+      - 'withTax(100) === 125'
+      - 'withTax(100, 0.5) === 150'
+    solution: |
+      const withTax = (price, rate = 0.25) => price * (1 + rate);
+  - id: js-arrow-describe
+    prompt: 'Write a function `describe(n, f)` that calls the function `f` with `n` and returns a string like `"3 → 6"`: the number, an arrow `→` and the result.'
+    check: test
+    tests:
+      - 'describe(3, (x) => x * 2) === "3 → 6"'
+      - 'describe(5, (x) => x + 1) === "5 → 6"'
+    solution: |
+      function describe(n, f) {
+        return `${n} → ${f(n)}`;
+      }

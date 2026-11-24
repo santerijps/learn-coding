@@ -177,3 +177,43 @@ cards:
       - 'JSON.stringify(kopio) === "[1,2,3]" && kopio !== alkuperainen'
     solution: |
       const kopio = [...alkuperainen];
+  - id: js-destructure-oldest
+    prompt: 'Kirjoita funktio `vanhin(kayttajat)`, joka palauttaa vanhimman käyttäjän nimen. Pura `nimi` ja `ika` silmukassa: `for (const { nimi, ika } of kayttajat)`.'
+    check: test
+    tests:
+      - 'vanhin([{ nimi: "Ada", ika: 36 }, { nimi: "Grace", ika: 45 }, { nimi: "Tim", ika: 12 }]) === "Grace"'
+    solution: |
+      function vanhin(kayttajat) {
+        let vanhimmanNimi = "";
+        let suurinIka = -1;
+        for (const { nimi, ika } of kayttajat) {
+          if (ika > suurinIka) {
+            suurinIka = ika;
+            vanhimmanNimi = nimi;
+          }
+        }
+        return vanhimmanNimi;
+      }
+  - id: js-destructure-min-max
+    prompt: 'Kirjoita funktio `minMax(luvut)`, joka palauttaa taulukon `[pienin, suurin]` käyttäen `Math.min`- ja `Math.max`-funktioita spreadin kanssa. Pura sitten `alin` ja `ylin` kutsusta `minMax(pisteet)`.'
+    check: test
+    setup: |
+      const pisteet = [7, 2, 9, 4];
+    tests:
+      - 'alin === 2 && ylin === 9'
+      - 'minMax([5, -1]).join(",") === "-1,5"'
+    solution: |
+      function minMax(luvut) {
+        return [Math.min(...luvut), Math.max(...luvut)];
+      }
+      const [alin, ylin] = minMax(pisteet);
+  - id: js-destructure-add-item
+    prompt: 'Kirjoita funktio `lisaaTuote(kori, tuote)`, joka palauttaa uuden taulukon, jonka lopussa on `tuote`, muuttamatta `kori`-taulukkoa. Lisätty tuote saa ominaisuuden `maara: 1`, ellei sillä jo ole määrää.'
+    check: test
+    tests:
+      - '(() => { const kori = []; const uusi = lisaaTuote(kori, { nimi: "tee" }); return kori.length === 0 && uusi.length === 1 && uusi[0].nimi === "tee" && uusi[0].maara === 1; })()'
+      - 'lisaaTuote([], { nimi: "tee", maara: 3 })[0].maara === 3'
+    solution: |
+      function lisaaTuote(kori, tuote) {
+        return [...kori, { maara: 1, ...tuote }];
+      }

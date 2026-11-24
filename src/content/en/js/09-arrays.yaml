@@ -151,3 +151,34 @@ cards:
       - 'path === "home/ada/code"'
     solution: |
       const path = parts.join("/");
+  - id: js-array-first-last
+    prompt: 'Write a function `firstAndLast(array)` that returns a new array containing the first and the last element of `array`.'
+    check: test
+    tests:
+      - 'firstAndLast([1, 2, 3, 4]).join(",") === "1,4"'
+      - 'firstAndLast(["a", "b"]).join(",") === "a,b"'
+    solution: |
+      function firstAndLast(array) {
+        return [array[0], array[array.length - 1]];
+      }
+  - id: js-array-add-unique
+    prompt: 'Write a function `addUnique(list, item)` that adds `item` to the end of `list` only if the list doesn''t already contain it, and returns the list.'
+    check: test
+    tests:
+      - 'addUnique(["milk"], "bread").join(",") === "milk,bread"'
+      - 'addUnique(["milk", "bread"], "milk").join(",") === "milk,bread"'
+    solution: |
+      function addUnique(list, item) {
+        if (!list.includes(item)) {
+          list.push(item);
+        }
+        return list;
+      }
+  - id: js-array-word-count
+    prompt: 'Write an arrow function `wordCount(sentence)` that returns the number of words in the sentence. Remove the spaces from the start and end first, then split on spaces.'
+    check: test
+    tests:
+      - 'wordCount("  hello big world ") === 3'
+      - 'wordCount("hi") === 1'
+    solution: |
+      const wordCount = (sentence) => sentence.trim().split(" ").length;

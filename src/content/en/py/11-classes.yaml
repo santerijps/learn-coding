@@ -209,3 +209,52 @@ cards:
       - 'is_animal is True'
     solution: |
       is_animal = isinstance(pet, Animal)
+  - id: py-class-cart
+    prompt: 'Create a class `Cart` whose attribute `items` starts as an empty list. Its method `add(name, price)` adds a dictionary `{"name": name, "price": price}` to `items`, and its method `total()` returns the sum of the prices.'
+    check: test
+    tests:
+      - '(lambda c: (c.add("tea", 3), c.add("cake", 5), c.total() == 8 and len(c.items) == 2 and c.items[0]["name"] == "tea")[-1])(Cart())'
+      - 'Cart().total() == 0'
+    solution: |
+      class Cart:
+          def __init__(self):
+              self.items = []
+
+          def add(self, name, price):
+              self.items.append({"name": name, "price": price})
+
+          def total(self):
+              return sum([item["price"] for item in self.items])
+  - id: py-class-withdraw
+    prompt: 'Create a class `Account` whose `__init__` takes `balance` and whose method `withdraw(amount)` raises `ValueError("Insufficient funds")` if the amount is more than the balance, and otherwise subtracts it.'
+    check: test
+    tests:
+      - '(lambda a: (a.withdraw(20), a.balance)[-1])(Account(50)) == 30'
+      - '__raises(lambda: Account(10).withdraw(20), ValueError, "Insufficient funds")'
+    solution: |
+      class Account:
+          def __init__(self, balance):
+              self.balance = balance
+
+          def withdraw(self, amount):
+              if amount > self.balance:
+                  raise ValueError("Insufficient funds")
+              self.balance -= amount
+  - id: py-class-todo
+    prompt: 'Create a class `TodoList` with a list `todos`. Its method `add(text)` adds `{"text": text, "done": False}`, `complete(index)` marks the todo at that index done, and `remaining()` returns how many todos are not done.'
+    check: test
+    tests:
+      - '(lambda t: (t.add("shop"), t.add("cook"), t.add("eat"), t.complete(1), t.remaining() == 2 and t.todos[1]["done"] and t.todos[0]["text"] == "shop")[-1])(TodoList())'
+    solution: |
+      class TodoList:
+          def __init__(self):
+              self.todos = []
+
+          def add(self, text):
+              self.todos.append({"text": text, "done": False})
+
+          def complete(self, index):
+              self.todos[index]["done"] = True
+
+          def remaining(self):
+              return len([todo for todo in self.todos if not todo["done"]])

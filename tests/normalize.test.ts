@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { matches, normalizeJs, normalizeShell } from '../src/check/normalize'
+import { matches, normalizeJs, normalizeShell, sameCode } from '../src/check/normalize'
 
 describe('normalizeJs', () => {
   test('ignores spacing around punctuation', () => {
@@ -55,5 +55,13 @@ describe('matches', () => {
   test('rejects an empty answer', () => {
     expect(matches('   ', ['git status'], 'shell')).toBe(false)
     expect(matches('', [''], 'js')).toBe(false)
+  })
+})
+
+describe('sameCode', () => {
+  test('ignores formatting but not different code', () => {
+    expect(sameCode('function f(x) { return x * x }', 'function f(x) {\n  return x * x;\n}\n', 'js')).toBe(true)
+    expect(sameCode('const y = x ** 2', 'const y = x * x', 'js')).toBe(false)
+    expect(sameCode("print('hi')", 'print("hi")\n', 'python')).toBe(true)
   })
 })

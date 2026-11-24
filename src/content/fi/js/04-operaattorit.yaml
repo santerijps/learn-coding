@@ -160,3 +160,33 @@ cards:
       - 'onValilla === true'
     solution: |
       const onValilla = luku >= 1 && luku <= 10;
+  - id: js-ops-price-with-tax
+    prompt: 'Merkkijono `hintaTeksti` sisältää hinnan. Muunna se luvuksi vakioon `hinta` ja luo vakio `yhteensa`, joka on hinta lisättynä 25 %:n verolla.'
+    check: test
+    setup: |
+      const hintaTeksti = "20";
+    tests:
+      - 'hinta === 20 && yhteensa === 25'
+    solution: |
+      const hinta = Number(hintaTeksti);
+      const yhteensa = hinta * 1.25;
+  - id: js-ops-minutes-seconds
+    prompt: '`sekunnitYhteensa` on kesto sekunteina. Luo vakio `sekunnit`, joka on sen jakojäännös 60:llä jaettaessa, ja vakio `minuutit`, jossa on täydet minuutit (vähennä ensin `sekunnit` ja jaa sitten 60:llä).'
+    check: test
+    setup: |
+      const sekunnitYhteensa = 135;
+    tests:
+      - 'sekunnit === 15 && minuutit === 2'
+    solution: |
+      const sekunnit = sekunnitYhteensa % 60;
+      const minuutit = (sekunnitYhteensa - sekunnit) / 60;
+  - id: js-ops-can-vote
+    prompt: 'Merkkijono `ikaTeksti` sisältää iän. Luo vakio `saaAanestaa`, joka on tosi, kun luvuksi muunnettu ikä on vähintään 18 **ja** `onKansalainen` on tosi.'
+    check: test
+    setup: |
+      const ikaTeksti = "18";
+      const onKansalainen = true;
+    tests:
+      - 'saaAanestaa === true'
+    solution: |
+      const saaAanestaa = Number(ikaTeksti) >= 18 && onKansalainen;

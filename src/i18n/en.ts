@@ -71,6 +71,8 @@ export const en: Messages = {
   retypeWrong: 'Not yet. Compare with the model answer and try again.',
   retypeDone: 'Good! This card will come back soon.',
   modelAnswer: 'Model answer',
+  sameAsModel: 'Same as the model answer.',
+  modelAnswerAlt: 'Model answer (another way to write it)',
   diffLegend: 'Red: wrong or extra in your answer. Green: missing from your answer.',
   overrideRight: 'My answer was right',
   errorPrefix: 'Error',

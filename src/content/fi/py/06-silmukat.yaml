@@ -181,3 +181,42 @@ cards:
       for luku in luvut:
           if luku > suurin:
               suurin = luku
+  - id: py-loop-fizzbuzz
+    prompt: 'Tulosta silmukalla luvut 1–15, mutta tulosta 3:lla jaollisten lukujen tilalle `Fizz`, 5:llä jaollisten tilalle `Buzz` ja molemmilla jaollisten tilalle `FizzBuzz`.'
+    check: test
+    tests:
+      - '__logs == ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]'
+    solution: |
+      for i in range(1, 16):
+          if i % 15 == 0:
+              print("FizzBuzz")
+          elif i % 3 == 0:
+              print("Fizz")
+          elif i % 5 == 0:
+              print("Buzz")
+          else:
+              print(i)
+  - id: py-loop-sum-positive
+    prompt: 'Laske silmukalla yhteen vain listan `luvut` positiiviset luvut muuttujaan `summa`.'
+    check: test
+    setup: |
+      luvut = [3, -2, 5, -1]
+    tests:
+      - 'summa == 8'
+    solution: |
+      summa = 0
+      for luku in luvut:
+          if luku > 0:
+              summa += luku
+  - id: py-loop-longest-word
+    prompt: 'Etsi silmukalla merkkijonon `lause` pisin sana ja tallenna se muuttujaan `pisin`. Jos useampi on yhtä pitkä, pidä ensimmäinen.'
+    check: test
+    setup: |
+      lause = "opin Pythonia tänään"
+    tests:
+      - 'pisin == "Pythonia"'
+    solution: |
+      pisin = ""
+      for sana in lause.split():
+          if len(sana) > len(pisin):
+              pisin = sana

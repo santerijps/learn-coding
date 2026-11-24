@@ -149,3 +149,34 @@ cards:
       - 'tuplaa.__name__ == "<lambda>"'
     solution: |
       tuplaa = lambda x: x * 2
+  - id: py-comprehension-cheap
+    prompt: 'Sanakirja `hinnat` kertoo tuotteiden hinnat. Luo listakoosteella lista `halvat`, jossa on alle 5 maksavien tuotteiden nimet.'
+    check: test
+    setup: |
+      hinnat = {"kahvi": 4.5, "kakku": 6, "tee": 3}
+    tests:
+      - 'halvat == ["kahvi", "tee"]'
+    solution: |
+      halvat = [nimi for nimi, hinta in hinnat.items() if hinta < 5]
+  - id: py-comprehension-tags
+    prompt: 'Kirjoita funktio `tunnisteet(teksti)`, joka jakaa tekstin pilkkujen kohdalta ja palauttaa tunnisteet pienillä kirjaimilla ilman ympäröiviä välilyöntejä, tyhjät tunnisteet pois jättäen. Käytä listakoostetta.'
+    check: test
+    tests:
+      - 'tunnisteet(" Python, WEB ,, koodi ") == ["python", "web", "koodi"]'
+    solution: |
+      def tunnisteet(teksti):
+          return [t.strip().lower() for t in teksti.split(",") if t.strip()]
+  - id: py-comprehension-ranking
+    prompt: 'Luo lista `tulokset`, jossa on `pelaajat`-listan pelaajien nimet suurimmista pisteistä pienimpiin. Järjestä `sorted`-funktiolla ja lambdalla ja ota nimet sitten listakoosteella.'
+    check: test
+    setup: |
+      pelaajat = [
+          {"nimi": "Ada", "pisteet": 70},
+          {"nimi": "Tim", "pisteet": 95},
+          {"nimi": "Grace", "pisteet": 80},
+      ]
+    tests:
+      - 'tulokset == ["Tim", "Grace", "Ada"]'
+    solution: |
+      jarjestetyt = sorted(pelaajat, key=lambda p: p["pisteet"], reverse=True)
+      tulokset = [p["nimi"] for p in jarjestetyt]

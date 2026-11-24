@@ -167,3 +167,42 @@ cards:
       - 'uniikit == {1, 2, 3}'
     solution: |
       uniikit = set(luvut)
+  - id: py-dict-cart-total
+    prompt: 'Kirjoita funktio `ostoskorin_summa(kori)`, joka palauttaa listan `kori` loppusumman. Jokainen tuote on sanakirja, jossa on avaimet `"hinta"` ja `"maara"`.'
+    check: test
+    tests:
+      - 'ostoskorin_summa([{"hinta": 2, "maara": 3}, {"hinta": 5, "maara": 1}]) == 11'
+      - 'ostoskorin_summa([]) == 0'
+    solution: |
+      def ostoskorin_summa(kori):
+          yhteensa = 0
+          for tuote in kori:
+              yhteensa += tuote["hinta"] * tuote["maara"]
+          return yhteensa
+  - id: py-dict-adult-names
+    prompt: 'Luo lista `aikuiset`, jossa on `kayttajat`-listan vähintään 18-vuotiaiden käyttäjien nimet. Käytä silmukkaa.'
+    check: test
+    setup: |
+      kayttajat = [
+          {"nimi": "Ada", "ika": 36},
+          {"nimi": "Tim", "ika": 12},
+          {"nimi": "Grace", "ika": 18},
+      ]
+    tests:
+      - 'aikuiset == ["Ada", "Grace"]'
+    solution: |
+      aikuiset = []
+      for kayttaja in kayttajat:
+          if kayttaja["ika"] >= 18:
+              aikuiset.append(kayttaja["nimi"])
+  - id: py-dict-word-counts
+    prompt: 'Kirjoita funktio `sanamaarat(lause)`, joka palauttaa sanakirjan siitä, montako kertaa kukin lauseen sana esiintyy. Muunna lause ensin pieniksi kirjaimiksi.'
+    check: test
+    tests:
+      - 'sanamaarat("Kissa ja koira ja kissa") == {"kissa": 2, "ja": 2, "koira": 1}'
+    solution: |
+      def sanamaarat(lause):
+          maarat = {}
+          for sana in lause.lower().split():
+              maarat[sana] = maarat.get(sana, 0) + 1
+          return maarat

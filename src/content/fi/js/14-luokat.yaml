@@ -240,3 +240,62 @@ cards:
       - 'onElain === true'
     solution: |
       const onElain = lemmikki instanceof Elain;
+  - id: js-class-cart
+    prompt: 'Luo luokka `Ostoskori`, jonka `tuotteet` on aluksi tyhjä taulukko. Sen metodi `lisaa(nimi, hinta)` lisää `tuotteet`-taulukkoon olion `{ nimi, hinta }`, ja metodi `summa()` palauttaa hintojen summan.'
+    check: test
+    tests:
+      - '(() => { const k = new Ostoskori(); k.lisaa("tee", 3); k.lisaa("kakku", 5); return k.summa() === 8 && k.tuotteet.length === 2 && k.tuotteet[0].nimi === "tee"; })()'
+      - 'new Ostoskori().summa() === 0'
+    solution: |
+      class Ostoskori {
+        constructor() {
+          this.tuotteet = [];
+        }
+        lisaa(nimi, hinta) {
+          this.tuotteet.push({ nimi, hinta });
+        }
+        summa() {
+          return this.tuotteet.reduce((yhteensa, tuote) => yhteensa + tuote.hinta, 0);
+        }
+      }
+  - id: js-class-withdraw
+    prompt: 'Luo luokka `Tili`, jonka `saldo` alkaa nollasta ja jolla on metodit `talleta(summa)` ja `nosta(summa)`. Jos summa on saldoa suurempi, `nosta` palauttaa `false` eikä muuta mitään; muuten se vähentää summan ja palauttaa `true`.'
+    check: test
+    tests:
+      - '(() => { const t = new Tili(); t.talleta(50); return t.nosta(80) === false && t.saldo === 50 && t.nosta(20) === true && t.saldo === 30; })()'
+    solution: |
+      class Tili {
+        constructor() {
+          this.saldo = 0;
+        }
+        talleta(summa) {
+          this.saldo += summa;
+        }
+        nosta(summa) {
+          if (summa > this.saldo) {
+            return false;
+          }
+          this.saldo -= summa;
+          return true;
+        }
+      }
+  - id: js-class-todo
+    prompt: 'Luo luokka `Tehtavalista`, jolla on taulukko `tehtavat`. Sen metodi `lisaa(teksti)` lisää olion `{ teksti, tehty: false }`, `merkitse(indeksi)` merkitsee sen kohdan tehtävän tehdyksi ja `jaljella()` palauttaa, montako tehtävää on tekemättä.'
+    check: test
+    tests:
+      - '(() => { const l = new Tehtavalista(); l.lisaa("kauppa"); l.lisaa("kokkaa"); l.lisaa("syö"); l.merkitse(1); return l.jaljella() === 2 && l.tehtavat[1].tehty === true && l.tehtavat[0].teksti === "kauppa"; })()'
+    solution: |
+      class Tehtavalista {
+        constructor() {
+          this.tehtavat = [];
+        }
+        lisaa(teksti) {
+          this.tehtavat.push({ teksti, tehty: false });
+        }
+        merkitse(indeksi) {
+          this.tehtavat[indeksi].tehty = true;
+        }
+        jaljella() {
+          return this.tehtavat.filter((tehtava) => !tehtava.tehty).length;
+        }
+      }

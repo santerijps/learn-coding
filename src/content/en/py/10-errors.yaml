@@ -184,3 +184,43 @@ cards:
           succeeded = True
       except ValueError:
           succeeded = False
+  - id: py-errors-parse-numbers
+    prompt: 'Write a function `parse_numbers(texts)` that converts a list of strings to integers and returns them. If a conversion raises `ValueError`, raise `ValueError(f"Not a number: {text}")` instead.'
+    check: test
+    tests:
+      - 'parse_numbers(["1", "22"]) == [1, 22]'
+      - '__raises(lambda: parse_numbers(["1", "x"]), ValueError, "Not a number: x")'
+    solution: |
+      def parse_numbers(texts):
+          numbers = []
+          for text in texts:
+              try:
+                  numbers.append(int(text))
+              except ValueError:
+                  raise ValueError(f"Not a number: {text}")
+          return numbers
+  - id: py-errors-average
+    prompt: 'Write a function `average(numbers)` that raises `ValueError("Empty list")` if the list is empty, and otherwise returns the average of the numbers.'
+    check: test
+    tests:
+      - 'average([2, 4, 9]) == 5'
+      - '__raises(lambda: average([]), ValueError, "Empty list")'
+    solution: |
+      def average(numbers):
+          if len(numbers) == 0:
+              raise ValueError("Empty list")
+          return sum(numbers) / len(numbers)
+  - id: py-errors-valid-numbers
+    prompt: 'Write a function `valid_numbers(texts)` that returns a list of the strings that can be converted to integers, as integers. Skip the ones that raise `ValueError`.'
+    check: test
+    tests:
+      - 'valid_numbers(["1", "x", "3", ""]) == [1, 3]'
+    solution: |
+      def valid_numbers(texts):
+          numbers = []
+          for text in texts:
+              try:
+                  numbers.append(int(text))
+              except ValueError:
+                  continue
+          return numbers

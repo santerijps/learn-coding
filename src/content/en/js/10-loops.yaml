@@ -204,3 +204,52 @@ cards:
           count++;
         }
       }
+  - id: js-loop-fizzbuzz
+    prompt: 'Print the numbers 1–15 with a loop, but print `Fizz` instead of numbers divisible by 3, `Buzz` instead of numbers divisible by 5, and `FizzBuzz` instead of numbers divisible by both.'
+    check: test
+    tests:
+      - '__logs.join(",") === "1,2,Fizz,4,Buzz,Fizz,7,8,Fizz,Buzz,11,Fizz,13,14,FizzBuzz"'
+    solution: |
+      for (let i = 1; i <= 15; i++) {
+        if (i % 15 === 0) {
+          console.log("FizzBuzz");
+        } else if (i % 3 === 0) {
+          console.log("Fizz");
+        } else if (i % 5 === 0) {
+          console.log("Buzz");
+        } else {
+          console.log(i);
+        }
+      }
+  - id: js-loop-sum-positive
+    prompt: 'Write a function `sumPositive(numbers)` that adds up only the positive numbers of the array with a loop and returns the sum.'
+    check: test
+    tests:
+      - 'sumPositive([3, -2, 5, -1]) === 8'
+      - 'sumPositive([-1, -2]) === 0'
+    solution: |
+      function sumPositive(numbers) {
+        let sum = 0;
+        for (const n of numbers) {
+          if (n > 0) {
+            sum += n;
+          }
+        }
+        return sum;
+      }
+  - id: js-loop-longest-word
+    prompt: 'Write a function `longestWord(sentence)` that splits the sentence into words and returns the longest one with a loop. If several are equally long, return the first.'
+    check: test
+    tests:
+      - 'longestWord("I love JavaScript a lot") === "JavaScript"'
+      - 'longestWord("cat dog") === "cat"'
+    solution: |
+      function longestWord(sentence) {
+        let longest = "";
+        for (const word of sentence.split(" ")) {
+          if (word.length > longest.length) {
+            longest = word;
+          }
+        }
+        return longest;
+      }

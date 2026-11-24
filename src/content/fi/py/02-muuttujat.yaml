@@ -147,3 +147,25 @@ cards:
       - 'a == 2 and b == 1'
     solution: |
       a, b = b, a
+  - id: py-vars-total-print
+    prompt: 'Luo muuttujat `hinta` (12) ja `maara` (3), muuttuja `yhteensa`, joka on niiden tulo, ja tulosta `yhteensa`.'
+    check: test
+    tests:
+      - 'hinta == 12 and maara == 3 and yhteensa == 36'
+      - '__logs == ["36"]'
+    solution: |
+      hinta = 12
+      maara = 3
+      yhteensa = hinta * maara
+      print(yhteensa)
+  - id: py-vars-input-double
+    prompt: 'Merkkijono `syote` sisältää kokonaisluvun. Muunna se kokonaisluvuksi muuttujaan `luku` ja tulosta luku kaksinkertaisena.'
+    check: test
+    setup: |
+      syote = "21"
+    tests:
+      - 'luku == 21'
+      - '__logs == ["42"]'
+    solution: |
+      luku = int(syote)
+      print(luku * 2)

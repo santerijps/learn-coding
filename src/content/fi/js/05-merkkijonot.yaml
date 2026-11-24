@@ -152,3 +152,32 @@ cards:
       - 'kuvaus === "Hinta: 12 €"'
     solution: |
       const kuvaus = `Hinta: ${kpl * hinta} €`;
+  - id: js-str-initials
+    prompt: 'Luo vakio `nimikirjaimet`, jossa on `etunimi`- ja `sukunimi`-merkkijonojen alkukirjaimet isoina ja niiden perässä pisteet: nimille `"ada"` ja `"lovelace"` se on `"A.L."`.'
+    check: test
+    setup: |
+      const etunimi = "ada";
+      const sukunimi = "lovelace";
+    tests:
+      - 'nimikirjaimet === "A.L."'
+    solution: |
+      const nimikirjaimet = `${etunimi[0]}.${sukunimi[0]}.`.toUpperCase();
+  - id: js-str-letter-count
+    prompt: 'Luo merkkijonosta `sana` vakio `kuvaus`, esimerkiksi `"banaani: 7 kirjainta"`. Käytä template literalia ja sanan pituutta.'
+    check: test
+    setup: |
+      const sana = "banaani";
+    tests:
+      - 'kuvaus === "banaani: 7 kirjainta"'
+    solution: |
+      const kuvaus = `${sana}: ${sana.length} kirjainta`;
+  - id: js-str-clean-long
+    prompt: 'Luo vakio `siisti`, jossa välilyönnit on poistettu `syote`-merkkijonon alusta ja lopusta, ja vakio `onPitka`, joka on tosi, kun `siisti`-merkkijonossa on yli 10 merkkiä.'
+    check: test
+    setup: |
+      const syote = "  hei maailma  ";
+    tests:
+      - 'siisti === "hei maailma" && onPitka === true'
+    solution: |
+      const siisti = syote.trim();
+      const onPitka = siisti.length > 10;

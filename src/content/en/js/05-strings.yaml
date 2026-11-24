@@ -152,3 +152,32 @@ cards:
       - 'label === "Price: 12 €"'
     solution: |
       const label = `Price: ${qty * price} €`;
+  - id: js-str-initials
+    prompt: 'Create a constant `initials` with the initials of `firstName` and `lastName` in upper case, followed by dots: for `"ada"` and `"lovelace"` it is `"A.L."`.'
+    check: test
+    setup: |
+      const firstName = "ada";
+      const lastName = "lovelace";
+    tests:
+      - 'initials === "A.L."'
+    solution: |
+      const initials = `${firstName[0]}.${lastName[0]}.`.toUpperCase();
+  - id: js-str-letter-count
+    prompt: 'Create a constant `label` like `"banana has 6 letters"` from the string `word`. Use a template literal and the length of the word.'
+    check: test
+    setup: |
+      const word = "banana";
+    tests:
+      - 'label === "banana has 6 letters"'
+    solution: |
+      const label = `${word} has ${word.length} letters`;
+  - id: js-str-clean-long
+    prompt: 'Create a constant `clean` with the spaces removed from the start and end of `input`, and a constant `isLong` that is true when `clean` has more than 10 characters.'
+    check: test
+    setup: |
+      const input = "  hello world  ";
+    tests:
+      - 'clean === "hello world" && isLong === true'
+    solution: |
+      const clean = input.trim();
+      const isLong = clean.length > 10;

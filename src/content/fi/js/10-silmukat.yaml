@@ -204,3 +204,52 @@ cards:
           maara++;
         }
       }
+  - id: js-loop-fizzbuzz
+    prompt: 'Tulosta silmukalla luvut 1–15, mutta tulosta 3:lla jaollisten lukujen tilalle `Fizz`, 5:llä jaollisten tilalle `Buzz` ja molemmilla jaollisten tilalle `FizzBuzz`.'
+    check: test
+    tests:
+      - '__logs.join(",") === "1,2,Fizz,4,Buzz,Fizz,7,8,Fizz,Buzz,11,Fizz,13,14,FizzBuzz"'
+    solution: |
+      for (let i = 1; i <= 15; i++) {
+        if (i % 15 === 0) {
+          console.log("FizzBuzz");
+        } else if (i % 3 === 0) {
+          console.log("Fizz");
+        } else if (i % 5 === 0) {
+          console.log("Buzz");
+        } else {
+          console.log(i);
+        }
+      }
+  - id: js-loop-sum-positive
+    prompt: 'Kirjoita funktio `positiivistenSumma(luvut)`, joka laskee silmukalla yhteen vain taulukon positiiviset luvut ja palauttaa summan.'
+    check: test
+    tests:
+      - 'positiivistenSumma([3, -2, 5, -1]) === 8'
+      - 'positiivistenSumma([-1, -2]) === 0'
+    solution: |
+      function positiivistenSumma(luvut) {
+        let summa = 0;
+        for (const luku of luvut) {
+          if (luku > 0) {
+            summa += luku;
+          }
+        }
+        return summa;
+      }
+  - id: js-loop-longest-word
+    prompt: 'Kirjoita funktio `pisinSana(lause)`, joka jakaa lauseen sanoiksi ja palauttaa silmukalla niistä pisimmän. Jos useampi on yhtä pitkä, palauta ensimmäinen.'
+    check: test
+    tests:
+      - 'pisinSana("opin JavaScriptiä tänään") === "JavaScriptiä"'
+      - 'pisinSana("kissa koira") === "kissa"'
+    solution: |
+      function pisinSana(lause) {
+        let pisin = "";
+        for (const sana of lause.split(" ")) {
+          if (sana.length > pisin.length) {
+            pisin = sana;
+          }
+        }
+        return pisin;
+      }

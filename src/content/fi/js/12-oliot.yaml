@@ -183,3 +183,47 @@ cards:
       - 'katu === undefined'
     solution: |
       const katu = kayttaja.osoite?.katu;
+  - id: js-object-cart-total
+    prompt: 'Kirjoita funktio `ostoskorinSumma(kori)`, joka palauttaa taulukon `kori` loppusumman. Jokainen tuote on olio, jolla on ominaisuudet `hinta` ja `maara`.'
+    check: test
+    tests:
+      - 'ostoskorinSumma([{ hinta: 2, maara: 3 }, { hinta: 5, maara: 1 }]) === 11'
+      - 'ostoskorinSumma([]) === 0'
+    solution: |
+      function ostoskorinSumma(kori) {
+        let yhteensa = 0;
+        for (const tuote of kori) {
+          yhteensa += tuote.hinta * tuote.maara;
+        }
+        return yhteensa;
+      }
+  - id: js-object-adult-names
+    prompt: 'Luo taulukko `aikuiset`, jossa on `kayttajat`-taulukon vähintään 18-vuotiaiden käyttäjien nimet. Käytä `filter`- ja `map`-metodeja.'
+    check: test
+    setup: |
+      const kayttajat = [
+        { nimi: "Ada", ika: 36 },
+        { nimi: "Tim", ika: 12 },
+        { nimi: "Grace", ika: 18 },
+      ];
+    tests:
+      - 'aikuiset.join(",") === "Ada,Grace"'
+    solution: |
+      const aikuiset = kayttajat.filter((k) => k.ika >= 18).map((k) => k.nimi);
+  - id: js-object-count-words
+    prompt: 'Kirjoita funktio `laskeSanat(sanat)`, joka palauttaa olion, joka kertoo, montako kertaa kukin sana esiintyy taulukossa: `laskeSanat(["a", "b", "a"])` palauttaa `{ a: 2, b: 1 }`.'
+    check: test
+    tests:
+      - '(() => { const m = laskeSanat(["a", "b", "a"]); return m.a === 2 && m.b === 1 && Object.keys(m).length === 2; })()'
+    solution: |
+      function laskeSanat(sanat) {
+        const maarat = {};
+        for (const sana of sanat) {
+          if (maarat[sana]) {
+            maarat[sana] += 1;
+          } else {
+            maarat[sana] = 1;
+          }
+        }
+        return maarat;
+      }

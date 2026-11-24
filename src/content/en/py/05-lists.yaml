@@ -155,3 +155,34 @@ cards:
       - 'x == 3 and y == 7'
     solution: |
       x, y = point
+  - id: py-list-add-unique
+    prompt: 'Add `item` to the end of the list `shopping`, but only if the list doesn''t already contain it.'
+    check: test
+    setup: |
+      shopping = ["milk", "bread"]
+      item = "eggs"
+    tests:
+      - 'shopping == ["milk", "bread", "eggs"]'
+    solution: |
+      if item not in shopping:
+          shopping.append(item)
+  - id: py-list-average-passed
+    prompt: 'Create a variable `average` with the average of the list `scores` (use `sum` and `len`), and a variable `passed` that is true when the average is at least 50.'
+    check: test
+    setup: |
+      scores = [40, 75, 90, 30]
+    tests:
+      - 'average == 58.75 and passed == True'
+    solution: |
+      average = sum(scores) / len(scores)
+      passed = average >= 50
+  - id: py-list-first-last-word
+    prompt: 'Split the string `sentence` into a list `words`, then create a variable `summary` like `"first: Ada, last: Grace"` from its first and last word.'
+    check: test
+    setup: |
+      sentence = "Ada Linus Grace"
+    tests:
+      - 'words == ["Ada", "Linus", "Grace"] and summary == "first: Ada, last: Grace"'
+    solution: |
+      words = sentence.split()
+      summary = f"first: {words[0]}, last: {words[-1]}"

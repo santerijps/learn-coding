@@ -202,3 +202,43 @@ cards:
       - 'await (async () => { const start = Date.now(); await sleep(30); return Date.now() - start >= 25; })()'
     solution: |
       const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  - id: js-async-total
+    prompt: 'Write an async function `total()` that waits for the array returned by the existing function `getPrices()` and returns the sum of the prices, using `reduce`.'
+    check: test
+    setup: |
+      const getPrices = async () => [3, 4.5, 2];
+    tests:
+      - '(await total()) === 9.5'
+    solution: |
+      async function total() {
+        const prices = await getPrices();
+        return prices.reduce((sum, p) => sum + p, 0);
+      }
+  - id: js-async-active-names
+    prompt: 'Write an async function `activeNames()` that waits for the users from `getUsers()` and returns the names of the users whose `active` is true.'
+    check: test
+    setup: |
+      const getUsers = async () => [
+        { name: "Ada", active: true },
+        { name: "Tim", active: false },
+        { name: "Grace", active: true },
+      ];
+    tests:
+      - '(await activeNames()).join(",") === "Ada,Grace"'
+    solution: |
+      async function activeNames() {
+        const users = await getUsers();
+        return users.filter((u) => u.active).map((u) => u.name);
+      }
+  - id: js-async-all-names
+    prompt: 'Write an async function `userNames(ids)` that fetches every user in parallel with `getUser(id)` (use `map` and `Promise.all`) and returns an array of their names.'
+    check: test
+    setup: |
+      const getUser = async (id) => ({ id, name: `User ${id}` });
+    tests:
+      - '(await userNames([1, 2])).join(",") === "User 1,User 2"'
+    solution: |
+      async function userNames(ids) {
+        const users = await Promise.all(ids.map((id) => getUser(id)));
+        return users.map((u) => u.name);
+      }

@@ -182,3 +182,41 @@ cards:
           merkki = "negatiivinen"
       else:
           merkki = "nolla"
+  - id: py-if-password-length
+    prompt: 'Tulosta `Liian lyhyt`, jos `salasana`-merkkijonossa on alle 8 merkkiä, ja muuten `OK`.'
+    check: test
+    setup: |
+      salasana = "abc123"
+    tests:
+      - '__logs == ["Liian lyhyt"]'
+    solution: |
+      if len(salasana) < 8:
+          print("Liian lyhyt")
+      else:
+          print("OK")
+  - id: py-if-member-discount
+    prompt: 'Luo muuttuja `yhteensa`, joka on `hinta` vähennettynä 10 %:lla, kun `on_jasen` on tosi ja `hinta` on vähintään 50, ja muuten pelkkä `hinta`.'
+    check: test
+    setup: |
+      hinta = 80
+      on_jasen = True
+    tests:
+      - 'yhteensa == 72'
+    solution: |
+      yhteensa = hinta
+      if on_jasen and hinta >= 50:
+          yhteensa = hinta * 0.9
+  - id: py-if-age-input
+    prompt: 'Merkkijono `ika_teksti` sisältää iän. Muunna se kokonaisluvuksi muuttujaan `ika` ja tulosta sitten `Aikuinen`, jos ikä on vähintään 18, ja muuten `Alaikäinen`.'
+    check: test
+    setup: |
+      ika_teksti = "15"
+    tests:
+      - 'ika == 15'
+      - '__logs == ["Alaikäinen"]'
+    solution: |
+      ika = int(ika_teksti)
+      if ika >= 18:
+          print("Aikuinen")
+      else:
+          print("Alaikäinen")

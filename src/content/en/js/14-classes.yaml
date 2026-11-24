@@ -240,3 +240,62 @@ cards:
       - 'isAnimal === true'
     solution: |
       const isAnimal = pet instanceof Animal;
+  - id: js-class-cart
+    prompt: 'Create a class `Cart` whose `items` start as an empty array. Its method `add(name, price)` adds an object `{ name, price }` to `items`, and its method `total()` returns the sum of the prices.'
+    check: test
+    tests:
+      - '(() => { const c = new Cart(); c.add("tea", 3); c.add("cake", 5); return c.total() === 8 && c.items.length === 2 && c.items[0].name === "tea"; })()'
+      - 'new Cart().total() === 0'
+    solution: |
+      class Cart {
+        constructor() {
+          this.items = [];
+        }
+        add(name, price) {
+          this.items.push({ name, price });
+        }
+        total() {
+          return this.items.reduce((sum, item) => sum + item.price, 0);
+        }
+      }
+  - id: js-class-withdraw
+    prompt: 'Create a class `Account` whose `balance` starts at zero, with methods `deposit(amount)` and `withdraw(amount)`. If the amount is more than the balance, `withdraw` returns `false` and changes nothing; otherwise it subtracts the amount and returns `true`.'
+    check: test
+    tests:
+      - '(() => { const a = new Account(); a.deposit(50); return a.withdraw(80) === false && a.balance === 50 && a.withdraw(20) === true && a.balance === 30; })()'
+    solution: |
+      class Account {
+        constructor() {
+          this.balance = 0;
+        }
+        deposit(amount) {
+          this.balance += amount;
+        }
+        withdraw(amount) {
+          if (amount > this.balance) {
+            return false;
+          }
+          this.balance -= amount;
+          return true;
+        }
+      }
+  - id: js-class-todo
+    prompt: 'Create a class `TodoList` with an array `todos`. Its method `add(text)` adds `{ text, done: false }`, `complete(index)` marks the todo at that index done, and `remaining()` returns how many todos are not done.'
+    check: test
+    tests:
+      - '(() => { const t = new TodoList(); t.add("shop"); t.add("cook"); t.add("eat"); t.complete(1); return t.remaining() === 2 && t.todos[1].done === true && t.todos[0].text === "shop"; })()'
+    solution: |
+      class TodoList {
+        constructor() {
+          this.todos = [];
+        }
+        add(text) {
+          this.todos.push({ text, done: false });
+        }
+        complete(index) {
+          this.todos[index].done = true;
+        }
+        remaining() {
+          return this.todos.filter((todo) => !todo.done).length;
+        }
+      }

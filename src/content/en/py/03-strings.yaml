@@ -159,3 +159,32 @@ cards:
       - 'path == "home/ada/code"'
     solution: |
       path = "/".join(parts)
+  - id: py-str-initials
+    prompt: 'Create a variable `initials` with the initials of `first_name` and `last_name` in upper case, followed by dots: for `"ada"` and `"lovelace"` it is `"A.L."`.'
+    check: test
+    setup: |
+      first_name = "ada"
+      last_name = "lovelace"
+    tests:
+      - 'initials == "A.L."'
+    solution: |
+      initials = f"{first_name[0]}.{last_name[0]}.".upper()
+  - id: py-str-letter-count
+    prompt: 'Create a variable `label` like `"banana has 6 letters"` from the string `word`. Use an f-string and `len`.'
+    check: test
+    setup: |
+      word = "banana"
+    tests:
+      - 'label == "banana has 6 letters"'
+    solution: |
+      label = f"{word} has {len(word)} letters"
+  - id: py-str-clean-label
+    prompt: 'Create a variable `clean` with the spaces removed from the start and end of `user_input` and the text in upper case. Then create `label` like `"HELLO (5)"`: the clean text and its length in brackets.'
+    check: test
+    setup: |
+      user_input = "  hello  "
+    tests:
+      - 'clean == "HELLO" and label == "HELLO (5)"'
+    solution: |
+      clean = user_input.strip().upper()
+      label = f"{clean} ({len(clean)})"

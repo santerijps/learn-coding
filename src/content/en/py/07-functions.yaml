@@ -156,3 +156,43 @@ cards:
     check: match
     solution: |
       from random import randint
+  - id: py-def-fizzbuzz
+    prompt: 'Write a function `fizz_buzz(n)` that returns `"FizzBuzz"` if `n` is divisible by both 3 and 5, `"Fizz"` if only by 3, `"Buzz"` if only by 5, and otherwise the number as a string.'
+    check: test
+    tests:
+      - 'fizz_buzz(15) == "FizzBuzz" and fizz_buzz(9) == "Fizz" and fizz_buzz(10) == "Buzz"'
+      - 'fizz_buzz(7) == "7"'
+    solution: |
+      def fizz_buzz(n):
+          if n % 15 == 0:
+              return "FizzBuzz"
+          if n % 3 == 0:
+              return "Fizz"
+          if n % 5 == 0:
+              return "Buzz"
+          return str(n)
+  - id: py-def-cart-total
+    prompt: 'Write a function `cart_total(price, quantity, is_member=False)` that stores `price * quantity` in a variable `total`, takes 10% off it if `is_member` is true, and returns `total`.'
+    check: test
+    tests:
+      - 'cart_total(10, 3) == 30'
+      - 'cart_total(10, 5, True) == 45'
+    solution: |
+      def cart_total(price, quantity, is_member=False):
+          total = price * quantity
+          if is_member:
+              total = total * 0.9
+          return total
+  - id: py-def-count-vowels
+    prompt: 'Write a function `count_vowels(text)` that counts with a loop how many of the letters a, e, i, o and u the text contains, in upper or lower case.'
+    check: test
+    tests:
+      - 'count_vowels("Ada Lovelace") == 6'
+      - 'count_vowels("xyz") == 0'
+    solution: |
+      def count_vowels(text):
+          count = 0
+          for char in text.lower():
+              if char in "aeiou":
+                  count += 1
+          return count

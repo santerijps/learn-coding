@@ -173,3 +173,39 @@ cards:
       - '__logs.join(",") === "red,blue"'
     solution: |
       colors.forEach((color) => console.log(color));
+  - id: js-methods-average
+    prompt: 'Write a function `average(numbers)` that returns the average of the array, calculated with `reduce`. For an empty array, return `0`.'
+    check: test
+    tests:
+      - 'average([2, 4, 9]) === 5'
+      - 'average([]) === 0'
+    solution: |
+      function average(numbers) {
+        if (numbers.length === 0) {
+          return 0;
+        }
+        const sum = numbers.reduce((total, n) => total + n, 0);
+        return sum / numbers.length;
+      }
+  - id: js-methods-short-names
+    prompt: 'Write a function `shortNames(names)` that returns the names shorter than 5 letters in upper case, joined into one string with `", "`.'
+    check: test
+    tests:
+      - 'shortNames(["Ada", "Grace", "Linus", "Tim"]) === "ADA, TIM"'
+    solution: |
+      function shortNames(names) {
+        return names
+          .filter((name) => name.length < 5)
+          .map((name) => name.toUpperCase())
+          .join(", ");
+      }
+  - id: js-methods-pass-summary
+    prompt: 'Create a constant `summary` like `"2/4 passed"`: how many of the `scores` are at least 50, out of all scores. Count the passed ones with `filter`.'
+    check: test
+    setup: |
+      const scores = [40, 75, 90, 30];
+    tests:
+      - 'summary === "2/4 passed"'
+    solution: |
+      const passed = scores.filter((s) => s >= 50).length;
+      const summary = `${passed}/${scores.length} passed`;

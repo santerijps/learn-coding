@@ -198,3 +198,54 @@ cards:
       } catch {
         succeeded = false;
       }
+  - id: js-error-withdraw
+    prompt: 'Create a class `Account` whose constructor takes `balance` and whose method `withdraw(amount)` throws `new Error("Insufficient funds")` if the amount is more than the balance, and otherwise subtracts it.'
+    check: test
+    tests:
+      - '(() => { const a = new Account(50); a.withdraw(20); return a.balance === 30; })()'
+      - '(() => { const a = new Account(10); try { a.withdraw(20); return false; } catch (e) { return e.message === "Insufficient funds" && a.balance === 10; } })()'
+    solution: |
+      class Account {
+        constructor(balance) {
+          this.balance = balance;
+        }
+        withdraw(amount) {
+          if (amount > this.balance) {
+            throw new Error("Insufficient funds");
+          }
+          this.balance -= amount;
+        }
+      }
+  - id: js-error-parse-numbers
+    prompt: 'Write a function `parseNumbers(texts)` that converts an array of strings to numbers with `Number` and returns them. If one of them is NaN, throw `` new Error(`Not a number: ${text}`) ``.'
+    check: test
+    tests:
+      - 'parseNumbers(["1", "2.5"]).join(",") === "1,2.5"'
+      - '(() => { try { parseNumbers(["1", "x"]); return false; } catch (e) { return e.message === "Not a number: x"; } })()'
+    solution: |
+      function parseNumbers(texts) {
+        const numbers = [];
+        for (const text of texts) {
+          const n = Number(text);
+          if (Number.isNaN(n)) {
+            throw new Error(`Not a number: ${text}`);
+          }
+          numbers.push(n);
+        }
+        return numbers;
+      }
+  - id: js-error-read-setting
+    prompt: 'Write a function `readSetting(json, key)` that parses the JSON string and returns the value of the property `key`. If parsing fails, return `null`.'
+    check: test
+    tests:
+      - 'readSetting(''{"theme":"dark"}'', "theme") === "dark"'
+      - 'readSetting("oops", "theme") === null'
+    solution: |
+      function readSetting(json, key) {
+        try {
+          const settings = JSON.parse(json);
+          return settings[key];
+        } catch {
+          return null;
+        }
+      }
